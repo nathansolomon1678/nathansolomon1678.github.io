@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="0; url='https://en.wikipedia.org/wiki/Special:Random'" />
   </head>
+  <body>
+    <script>
+
+      var websites_to_redirect_to = [
+        'http://nandgame.com/',  // this will look sketch since it isn't https
+        'https://www.youtube.com/watch?v=pxw-5qfJ1dk',  // shreksophone
+        'https://dood.al/pinktrombone/',
+        'https://esolangs.org/wiki/Befunge',
+        'https://en.wikipedia.org/wiki/Special:Random'
+      ]
+      var random_index = Math.floor(Math.random() * websites_to_redirect_to.length)
+      window.location.href = websites_to_redirect_to[random_index];
+
+    </script>
+  </body>
 </html>
