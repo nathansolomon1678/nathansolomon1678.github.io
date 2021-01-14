@@ -27,10 +27,11 @@ out vec4 fragmentColor;
 
   uniform vec2 complex_constant;
   uniform vec2 canvas_dimensions;
+  uniform float scale_factor;
   float square(float x) { return x * x; }
 
   const int max_iterations = 100;
-  float scale_factor = .2;
+  float log_divergence_limit = 25.;
 
   vec3 rainbow(float x) {
     x = mod(x, 6.);
@@ -43,9 +44,8 @@ out vec4 fragmentColor;
   }
 
   void main() {
-    float log_divergence_limit = 25.;
-    vec2 coords = vertex_position;  // TODO: check that this is right side up (and not flipped horizontally either)
-    vec2 z = coords / scale_factor;
+    vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
+    vec2 z = vertex_position * window / scale_factor;
     int iterations = 0;
     float magnitude = sqrt(square(z.x) + square(z.y));
     for (int i = 0; i <= max_iterations; i++) {

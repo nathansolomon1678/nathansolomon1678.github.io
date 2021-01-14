@@ -37,14 +37,15 @@ function setupWebGL (evt) {
   document.getElementById("theCanvas").addEventListener("mousemove",
     function (evt) {
       // negate Y coord to make right side up (TODO: might have to flip X coord too? not sure)
-      var x_coord =  3 * (2 * (evt.pageX - evt.target.offsetLeft) - gl.drawingBufferWidth ) / gl.drawingBufferWidth;
-      var y_coord = -3 * (2 * (evt.pageY - evt.target.offsetTop ) - gl.drawingBufferHeight) / gl.drawingBufferHeight;
+      var x_coord = ( 2 * (evt.pageX - evt.target.offsetLeft) - gl.drawingBufferWidth ) / gl.drawingBufferWidth  / scale_factor;
+      var y_coord = (-2 * (evt.pageY - evt.target.offsetTop ) - gl.drawingBufferHeight) / gl.drawingBufferHeight / scale_factor;
       gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [x_coord, y_coord]);
       gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
     }, false);
 }
 
-var vertexBuffer
+var vertexBuffer;
+var scale_factor = .5;
 function initializeAttributes() {
   const vertexArray = new Float32Array([-1., -1., 1., -1., 1., 1., -1., 1.]);
   vertexBuffer = gl.createBuffer();
@@ -57,8 +58,9 @@ function initializeAttributes() {
   gl.enableVertexAttribArray(aVertexPosition);
   gl.vertexAttribPointer(aVertexPosition, 2, gl.FLOAT, false, 0, 0);
   var canvas = document.querySelector("canvas");
-  gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
   gl.useProgram(program);
+  gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
+  gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
   gl.drawArrays(gl.TRIANGLE_FAN, 0, vertexCount);
 }
 
