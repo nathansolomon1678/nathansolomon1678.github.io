@@ -40,7 +40,7 @@ function setupWebGL (evt) {
       var x_coord =  3 * (2 * (evt.pageX - evt.target.offsetLeft) - gl.drawingBufferWidth ) / gl.drawingBufferWidth;
       var y_coord = -3 * (2 * (evt.pageY - evt.target.offsetTop ) - gl.drawingBufferHeight) / gl.drawingBufferHeight;
       gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [x_coord, y_coord]);
-      gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
+      gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
     }, false);
 }
 
@@ -59,7 +59,7 @@ function initializeAttributes() {
   var canvas = document.querySelector("canvas");
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
   gl.useProgram(program);
-  gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
+  gl.drawArrays(gl.TRIANGLE_FAN, 0, vertexCount);
 }
 
 function getRenderingContext() {
