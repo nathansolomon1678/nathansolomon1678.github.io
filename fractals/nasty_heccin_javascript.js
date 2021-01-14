@@ -8,12 +8,12 @@ function setupWebGL (evt) {
   if (!(gl = getRenderingContext()))
     return;
 
-  var source = document.querySelector("#vertex-shader").innerHTML;
+  var source = document.getElementById("vert-shader").innerHTML;
   var vertexShader = gl.createShader(gl.VERTEX_SHADER);
   gl.shaderSource(vertexShader,source);
   gl.compileShader(vertexShader);
   console.log(gl.getShaderInfoLog(vertexShader));
-  source = document.querySelector("#fragment-shader").innerHTML
+  source = document.getElementById("frag-shader").innerHTML
   var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(fragmentShader,source);
   gl.compileShader(fragmentShader);
@@ -39,7 +39,6 @@ function setupWebGL (evt) {
       // negate Y coord to make right side up (TODO: might have to flip X coord too? not sure)
       var x_coord =  3 * (2 * (evt.pageX - evt.target.offsetLeft) - gl.drawingBufferWidth ) / gl.drawingBufferWidth;
       var y_coord = -3 * (2 * (evt.pageY - evt.target.offsetTop ) - gl.drawingBufferHeight) / gl.drawingBufferHeight;
-      console.log(x_coord, y_coord)
       gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [x_coord, y_coord]);
       gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
     }, false);
