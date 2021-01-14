@@ -10,64 +10,86 @@
 <body>
   <canvas id="theCanvas">Your browser does not seem to support HTML5 canvas.</canvas>
   <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
-precision highp float;
-
-in vec2 position;
-out vec2 vertex_position;
-
-void main() {
-  gl_Position = vec4(position, 0., 1.);
-  vertex_position = position;
-}
+    precision highp float;
+    
+    in vec2 position;
+    out vec2 vertex_position;
+    
+    void main() {
+      gl_Position = vec4(position, 0., 1.);
+      vertex_position = position;
+    }
   </script>
   <script type="x-shader/x-fragment" id="frag-shader">#version 300 es
-precision highp float;
-in vec2 vertex_position;
-out vec4 fragmentColor;
+    precision highp float;
+    in vec2 vertex_position;
+    out vec4 fragmentColor;
+    
+    uniform vec2 complex_constant;
+    uniform vec2 canvas_dimensions;
+    uniform float scale_factor;
+    uniform int coloring_method;
+    uniform int max_iterations;
+    uniform float log_divergence_limit;
+    uniform int fractal_type;
 
-  uniform vec2 complex_constant;
-  uniform vec2 canvas_dimensions;
-  uniform float scale_factor;
-  float square(float x) { return x * x; }
+    float square(float x) { return x * x; }
+    
+    vec3 rainbow(float x) {
+      x = fract(x) * 6.;
+           if (x < 1.) { return vec3(1.           , fract(x)     , 0.           ); }
+      else if (x < 2.) { return vec3(1. - fract(x), 1.           , 0.           ); }
+      else if (x < 3.) { return vec3(0.           , 1.           , fract(x)     ); }
+      else if (x < 4.) { return vec3(0.           , 1. - fract(x), 1.           ); }
+      else if (x < 5.) { return vec3(fract(x)     , 0.           , 1.           ); }
+      else             { return vec3(1.           , 0.           , 1. - fract(x)); }
+    }
 
-  const int max_iterations = 100;
-  float log_divergence_limit = 25.;
-
-  vec3 rainbow(float x) {
-    x = mod(x, 6.);
-         if (x < 1.) { return vec3(1.           , fract(x)     , 0.           ); }
-    else if (x < 2.) { return vec3(1. - fract(x), 1.           , 0.           ); }
-    else if (x < 3.) { return vec3(0.           , 1.           , fract(x)     ); }
-    else if (x < 4.) { return vec3(0.           , 1. - fract(x), 1.           ); }
-    else if (x < 5.) { return vec3(fract(x)     , 0.           , 1.           ); }
-    else             { return vec3(1.           , 0.           , 1. - fract(x)); }
-  }
-
-  void main() {
-    vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
-    vec2 z = vertex_position * window / scale_factor;
-    int iterations = 0;
-    float magnitude = sqrt(square(z.x) + square(z.y));
-    for (int i = 0; i <= max_iterations; i++) {
-      float last_magnitude = magnitude;
-      float a = z.x * z.y;
-      float b = abs(z.y) - abs(z.x);
-      z.x = a + complex_constant.x;
-      z.y = b + complex_constant.y;
-      magnitude = sqrt(square(z.x) + square(z.y));
-      iterations = i;
-      if (log(magnitude) > log_divergence_limit) {
-        float float_iters = float(iterations) + (log_divergence_limit - log(last_magnitude)) / (log(magnitude) - log(last_magnitude));
-        fragmentColor = vec4(rainbow(-float_iters / 5.), 1.);
-        break;
-      } else if (iterations == max_iterations) {
-        fragmentColor = vec4(vec3(0.), 1.);
+    vec2 iterate(vec2 z, vec2 c, int type) {
+      if (type == 0) {
+        // Mandelbrot
+        return vec2(square(z.x) - square(z.y) + c.x,
+                    2. * z.x * z.y + c.y);
+      } else if (type == 1) {
+        // Heart
+        return vec2(z.x * z.y + c.x,
+                    abs(z.y) - abs(z.x) + c.y);
+      } else if (type == 2) {
+        // Burning ship
+        return vec2(square(z.x) - square(z.y) + c.x,
+                    abs(2. * z.x * z.y) + c.y);
       }
     }
-  }
-
-
-
+    
+    void main() {
+      vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
+      vec2 z = vertex_position * window / scale_factor;
+      float magnitude = sqrt(square(z.x) + square(z.y));
+      for (int i = 0; i <= max_iterations; i++) {
+        float last_magnitude = magnitude;
+        z = iterate(z, complex_constant, fractal_type);
+        magnitude = sqrt(square(z.x) + square(z.y));
+        if (coloring_method == 0) {
+          // Color by how many iterations it takes to diverge
+          if (log(magnitude) > log_divergence_limit) {
+            float float_iters = float(i) + (log_divergence_limit - log(last_magnitude)) /
+                                           (log(magnitude) - log(last_magnitude));
+            fragmentColor = vec4(rainbow(float_iters / 20.), 1.);
+          break;
+          } else if (i == max_iterations) {
+            fragmentColor = vec4(0., 0., 0., 1.);
+          }
+        } else if (coloring_method == 1) {
+          // Color by the log of the magnitude after interating a whole bunch
+          if (log(magnitude) > log_divergence_limit) {
+            fragmentColor = vec4(0., 0., 0., 1.);
+            break;
+          } else {
+            fragmentColor = vec4(rainbow(log(magnitude)), 1.);
+          }
+        }
+      }
+    }
   </script>
 </body>
 </html>
