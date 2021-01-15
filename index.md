@@ -1,3 +1,5 @@
 # Welcome to my website!
 
-Click [Here](https://nathansolomon1678.github.io/redirect) to begin.
+Click [here](fractals) to explore some nifty escape time fractlas!
+
+or, click [here](redirect) to explore the vast interwebs.
