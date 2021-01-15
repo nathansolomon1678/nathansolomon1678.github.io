@@ -39,7 +39,6 @@ function setupWebGL (evt) {
       var canvas = document.querySelector("canvas");
       var x_coord = (2 * (evt.pageX - evt.target.offsetLeft) - canvas.width ) / canvas.width  / scale_factor;
       var y_coord = (2 * (evt.pageY - evt.target.offsetTop ) - canvas.height) / canvas.height / scale_factor;
-      // negate Y coord to make right side up (TODO: might have to flip X coord too? not sure)
       y_coord *= -1;
       gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [x_coord, y_coord]);
       gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
@@ -48,11 +47,13 @@ function setupWebGL (evt) {
 }
 
 var vertexBuffer;
-var scale_factor = .5;
+var scale_factor = 1.;
 var coloring_method = 1;  // 0 to color by iteration, 1 to color by log_magnitude
 var max_iterations = 100;
 var log_divergence_limit = 25.;
 var fractal_type = 2;
+var julify = 1;
+
 function initializeAttributes() {
   const vertexArray = new Float32Array([-1., -1., 1., -1., 1., 1., -1., 1.]);
   vertexBuffer = gl.createBuffer();
@@ -72,6 +73,7 @@ function initializeAttributes() {
   gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
   gl.uniform1f(gl.getUniformLocation(program, "log_divergence_limit"), log_divergence_limit);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
+  gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
   gl.drawArrays(gl.TRIANGLE_FAN, 0, vertexCount);
 }
 

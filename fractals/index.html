@@ -32,6 +32,7 @@
     uniform int max_iterations;
     uniform float log_divergence_limit;
     uniform int fractal_type;
+    uniform int julify;
 
     float square(float x) { return x * x; }
     
@@ -57,17 +58,24 @@
       } else if (type == 2) {
         // Burning ship
         return vec2(square(z.x) - square(z.y) + c.x,
-                    abs(2. * z.x * z.y) + c.y);
+                    -abs(2. * z.x * z.y) + c.y);
       }
     }
     
     void main() {
       vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
       vec2 z = vertex_position * window / scale_factor;
+      vec2 original_z = z;
       float magnitude = sqrt(square(z.x) + square(z.y));
       for (int i = 0; i <= max_iterations; i++) {
         float last_magnitude = magnitude;
-        z = iterate(z, complex_constant, fractal_type);
+        if (julify == 0) {
+          // Don't julify
+          z = iterate(z, original_z, fractal_type);
+        } else if (julify == 1) {
+          // Julify
+          z = iterate(z, complex_constant, fractal_type);
+        }
         magnitude = sqrt(square(z.x) + square(z.y));
         if (coloring_method == 0) {
           // Color by how many iterations it takes to diverge
