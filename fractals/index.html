@@ -34,7 +34,24 @@
     uniform int fractal_type;
     uniform int julify;
 
+    const float pi = 3.14159265;
     float square(float x) { return x * x; }
+    // Functions for complex numbers:
+    vec2 cosine(vec2 z) {
+      return vec2( cos(z.x) * cosh(z.y),
+                  -sin(z.x) * sinh(z.y));
+    }
+    vec2 sine(vec2 z) {
+      return vec2( sin(z.x) * cosh(z.y),
+                   cos(z.x) * sinh(z.y));
+    }
+    vec2 multiply(vec2 z, vec2 s) {
+      return vec2(z.x * s.x - z.y * s.y,
+                  z.x * s.y + z.y * s.x);
+    }
+    vec2 square(vec2 z) {
+      return multiply(z, z);
+    }
     
     vec3 rainbow(float x) {
       x = fract(x) * 6.;
@@ -49,16 +66,22 @@
     vec2 iterate(vec2 z, vec2 c, int type) {
       if (type == 0) {
         // Mandelbrot
-        return vec2(square(z.x) - square(z.y) + c.x,
-                    2. * z.x * z.y + c.y);
+        return c + square(z);
       } else if (type == 1) {
         // Heart
-        return vec2(z.x * z.y + c.x,
-                    abs(z.y) - abs(z.x) + c.y);
+        return c + vec2(z.x * z.y,
+                        abs(z.y) - abs(z.x));
       } else if (type == 2) {
         // Burning ship
-        return vec2(square(z.x) - square(z.y) + c.x,
-                    -abs(2. * z.x * z.y) + c.y);
+        return c + vec2(square(z.x) - square(z.y),
+                        -abs(2. * z.x * z.y));
+      } else if (type == 3) {
+        // Collatz thingy
+        return .25 * (c * 2. + 7. * z - multiply(c * 2. + 5. * z, cosine(pi * z)));
+      } else if (type == 4) {
+        // Random fiddling around v2
+        return c + vec2(abs(z.y) - abs(z.x),
+                        z.x * abs(z.y));
       }
     }
     

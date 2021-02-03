@@ -47,11 +47,11 @@ function setupWebGL (evt) {
 }
 
 var vertexBuffer;
-var scale_factor = 1.;
-var coloring_method = 1;  // 0 to color by iteration, 1 to color by log_magnitude
+var scale_factor = .5;
+var coloring_method = 0;  // 0 to color by iteration, 1 to color by log_magnitude
 var max_iterations = 100;
-var log_divergence_limit = 25.;
-var fractal_type = 2;
+var log_divergence_limit = 4.;
+var fractal_type = 4;
 var julify = 1;
 
 function initializeAttributes() {
