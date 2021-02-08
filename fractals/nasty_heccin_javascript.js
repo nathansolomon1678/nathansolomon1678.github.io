@@ -40,7 +40,7 @@ function setupWebGL (evt) {
   initializeAttributes();
   document.getElementById("theCanvas").addEventListener("mousemove", function(event) {
     var canvas = document.querySelector("canvas");
-    var scale_factor = document.getElementById("scaleFactor").value;
+    var scale_factor = Math.exp(document.getElementById("logScaleFactor").value);
     // TODO: alert if screen dimensions are too small, advising users to use a computer instead
     mouseX = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / canvas.width  / scale_factor;
     mouseY = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / canvas.height / scale_factor;
@@ -55,7 +55,7 @@ function redraw() {
   var coloring_method = document.getElementById("coloringMethod").value;
   var fractal_type = document.getElementById("fractalType").value;
   var julify = document.getElementById("julify").checked ? 1 : 0;
-  var scale_factor = document.getElementById("scaleFactor").value;
+  var scale_factor = Math.exp(document.getElementById("logScaleFactor").value);
   var max_iterations = document.getElementById("maxIters").value;
   var log_divergence_limit = document.getElementById("logDivergenceLimit").value;
   gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
