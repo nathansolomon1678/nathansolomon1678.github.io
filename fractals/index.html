@@ -8,6 +8,41 @@
   <script src="nasty_heccin_javascript.js" type="text/javascript"> </script>
 </head>
 <body>
+  <div id="theDivWithAllTheStuff" style="display: block">
+    <div>
+      <h1>Escape-time fractals</h1>
+      <p>(press <code>space</code>  to dismiss or reopen this div)</p>
+      <h2>Settings</h2>
+        <label for="fractalType">Fractal type:</label>
+        <select id="fractalType" onchange="redraw()">
+          <option value=0>Mandelbrot</option>
+          <option value=1>Heart</option>
+          <option value=2>Burning ship</option>
+          <option value=3>Collatz</option>
+          <option value=4 selected="selected">Untitled 1</option>
+        </select>
+        <br><br>
+        <label for="coloringMethod">Coloring method:</label>
+        <select id="coloringMethod" onchange="redraw()">
+          <option value=0 selected="selected">Outside of shape</option>
+          <option value=1>Inside of shape</option>
+        </select>
+        <br><br>
+        <label for="julify">Show julia set: </label>
+        <input type="checkbox" id="julify" checked onchange="redraw()">
+        <br><br>
+        <label for="scaleFactor">Scale factor: </label>
+        <input id="scaleFactor" type="number" value=.5 min=.1 step=.1 onchange="redraw()">
+        <br><br>
+        <label for="maxIters">Maximum iterations: </label>
+        <input id="maxIters" type="number" value=100 min=1 max=200 step=1 onchange="redraw()">
+        <br><br>
+        <label for="logDivergenceLimit">(log) Divergence limit: </label>
+        <input id="logDivergenceLimit" type="number" value=4 min=.1 step=.1 onchange="redraw()">
+      <h2>What are fractals?</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+  </div>
   <canvas id="theCanvas">Your browser does not seem to support HTML5 canvas.</canvas>
   <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
     precision highp float;
@@ -77,7 +112,7 @@
                         -abs(2. * z.x * z.y));
       } else if (type == 3) {
         // Collatz thingy
-        return .25 * (c * 2. + 7. * z - multiply(c * 2. + 5. * z, cosine(pi * z)));
+        return .25 * (7. * z - multiply(5. * z, cosine(pi * z)));
       } else if (type == 4) {
         // Random fiddling around v2
         return c + vec2(abs(z.y) - abs(z.x),

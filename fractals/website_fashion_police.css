@@ -1,9 +1,24 @@
-* {
+canvas {
+  height: 100vh;
+  width: 100vw;
+  display: block;
   margin: 0px;
   padding: 0px;
 }
-canvas {
-  width: 100vw;
-  height: 100vh;
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+#theDivWithAllTheStuff {
+  border: 3px solid #999999;
+  border-radius: 20px;
+  background-color: #ffffffaa;
+  margin: 10px;
+  padding: 10px;
+  position: absolute;
   display: block;
+  width: 25vw;
+  overflow: auto;
 }

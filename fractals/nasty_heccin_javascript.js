@@ -1,8 +1,12 @@
-;(function(){
 "use strict"
 window.addEventListener("load", setupWebGL, false);
-var gl,
-  program;
+
+var gl;
+var program;
+var mouseX = 0;
+var mouseY = 0;
+var vertexBuffer;
+
 function setupWebGL (evt) {
   window.removeEventListener(evt.type, setupWebGL, false);
   if (!(gl = getRenderingContext()))
@@ -13,7 +17,7 @@ function setupWebGL (evt) {
   gl.shaderSource(vertexShader,source);
   gl.compileShader(vertexShader);
   console.log(gl.getShaderInfoLog(vertexShader));
-  source = document.getElementById("frag-shader").innerHTML
+  source = document.getElementById("frag-shader").innerHTML;
   var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(fragmentShader,source);
   gl.compileShader(fragmentShader);
@@ -34,25 +38,36 @@ function setupWebGL (evt) {
     return;
   } 
   initializeAttributes();
-  document.getElementById("theCanvas").addEventListener("mousemove",
-    function (evt) {
-      var canvas = document.querySelector("canvas");
-      var x_coord = (2 * (evt.pageX - evt.target.offsetLeft) - canvas.width ) / canvas.width  / scale_factor;
-      var y_coord = (2 * (evt.pageY - evt.target.offsetTop ) - canvas.height) / canvas.height / scale_factor;
-      y_coord *= -1;
-      gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [x_coord, y_coord]);
-      gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
-    }, false
-  );
+  document.getElementById("theCanvas").addEventListener("mousemove", function(event) {
+    var canvas = document.querySelector("canvas");
+    var scale_factor = document.getElementById("scaleFactor").value;
+    // TODO: alert if screen dimensions are too small, advising users to use a computer instead
+    mouseX = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / canvas.width  / scale_factor;
+    mouseY = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / canvas.height / scale_factor;
+    mouseY *= -1;
+    redraw();
+  }, false);
 }
 
-var vertexBuffer;
-var scale_factor = .5;
-var coloring_method = 0;  // 0 to color by iteration, 1 to color by log_magnitude
-var max_iterations = 100;
-var log_divergence_limit = 4.;
-var fractal_type = 4;
-var julify = 1;
+function redraw() {
+  var canvas = document.querySelector("canvas");
+  gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [mouseX, mouseY]);
+  var coloring_method = document.getElementById("coloringMethod").value;
+  var fractal_type = document.getElementById("fractalType").value;
+  var julify = document.getElementById("julify").checked ? 1 : 0;
+  var scale_factor = document.getElementById("scaleFactor").value;
+  var max_iterations = document.getElementById("maxIters").value;
+  var log_divergence_limit = document.getElementById("logDivergenceLimit").value;
+  gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
+  gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
+  gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
+  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
+  gl.uniform1f(gl.getUniformLocation(program, "log_divergence_limit"), log_divergence_limit);
+  gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
+  gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
+  gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+}
+
 
 function initializeAttributes() {
   const vertexArray = new Float32Array([-1., -1., 1., -1., 1., 1., -1., 1.]);
@@ -67,14 +82,6 @@ function initializeAttributes() {
   gl.vertexAttribPointer(aVertexPosition, 2, gl.FLOAT, false, 0, 0);
   var canvas = document.querySelector("canvas");
   gl.useProgram(program);
-  gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
-  gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
-  gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
-  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
-  gl.uniform1f(gl.getUniformLocation(program, "log_divergence_limit"), log_divergence_limit);
-  gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
-  gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
-  gl.drawArrays(gl.TRIANGLE_FAN, 0, vertexCount);
 }
 
 function getRenderingContext() {
@@ -96,4 +103,18 @@ function getRenderingContext() {
   return gl;
 }
 
-})();
+window.onkeypress = function(event) {
+  // When space bar is pressed, toggle visiblity of main div
+  if (event.keyCode === 32) {
+    var divWithEverything = document.getElementById("theDivWithAllTheStuff");
+    var display = divWithEverything.style.display;
+    if (display === "block") {
+      display = "none";
+    } else if (display === "none") {
+      display = "block";
+    } else {
+      console.log(divWithEverything.style.display);
+    }
+    divWithEverything.style.display = display;
+  }
+}
