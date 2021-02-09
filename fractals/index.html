@@ -40,12 +40,12 @@
     <br>
     <label for="colorscheme">Colorscheme: </label>
     <select id="colorscheme" onchange="redraw()">
-      <option value=0 selected="selected">Rainbow</option>
-      <option value=1>Colorscheme 2</option>
+      <option value=0 selected="selected">Default</option>
+      <option value=1>Rainbow</option>
     </select>
     <br>
     <label for="colorfullness">Colorfullness: </label>
-    <input id="colorfullness" type="number" value=.1 min=.01 max=1 step=.01 onchange="redraw()">
+    <input id="colorfullness" type="number" value=.15 min=.01 max=1 step=.01 onchange="redraw()">
     <h2>What are fractals?</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   </div>
@@ -97,6 +97,11 @@
     }
     
     // COLORSCHEMES
+    vec3 default_colo(float x) {
+      return vec3(.5 + sin(x     ) / 2.,
+                  .5 + sin(x + 1.) / 2.,
+                  .5 + sin(x + 2.) / 2.);
+    }
     vec3 rainbow(float x) {
       x = fract(x / 6.) * 6.;
            if (x < 1.) { return vec3(1.           , fract(x)     , 0.           ); }
@@ -106,17 +111,12 @@
       else if (x < 5.) { return vec3(fract(x)     , 0.           , 1.           ); }
       else             { return vec3(1.           , 0.           , 1. - fract(x)); }
     }
-    vec3 colo2(float x) {
-      return vec3(.5 + sin(x     ) / 2.,
-                  .5 + sin(x + 1.) / 2.,
-                  .5 + sin(x + 2.) / 2.);
-    }
     vec4 color(float x) {
       x *= colorfullness;
       if (colorscheme == 0) {
-        return vec4(rainbow(x), 1);
+        return vec4(default_colo(x), 1);
       } else if (colorscheme == 1) {
-        return vec4(colo2(x), 1.);
+        return vec4(rainbow(x), 1.);
       }
     }
 
