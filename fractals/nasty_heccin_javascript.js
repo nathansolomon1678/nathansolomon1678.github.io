@@ -41,7 +41,6 @@ function setupWebGL (evt) {
   document.getElementById("theCanvas").addEventListener("mousemove", function(event) {
     var canvas = document.querySelector("canvas");
     var scale_factor = Math.exp(document.getElementById("logScaleFactor").value);
-    // TODO: alert if screen dimensions are too small, advising users to use a computer instead
     mouseX = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / canvas.width  / scale_factor;
     mouseY = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / canvas.height / scale_factor;
     mouseY *= -1;
@@ -58,6 +57,8 @@ function redraw() {
   var scale_factor = Math.exp(document.getElementById("logScaleFactor").value);
   var max_iterations = document.getElementById("maxIters").value;
   var log_divergence_limit = document.getElementById("logDivergenceLimit").value;
+  var colorscheme = document.getElementById("colorscheme").value;
+  var colorfullness = document.getElementById("colorfullness").value;
   gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
@@ -65,6 +66,8 @@ function redraw() {
   gl.uniform1f(gl.getUniformLocation(program, "log_divergence_limit"), log_divergence_limit);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
   gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
+  gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), colorscheme);
+  gl.uniform1f(gl.getUniformLocation(program, "colorfullness"), colorfullness);
   gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 }
 
@@ -88,6 +91,9 @@ function getRenderingContext() {
   var canvas = document.querySelector("canvas");
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
+  if (canvas.width < 700 || canvas.height < 700) {
+    alert("This site is much cooler on a large computer window with high resolution");
+  }
   var gl = canvas.getContext("webgl2") 
     || canvas.getContext("experimental-webgl");
   if (!gl) {

@@ -37,10 +37,16 @@
     <br>
     <label for="logDivergenceLimit">log(Divergence limit): </label>
     <input id="logDivergenceLimit" type="number" value=5 min=-5 max=20 step=.1 onchange="redraw()">
+    <br>
+    <label for="colorscheme">Colorscheme: </label>
+    <select id="colorscheme" onchange="redraw()">
+      <option value=0 selected="selected">Rainbow</option>
+      <option value=1>Colorscheme 2</option>
+    </select>
+    <br>
+    <label for="colorfullness">Colorfullness: </label>
+    <input id="colorfullness" type="number" value=.1 min=.01 max=100 step=.01 onchange="redraw()">
     <h2>What are fractals?</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   </div>
   <canvas id="theCanvas">Your browser does not seem to support HTML5 canvas.</canvas>
@@ -68,6 +74,8 @@
     uniform float log_divergence_limit;
     uniform int fractal_type;
     uniform int julify;
+    uniform int colorscheme;
+    uniform float colorfullness;
 
     const float pi = 3.14159265;
     float square(float x) { return x * x; }
@@ -88,14 +96,28 @@
       return multiply(z, z);
     }
     
+    // COLORSCHEMES
     vec3 rainbow(float x) {
-      x = fract(x) * 6.;
+      x = fract(x / 6.) * 6.;
            if (x < 1.) { return vec3(1.           , fract(x)     , 0.           ); }
       else if (x < 2.) { return vec3(1. - fract(x), 1.           , 0.           ); }
       else if (x < 3.) { return vec3(0.           , 1.           , fract(x)     ); }
       else if (x < 4.) { return vec3(0.           , 1. - fract(x), 1.           ); }
       else if (x < 5.) { return vec3(fract(x)     , 0.           , 1.           ); }
       else             { return vec3(1.           , 0.           , 1. - fract(x)); }
+    }
+    vec3 colo2(float x) {
+      return vec3(.5 + sin(x     ) / 2.,
+                  .5 + sin(x + 1.) / 2.,
+                  .5 + sin(x + 2.) / 2.);
+    }
+    vec4 color(float x) {
+      x *= colorfullness;
+      if (colorscheme == 0) {
+        return vec4(rainbow(x), 1);
+      } else if (colorscheme == 1) {
+        return vec4(colo2(x), 1.);
+      }
     }
 
     vec2 iterate(vec2 z, vec2 c, int type) {
@@ -140,7 +162,7 @@
           if (log(magnitude) > log_divergence_limit) {
             float float_iters = float(i) + (log_divergence_limit - log(last_magnitude)) /
                                            (log(magnitude) - log(last_magnitude));
-            fragmentColor = vec4(rainbow(float_iters / 20.), 1.);
+            fragmentColor = color(float_iters);
           break;
           } else if (i == max_iterations) {
             fragmentColor = vec4(0., 0., 0., 1.);
@@ -151,7 +173,7 @@
             fragmentColor = vec4(0., 0., 0., 1.);
             break;
           } else {
-            fragmentColor = vec4(rainbow(log(magnitude)), 1.);
+            fragmentColor = color(log(magnitude));
           }
         }
       }
