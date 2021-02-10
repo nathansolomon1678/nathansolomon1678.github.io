@@ -91,9 +91,6 @@ function getRenderingContext() {
   var canvas = document.querySelector("canvas");
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
-  if (canvas.width < 700 || canvas.height < 700) {
-    alert("This site is much cooler on a large computer window with high resolution");
-  }
   var gl = canvas.getContext("webgl2") 
     || canvas.getContext("experimental-webgl");
   if (!gl) {
@@ -124,3 +121,7 @@ window.onkeypress = function(event) {
     divWithEverything.style.display = display;
   }
 }
+
+// TODO: add a feature to zoom in & pan
+// TODO: somehow show julia set and original fractal at the same time?
+// TODO: finish descriptions of all the settings
