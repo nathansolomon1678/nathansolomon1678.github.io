@@ -22,7 +22,7 @@
     <h1>Escape-time fractals</h1>
     <h2>Settings</h2>
     <label for="fractalType">Fractal type:</label>
-    <select id="fractalType" onchange="redraw()">
+    <select id="fractalType" onchange="redraw()" class="setting">
       <option value=0>Mandelbrot</option>
       <option value=1>Heart</option>
       <option value=2>Burning ship</option>
@@ -31,31 +31,31 @@
     </select>
     <br>
     <label for="coloringMethod">Coloring method:</label>
-    <select id="coloringMethod" onchange="redraw()">
+    <select id="coloringMethod" onchange="redraw()" class="setting">
       <option value=0 selected="selected">Outside of shape</option>
       <option value=1>Inside of shape</option>
     </select>
     <br>
     <label for="julify">Show Julia set instead of original: </label>
-    <input type="checkbox" id="julify" checked onchange="redraw()">
+    <input type="checkbox" id="julify" checked onchange="redraw()" class="setting">
     <br>
     <label for="logScaleFactor">log(Scale factor): </label>
-    <input id="logScaleFactor" type="number" value=-.3 min=-5 max=10 step=.1 onchange="redraw()">
+    <input id="logScaleFactor" type="number" value=-.3 min=-5 max=10 step=.1 onchange="redraw()" class="setting">
     <br>
     <label for="maxIters">Maximum iterations: </label>
-    <input id="maxIters" type="number" value=100 min=0 max=150 step=1 onchange="redraw()">
+    <input id="maxIters" type="number" value=100 min=0 max=150 step=1 onchange="redraw()" class="setting">
     <br>
     <label for="logDivergenceLimit">log(Divergence limit): </label>
-    <input id="logDivergenceLimit" type="number" value=5 min=-5 max=20 step=.2 onchange="redraw()">
+    <input id="logDivergenceLimit" type="number" value=5 min=-5 max=20 step=.2 onchange="redraw()" class="setting">
     <br>
     <label for="colorscheme">Colorscheme: </label>
-    <select id="colorscheme" onchange="redraw()">
+    <select id="colorscheme" onchange="redraw()" class="setting">
       <option value=0 selected="selected">Default</option>
       <option value=1>Rainbow</option>
     </select>
     <br>
     <label for="colorfullness">Colorfullness: </label>
-    <input id="colorfullness" type="number" value=.2 min=0 max=10 step=.01 onchange="redraw()">
+    <input id="colorfullness" type="number" value=.2 min=0 max=10 step=.01 onchange="redraw()" class="setting">
     <h2>How do I use this site?</h2>
     <h3>...on a phone / tablet</h3>
     <p>You don't. Since the beauty of fractals lies in their infinite detail, instead of their overall shapes and colors, the only way to appreciate this site is to visit it on a computer.</p>
@@ -102,7 +102,7 @@
     <p>$$ y_{n+1} = x_n * |y_n| + y_0 $$</p>
     <h2>Credits & stuff</h2>
     <p>For more info, go back to <a href="https://nathansolomon1678.github.io">the home page</a> of this site.</p>
-    <p>Note that this website is currently incomplete. If you couldn't tell, I guess I'll take that as a compliment</p>
+    <p>Note that this website is currently incomplete. If you couldn't tell, I guess I'll take that as a compliment.</p>
   </div>
   <canvas id="theCanvas">Your browser does not seem to support HTML5 canvas.</canvas>
   <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
