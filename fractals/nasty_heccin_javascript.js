@@ -106,20 +106,14 @@ function getRenderingContext() {
   return gl;
 }
 
-window.onkeypress = function(event) {
-  // When space bar is pressed, toggle visiblity of main div
-  if (event.keyCode === 32) {
-    var divWithEverything = document.getElementById("theDivWithAllTheStuff");
-    var display = divWithEverything.style.display;
-    if (display === "block") {
-      display = "none";
-    } else if (display === "none") {
-      display = "block";
-    } else {
-      console.log(divWithEverything.style.display);
-    }
-    divWithEverything.style.display = display;
-  }
+function hideSidebar() {
+  document.getElementById("theDivWithAllTheStuff").style.display = "none";
+  document.getElementById("showSidebarButton").style.display = "block";
+}
+
+function showSidebar() {
+  document.getElementById("theDivWithAllTheStuff").style.display = "block";
+  document.getElementById("showSidebarButton").style.display = "none";
 }
 
 // TODO: add a feature to zoom in & pan

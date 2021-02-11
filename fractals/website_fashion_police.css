@@ -11,6 +11,14 @@ body {
   padding: 0px;
 }
 
+button {
+  margin: 5px;
+  padding: 5px;
+  background-color: #ddd;
+  border-color: #999;
+  border-radius: 10px;
+}
+
 #theDivWithAllTheStuff {
   border: 3px solid #999999;
   border-radius: 20px;
