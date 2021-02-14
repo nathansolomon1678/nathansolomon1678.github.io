@@ -2,8 +2,8 @@
 
 All of these are generated using [this webpage](https://nathansolomon1678.github.io/fractals)
 
-![](adrenaline-inducing\ despair.png)
-![](flirtatious\ fear.png)
-![](zesty\ heartache.png)
-![](soul-suffocating\ sorrow.png)
-![](tantalizing\ torment.png)
+![](adrenaline-inducing%20despair.png)
+![](flirtatious%20fear.png)
+![](zesty%20heartache.png)
+![](soul-suffocating%20sorrow.png)
+![](tantalizing%20torment.png)
