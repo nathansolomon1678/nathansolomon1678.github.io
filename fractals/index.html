@@ -9,7 +9,7 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body>
+<body onload="redraw()">
   <!-- There are separate buttons for dismissing and reopening the sidebar,
   but only one of them will be visible at a time. This one starts hidden. -->
   <button id=showSidebarButton onclick="showSidebar()" style="float: left; display: none; position: absolute">
@@ -24,10 +24,11 @@
     <label for="fractalType">Fractal type:</label>
     <select id="fractalType" onchange="redraw()" class="setting">
       <option value=0>Mandelbrot</option>
-      <option value=1 selected="selected">Heart</option>
+      <option value=1>Heart</option>
       <option value=2>Burning ship</option>
       <option value=3>Collatz</option>
       <option value=4>Untitled 1</option>
+      <option value=5 selected="selected">Untitled 2</option>
     </select>
     <br>
     <label for="coloringMethod">Coloring method:</label>
@@ -193,6 +194,10 @@
       } else if (type == 4) {
         // Untitled 1
         return c + vec2(abs(z.y) - abs(z.x),
+                        z.x * abs(z.y));
+      } else if (type == 5) {
+        // Untitled 2
+        return c + vec2(square(z.x) - abs(z.y),
                         z.x * abs(z.y));
       }
     }
