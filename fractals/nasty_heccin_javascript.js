@@ -3,9 +3,13 @@ window.addEventListener("load", setupWebGL, false);
 
 var gl;
 var program;
-var mouseX = 0;
-var mouseY = 0;
 var vertexBuffer;
+
+var mouse_x = 0;
+var mouse_y = 0;
+var center_x = 0;
+var center_y = 0;
+var scale_factor = .7;
 
 function setupWebGL (evt) {
   window.removeEventListener(evt.type, setupWebGL, false);
@@ -39,28 +43,24 @@ function setupWebGL (evt) {
   } 
   initializeAttributes();
   document.getElementById("theCanvas").addEventListener("mousemove", function(event) {
-    var canvas = document.querySelector("canvas");
-    var scale_factor = Math.exp(document.getElementById("logScaleFactor").value);
-    mouseX = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / canvas.width  / scale_factor;
-    mouseY = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / canvas.height / scale_factor;
-    mouseY *= -1;
+    setMouseCoords();
     redraw();
   }, false);
 }
 
 function redraw() {
   var canvas = document.querySelector("canvas");
-  gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [mouseX, mouseY]);
+  gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [mouse_x, mouse_y]);
   var coloring_method = document.getElementById("coloringMethod").value;
   var fractal_type = document.getElementById("fractalType").value;
   var julify = document.getElementById("julify").checked ? 1 : 0;
-  var scale_factor = Math.exp(document.getElementById("logScaleFactor").value);
   var max_iterations = document.getElementById("maxIters").value;
   var log_divergence_limit = document.getElementById("logDivergenceLimit").value;
   var colorscheme = document.getElementById("colorscheme").value;
   var colorfullness = document.getElementById("colorfullness").value;
   gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
+  gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
   gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
   gl.uniform1f(gl.getUniformLocation(program, "log_divergence_limit"), log_divergence_limit);
@@ -116,6 +116,28 @@ function showSidebar() {
   document.getElementById("showSidebarButton").style.display = "none";
 }
 
+function setMouseCoords() {
+  var canvas = document.getElementById("theCanvas");
+  mouse_x = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / canvas.width;
+  mouse_y = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / canvas.height;
+  mouse_y *= -1;
+}
+
+function zoom(event) {
+  // TODO: define some constant for scroll sensitivity instead of hardcoding?
+  var zoom_factor = Math.exp(-event.deltaY / 500);
+  scale_factor *= zoom_factor;
+  setMouseCoords();
+  var x_coord_at_mouse = mouse_x / scale_factor + center_x;
+  var y_coord_at_mouse = mouse_y / scale_factor + center_y;
+  center_x = x_coord_at_mouse + (center_x - x_coord_at_mouse) / zoom_factor;
+  center_y = y_coord_at_mouse + (center_y - y_coord_at_mouse) / zoom_factor;
+  redraw();
+}
+
 // TODO: add a feature to zoom in & pan
 // TODO: somehow show julia set and original fractal at the same time?
 // TODO: finish descriptions of all the settings
+// TODO: store shaders in separate files
+// TODO: use snake case for all variable names?
+// TODO: add event to redraw when canvas is resized
