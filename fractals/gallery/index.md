@@ -1,7 +1,5 @@
 # Fractal Gallery
 
-All of these are generated using [this webpage](https://nathansolomon1678.github.io/fractals)
-
 ![](adrenaline-inducing%20despair.png)
 ![](zesty%20heartache.png)
 ![](soul-suffocating%20sorrow.png)
@@ -11,3 +9,4 @@ All of these are generated using [this webpage](https://nathansolomon1678.github
 ![](gourmet%20cabbage.png)
 ![](zvzvzvzvzvzvzvvzzzvzvzvzvzvzvzvvzzvzzvZVvzvv.png)
 ![](xbxbbbxbxbxbxBXXbXbXbbxBbxbxb.png)
+![](i%20am%20a%20dork.png)
