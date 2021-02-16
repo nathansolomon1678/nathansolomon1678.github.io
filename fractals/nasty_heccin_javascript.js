@@ -118,20 +118,34 @@ function showSidebar() {
 
 function setMouseCoords() {
   var canvas = document.getElementById("theCanvas");
-  mouse_x = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / canvas.width;
-  mouse_y = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / canvas.height;
+  mouse_x = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / Math.min(canvas.width, canvas.height);
+  mouse_y = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / Math.min(canvas.width, canvas.height);
   mouse_y *= -1;
+}
+
+function clamp(x, min, max) {
+  if (min >= max) { console.log("oof"); }
+  if (x < min) { return min; }
+  else if (x > max) { return max; }
+  else { return x; }
 }
 
 function zoom(event) {
   // TODO: define some constant for scroll sensitivity instead of hardcoding?
+  const min_scale_factor = .01;
+  const max_scale_factor = 1000000;
   var zoom_factor = Math.exp(-event.deltaY / 500);
-  scale_factor *= zoom_factor;
   setMouseCoords();
   var x_coord_at_mouse = mouse_x / scale_factor + center_x;
   var y_coord_at_mouse = mouse_y / scale_factor + center_y;
-  center_x = x_coord_at_mouse + (center_x - x_coord_at_mouse) / zoom_factor;
-  center_y = y_coord_at_mouse + (center_y - y_coord_at_mouse) / zoom_factor;
+  if (!(scale_factor == min_scale_factor || scale_factor == max_scale_factor)) {
+    center_x = x_coord_at_mouse + (center_x - x_coord_at_mouse) / zoom_factor;
+    center_y = y_coord_at_mouse + (center_y - y_coord_at_mouse) / zoom_factor;
+  }
+  scale_factor *= zoom_factor;
+  scale_factor = clamp(scale_factor, min_scale_factor, max_scale_factor)
+  center_x = clamp(center_x, -10, 10);
+  center_y = clamp(center_y, -10, 10);
   redraw();
 }
 
