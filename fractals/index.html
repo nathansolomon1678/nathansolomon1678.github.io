@@ -9,7 +9,7 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body onload="redraw()" onresize="redraw()">
+<body onresize="resize_canvas()">
   <!-- There are separate buttons for dismissing and reopening the sidebar,
   but only one of them will be visible at a time. This one starts hidden. -->
   <button id=showSidebarButton onclick="showSidebar()" style="float: left; display: none; position: absolute">
@@ -49,8 +49,7 @@
     <br>
     <label for="colorfullness">Colorfullness: </label>
     <input id="colorfullness" type="number" value=.2 min=0 max=10 step=.01 onchange="redraw()" class="setting">
-    <p id="display scale factor">Loading...</p>
-    <p id="display center coords">Loading...</p>
+    <p id="display view settings">Loading...</p>
 
     <h2>How do I use this site?</h2>
     <h3>...on a phone / tablet</h3>
