@@ -8,10 +8,8 @@ var vertexBuffer;
 var mouse_x = 0;
 var mouse_y = 0;
 var center_x = 0;
-var center_y = -.4;
+var center_y = 0;
 var scale_factor = .7;
-var x_coord_at_mouse = mouse_x / scale_factor + center_x;
-var y_coord_at_mouse = mouse_y / scale_factor + center_y;
 
 function setupWebGL (evt) {
   window.removeEventListener(evt.type, setupWebGL, false);
@@ -62,6 +60,7 @@ function redraw() {
   gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
   gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
+  gl.uniform2fv(gl.getUniformLocation(program, "mouse_coords"), [mouse_x, mouse_y]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
   gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
@@ -73,7 +72,7 @@ function redraw() {
   document.getElementById("display scale factor").innerHTML =
     "Scale factor: " + scale_factor.toPrecision(3);
   document.getElementById("display center coords").innerHTML =
-    "Mouse coords: (" + x_coord_at_mouse.toFixed(5) + "," + y_coord_at_mouse.toFixed(5) + ")";
+    "Mouse coords: (" + mouse_x.toFixed(5) + "," + mouse_y.toFixed(5) + ")";
 }
 
 
@@ -126,8 +125,8 @@ function setMouseCoords() {
   mouse_x = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / Math.min(canvas.width, canvas.height);
   mouse_y = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / Math.min(canvas.width, canvas.height);
   mouse_y *= -1;
-  x_coord_at_mouse = mouse_x / scale_factor + center_x;
-  y_coord_at_mouse = mouse_y / scale_factor + center_y;
+  mouse_x = mouse_x / scale_factor + center_x;
+  mouse_y = mouse_y / scale_factor + center_y;
 }
 
 function clamp(x, min, max) {
@@ -144,8 +143,8 @@ function zoom(event) {
   var zoom_factor = Math.exp(-event.deltaY / 500);
   setMouseCoords();
   if (!(scale_factor == min_scale_factor || scale_factor == max_scale_factor)) {
-    center_x = x_coord_at_mouse + (center_x - x_coord_at_mouse) / zoom_factor;
-    center_y = y_coord_at_mouse + (center_y - y_coord_at_mouse) / zoom_factor;
+    center_x = mouse_x + (center_x - mouse_x) / zoom_factor;
+    center_y = mouse_y + (center_y - mouse_y) / zoom_factor;
   }
   scale_factor *= zoom_factor;
   scale_factor = clamp(scale_factor, min_scale_factor, max_scale_factor)

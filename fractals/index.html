@@ -26,8 +26,7 @@
       <option value=0>Mandelbrot</option>
       <option value=1 selected="selected">Heart</option>
       <option value=2>Burning ship</option>
-      <option value=3>Collatz</option>
-      <option value=4>Untitled 1</option>
+      <option value=3>Untitled 1</option>
     </select>
     <br>
     <label for="coloringMethod">Coloring method:</label>
@@ -40,7 +39,7 @@
     <input type="checkbox" id="julify" onchange="redraw()" class="setting">
     <br>
     <label for="maxIters">Maximum iterations: </label>
-    <input id="maxIters" type="number" value=100 min=0 max=150 step=1 onchange="redraw()" class="setting">
+    <input id="maxIters" type="number" value=20 min=0 max=150 step=1 onchange="redraw()" class="setting">
     <br>
     <label for="colorscheme">Colorscheme: </label>
     <select id="colorscheme" onchange="redraw()" class="setting">
@@ -86,14 +85,6 @@
     <h3>Burning ship</h3>
     <p>$$ x_{n+1} = x_n^2 - y_n^2 + x_0 $$</p>
     <p>$$ y_{n+1} = -2 |x_n y_n| + y_0 $$</p>
-    <h3>Collatz</h3>
-    <p>The currently unproven Collatz Conjecture states that for any natural number \(z\), repeatedly mapping this function will eventually get \(z\) to one:
-    <p>$$ z_{n+1} = \begin{cases} z_n / 2 & \text{if $z_n$ is even} \\
-                                  3 z_n + 1 & \text{if $z_n$ is odd} \end{cases} $$</p>
-    <p>This can be generalized to all \(z \in \Bbb C\) as shown below:</p>
-    <p>$$ z_{n+1} = \Big( \frac {z_n} {2} \Big) \cos^2 \Big( \frac {\pi} {2} z_n \Big) + (3 z_n + 1) \sin^2 \Big( \frac {\pi} {2} z_n \Big) $$</p>
-    <p>Here, we're once again treating the \((x,y)\) point as a single number \(z=x+iy\)</p>
-    <p>Note that there is not a Julia set modification of the Collatz fractal, since that equation does not inculde a \(z_0\) term.<p>
     <h3>Untitled 1</h4>
     <p>$$ x_{n+1} = |y_n| - |x_n| + x_0 $$</p>
     <p>$$ y_{n+1} = x_n * |y_n| + y_0 $$</p>
@@ -122,7 +113,8 @@
     in vec2 vertex_position;
     out vec4 fragmentColor;
     
-    uniform vec2 complex_constant;
+    uniform vec2 crosshair;
+    uniform vec2 mouse_coords;
     uniform vec2 canvas_dimensions;
     uniform vec2 center;
     uniform float scale_factor;
@@ -137,21 +129,8 @@
     const float pi = 3.14159265;
 
     float square(float x) { return x * x; }
-    // Functions for complex numbers:
-    vec2 cosine(vec2 z) {
-      return vec2( cos(z.x) * cosh(z.y),
-                  -sin(z.x) * sinh(z.y));
-    }
-    vec2 sine(vec2 z) {
-      return vec2( sin(z.x) * cosh(z.y),
-                   cos(z.x) * sinh(z.y));
-    }
-    vec2 multiply(vec2 z, vec2 s) {
-      return vec2(z.x * s.x - z.y * s.y,
-                  z.x * s.y + z.y * s.x);
-    }
-    vec2 square(vec2 z) {
-      return multiply(z, z);
+    float magnitude(vec2 z) {
+      return sqrt(square(z.x) + square(z.y));
     }
     
     // COLORSCHEMES
@@ -178,10 +157,27 @@
       }
     }
 
+    void draw_crosshair(vec2 center, vec2 pixel_coord, vec4 color) {
+      float distance_to_center = magnitude(center - pixel_coord) * scale_factor;
+      if (distance_to_center > .2) {
+        return;
+      }
+      if (distance_to_center > .18 || distance_to_center > .10 && distance_to_center < .11) {
+        fragmentColor = color;
+        return;
+      }
+      float angle = atan(pixel_coord.y - center.y,
+                         pixel_coord.x - center.x);
+      if (distance_to_center > abs(sin(angle * 2.))) {
+        fragmentColor = color;
+      }
+    }
+
     vec2 iterate(vec2 z, vec2 c, int type) {
       if (type == 0) {
         // Mandelbrot
-        return c + square(z);
+        return c + vec2(square(z.x) - square(z.y),
+                        2. * z.x * z.y);
       } else if (type == 1) {
         // Heart
         return c + vec2(z.x * z.y,
@@ -191,9 +187,6 @@
         return c + vec2(square(z.x) - square(z.y),
                         -abs(2. * z.x * z.y));
       } else if (type == 3) {
-        // Collatz thingy
-        return multiply(z / 2., square(cosine(pi/ 2. * z))) + multiply(3. * z + vec2(1., 0.), square(sine(pi / 2. * z)));
-      } else if (type == 4) {
         // Untitled 1
         return c + vec2(abs(z.y) - abs(z.x),
                         z.x * abs(z.y));
@@ -202,38 +195,42 @@
     
     void main() {
       vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
-      vec2 z = vertex_position * window / scale_factor + center;
-      vec2 original_z = z;
-      float magnitude = sqrt(square(z.x) + square(z.y));
+      vec2 original_z = vertex_position * window / scale_factor + center;
+      vec2 last_z = original_z;
+      vec2 z = original_z;
       for (int i = 0; i <= max_iterations; i++) {
-        float last_magnitude = magnitude;
         if (julify == 0) {
           // Don't julify
           z = iterate(z, original_z, fractal_type);
         } else if (julify == 1) {
           // Julify
-          z = iterate(z, complex_constant, fractal_type);
+          z = iterate(z, crosshair, fractal_type);
         }
-        magnitude = sqrt(square(z.x) + square(z.y));
         if (coloring_method == 0) {
           // Color by how many iterations it takes to diverge
-          if (magnitude > divergence_limit) {
-            float float_iters = float(i) + (log(divergence_limit / last_magnitude)) /
-                                           (log(magnitude / last_magnitude));
+          if (magnitude(z) > divergence_limit) {
+            float float_iters = float(i) + (log(divergence_limit / magnitude(last_z))) /
+                                           (log(magnitude(z) / magnitude(last_z)));
             fragmentColor = color(float_iters);
-          break;
+            break;
           } else if (i == max_iterations) {
             fragmentColor = vec4(0., 0., 0., 1.);
           }
         } else if (coloring_method == 1) {
           // Color by the log of the magnitude after interating a whole bunch
-          if (magnitude > divergence_limit) {
+          if (magnitude(z) > divergence_limit) {
             fragmentColor = vec4(0., 0., 0., 1.);
             break;
           } else {
-            fragmentColor = color(log(magnitude));
+            fragmentColor = color(log(magnitude(z)));
           }
         }
+        last_z = z;
+      }
+      vec4 negative = vec4(vec3(1.) - fragmentColor.xyz, 1.);
+      if (julify == 0) {
+        // showing original instead of julia set
+        draw_crosshair(mouse_coords, original_z, negative);
       }
     }
   </script>
