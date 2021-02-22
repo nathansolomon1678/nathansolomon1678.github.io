@@ -9,7 +9,9 @@ var mouse_x = 0;
 var mouse_y = 0;
 var center_x = 0;
 var center_y = 0;
-var scale_factor = .7;
+var crosshair_x = 0;
+var crosshair_y = 0;
+var scale_factor = 1.;
 
 function setupWebGL (evt) {
   window.removeEventListener(evt.type, setupWebGL, false);
@@ -50,7 +52,6 @@ function setupWebGL (evt) {
 
 function redraw() {
   var canvas = document.querySelector("canvas");
-  gl.uniform2fv(gl.getUniformLocation(program, "complex_constant"), [mouse_x, mouse_y]);
   var coloring_method = document.getElementById("coloringMethod").value;
   var fractal_type = document.getElementById("fractalType").value;
   var julify = document.getElementById("julify").checked ? 1 : 0;
@@ -60,7 +61,7 @@ function redraw() {
   gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
   gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
-  gl.uniform2fv(gl.getUniformLocation(program, "mouse_coords"), [mouse_x, mouse_y]);
+  gl.uniform2fv(gl.getUniformLocation(program, "crosshair"), [crosshair_x, crosshair_y]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
   gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
@@ -153,8 +154,17 @@ function zoom(event) {
   redraw();
 }
 
-// TODO: add a feature to zoom in & pan
-// TODO: somehow show julia set and original fractal at the same time?
+function set_crosshair() {
+  var julify = document.getElementById("julify").checked;
+  if (!julify) {
+    setMouseCoords();
+    crosshair_x = mouse_x;
+    crosshair_y = mouse_y;
+    redraw();
+  }
+}
+
+// TODO: add a feature to pan
 // TODO: finish descriptions of all the settings
 // TODO: store shaders in separate files
 // TODO: use snake case for all variable names?

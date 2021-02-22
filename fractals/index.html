@@ -39,7 +39,7 @@
     <input type="checkbox" id="julify" onchange="redraw()" class="setting">
     <br>
     <label for="maxIters">Maximum iterations: </label>
-    <input id="maxIters" type="number" value=20 min=0 max=150 step=1 onchange="redraw()" class="setting">
+    <input id="maxIters" type="number" value=100 min=0 max=150 step=1 onchange="redraw()" class="setting">
     <br>
     <label for="colorscheme">Colorscheme: </label>
     <select id="colorscheme" onchange="redraw()" class="setting">
@@ -94,7 +94,7 @@
     <p>Note that this website is currently incomplete. If you couldn't tell, I guess I'll take that as a compliment.</p>
   </div>
 
-  <canvas id="theCanvas" onwheel="zoom(event)">
+  <canvas id="theCanvas" onwheel="zoom(event)" onclick="set_crosshair()">
     Your browser does not seem to support HTML5 canvas.
   </canvas>
   <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
@@ -114,7 +114,6 @@
     out vec4 fragmentColor;
     
     uniform vec2 crosshair;
-    uniform vec2 mouse_coords;
     uniform vec2 canvas_dimensions;
     uniform vec2 center;
     uniform float scale_factor;
@@ -157,19 +156,17 @@
       }
     }
 
-    void draw_crosshair(vec2 center, vec2 pixel_coord, vec4 color) {
+    void draw_crosshair(vec2 center, vec2 pixel_coord, vec3 color) {
       float distance_to_center = magnitude(center - pixel_coord) * scale_factor;
-      if (distance_to_center > .2) {
-        return;
-      }
-      if (distance_to_center > .18 || distance_to_center > .10 && distance_to_center < .11) {
-        fragmentColor = color;
+      if (distance_to_center > .18 && distance_to_center < .2 ||
+          distance_to_center > .10 && distance_to_center < .11) {
+        fragmentColor = vec4(color, 1.);
         return;
       }
       float angle = atan(pixel_coord.y - center.y,
                          pixel_coord.x - center.x);
-      if (distance_to_center > abs(sin(angle * 2.))) {
-        fragmentColor = color;
+      if (distance_to_center > abs(sin(angle * 2.)) && distance_to_center < .25) {
+        fragmentColor = vec4(color, 1.);
       }
     }
 
@@ -227,10 +224,9 @@
         }
         last_z = z;
       }
-      vec4 negative = vec4(vec3(1.) - fragmentColor.xyz, 1.);
       if (julify == 0) {
         // showing original instead of julia set
-        draw_crosshair(mouse_coords, original_z, negative);
+        draw_crosshair(crosshair, original_z, vec3(1.));
       }
     }
   </script>
