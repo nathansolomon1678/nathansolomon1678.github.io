@@ -11,3 +11,7 @@
 ![](zvzvzvzvzvzvzvvzzzvzvzvzvzvzvzvvzzvzzvZVvzvv.png)
 ![](xbxbbbxbxbxbxBXXbXbXbbxBbxbxb.png)
 ![](i%20am%20a%20dork.png)
+![](withering%20sanity.png)
+![](porcelain%20galaxies.png)
+![](owo.png)
+![](Phnglui%20mglwnafh%20Cthulhu%20Rlyeh%20wgahnagl%20fhtagn.png)
