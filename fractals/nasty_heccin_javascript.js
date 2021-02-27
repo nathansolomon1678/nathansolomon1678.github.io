@@ -13,6 +13,8 @@ var center_y = 0;
 var crosshair_x = 0;
 var crosshair_y = 0;
 var scale_factor = 1.;
+var mouse_is_down = false;
+var moved_mouse_since_last_click = false;
 
 function onload(event) {
   canvas = document.getElementById("theCanvas");
@@ -48,13 +50,15 @@ function onload(event) {
 }
 
 function redraw() {
-  var coloring_method = document.getElementById("coloringMethod").value;
+  var color_exterior = document.getElementById("coloring method").value === "color exterior";
   var fractal_type = document.getElementById("fractalType").value;
-  var julify = document.getElementById("julify").checked ? 1 : 0;
+  var julify = document.getElementById("julify").checked;
   var max_iterations = document.getElementById("maxIters").value;
   var colorscheme = document.getElementById("colorscheme").value;
   var colorfullness = document.getElementById("colorfullness").value;
-  gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), coloring_method);
+  var terrace = document.getElementById("terrace").checked;
+
+  gl.uniform1i(gl.getUniformLocation(program, "color_exterior"), color_exterior);
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
   gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
   gl.uniform2fv(gl.getUniformLocation(program, "crosshair"), [crosshair_x, crosshair_y]);
@@ -62,14 +66,15 @@ function redraw() {
   gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
   gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
+  gl.uniform1i(gl.getUniformLocation(program, "terrace"), terrace);
   gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), colorscheme);
   gl.uniform1f(gl.getUniformLocation(program, "colorfullness"), colorfullness);
   gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 
   document.getElementById("display view settings").innerHTML =
     "Scale factor: " + scale_factor.toPrecision(3) + "<br>" +
-    "Center coords: (" + center_x.toFixed(5) + "," + center_y.toFixed(5) + ")<br>" +
-    "Crosshair coords: (" + crosshair_x.toFixed(5) + "," + crosshair_y.toFixed(5) + ")";
+    "Center coords: (" + center_x.toFixed(5) + ", " + center_y.toFixed(5) + ")<br>" +
+    "Crosshair coords: (" + crosshair_x.toFixed(5) + ", " + crosshair_y.toFixed(5) + ")";
 }
 
 
@@ -151,13 +156,38 @@ function set_crosshair() {
   }
 }
 
+function mouse_down(event) {
+  mouse_is_down = true;
+  moved_mouse_since_last_click = false;
+  setMouseCoords(event);
+}
+function mouse_up(event) {
+  mouse_is_down = false;
+  if (!moved_mouse_since_last_click) {
+    set_crosshair();
+  }
+}
+function mouse_move(event) {
+  if (mouse_is_down) {
+    moved_mouse_since_last_click = true;
+    var old_mouse_x = mouse_x;
+    var old_mouse_y = mouse_y;
+    setMouseCoords(event);
+    center_x += old_mouse_x - mouse_x;
+    center_y += old_mouse_y - mouse_y;
+    center_x = clamp(center_x, -10, 10);
+    center_y = clamp(center_y, -10, 10);
+    setMouseCoords(event);
+    redraw();
+  }
+}
+
 function resize_canvas() {
   // TODO: make this work
-  console.log(canvas.clientWidth, canvas.clientHeight);
+  // console.log(canvas.clientWidth, canvas.clientHeight);
   redraw();
 }
 
-// TODO: add a feature to pan
 // TODO: finish descriptions of all the settings
 // TODO: use snake case for all variable names? also just clean up code
 // TODO: save settings as vars in URL & add button to copy that URL to clipboard

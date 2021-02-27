@@ -17,6 +17,7 @@ button {
   background-color: #ddd;
   border-color: #999;
   border-radius: 10px;
+  right: 0px;
 }
 
 .setting {
@@ -33,6 +34,7 @@ button {
   display: block;
   top: 0px;
   bottom: 0px;
+  right: 0px;
   max-width: 400px;
   overflow: auto;
 }

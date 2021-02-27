@@ -1,6 +1,6 @@
 # Fractal Gallery
 
-Create your own fractals [here](https://nathansolomon1678.github.io/fractals)
+Create your own fractals [here](https://nathansolomon1678.github.io/fractals)!
 
 ![](withering%20sanity.png)
 ![](adrenaline-inducing%20despair.png)
