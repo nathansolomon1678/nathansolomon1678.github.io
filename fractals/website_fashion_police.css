@@ -20,11 +20,7 @@ button {
   right: 0px;
 }
 
-.setting {
-  margin: 4px;
-}
-
-#theDivWithAllTheStuff {
+div {
   border: 3px solid #999999;
   border-radius: 20px;
   background-color: #fffc;
@@ -37,4 +33,8 @@ button {
   right: 0px;
   max-width: 400px;
   overflow: auto;
+}
+
+ul {
+  list-style: "\2605";
 }
