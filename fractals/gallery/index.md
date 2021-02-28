@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Fractal Gallery
 
 Create your own fractals [here](https://nathansolomon1678.github.io/fractals)!

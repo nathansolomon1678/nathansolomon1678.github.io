@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Welcome to my website!
 
 Click on one of the links below to:
