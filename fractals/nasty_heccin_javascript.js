@@ -4,7 +4,6 @@ window.addEventListener("load", onload, false);
 var gl;
 var program;
 var vertexBuffer;
-
 var canvas;
 var mouse_x = 0;
 var mouse_y = 0;
@@ -39,41 +38,29 @@ function onload(event) {
   gl.deleteShader(vertexShader);
   gl.deleteShader(fragmentShader);
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    var linkErrLog = gl.getProgramInfoLog(program);
-    document.querySelector("p").innerHTML = 
-      "Shader program did not link successfully. "
-      + "Error log: " + linkErrLog;
-    return;
+    alert(gl.getProgramInfoLog(program));
   } 
   initializeAttributes();
   redraw();
 }
 
 function redraw() {
-  var color_exterior = document.getElementById("coloring method").value === "color exterior";
-  var fractal_type = document.getElementById("fractalType").value;
-  var julify = document.getElementById("julify").checked;
-  var max_iterations = document.getElementById("maxIters").value;
-  var colorscheme = document.getElementById("colorscheme").value;
-  var colorfullness = document.getElementById("colorfullness").value;
-  var terrace = document.getElementById("terrace").checked;
-
-  gl.uniform1i(gl.getUniformLocation(program, "color_exterior"), color_exterior);
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
   gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
   gl.uniform2fv(gl.getUniformLocation(program, "crosshair"), [crosshair_x, crosshair_y]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
-  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
-  gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
-  gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
-  gl.uniform1i(gl.getUniformLocation(program, "terrace"), terrace);
-  gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), colorscheme);
-  gl.uniform1f(gl.getUniformLocation(program, "colorfullness"), colorfullness);
+  gl.uniform1i(gl.getUniformLocation(program, "color_exterior"), document.getElementById("coloring method").value === "color exterior");
+  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), document.getElementById("max iters").value);
+  gl.uniform1f(gl.getUniformLocation(program, "divergence_limit"), document.getElementById("divergence limit").value);
+  gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);
+  gl.uniform1i(gl.getUniformLocation(program, "julify"), document.getElementById("julify").checked);
+  gl.uniform1i(gl.getUniformLocation(program, "terrace"), document.getElementById("terrace").checked);
+  gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
+  gl.uniform1f(gl.getUniformLocation(program, "colorfullness"), document.getElementById("colorfullness").value);
   gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
-
   document.getElementById("display view settings").innerHTML =
-    "Scale factor: " + scale_factor.toPrecision(3) + "<br>" +
-    "Center coords: (" + center_x.toFixed(5) + ", " + center_y.toFixed(5) + ")<br>" +
+    "Scale factor: "      + scale_factor.toPrecision(3) + "<br>" +
+    "Center coords: ("    + center_x.toFixed(5)    + ", " + center_y.toFixed(5) + ")<br>" +
     "Crosshair coords: (" + crosshair_x.toFixed(5) + ", " + crosshair_y.toFixed(5) + ")";
 }
 
@@ -187,7 +174,3 @@ function resize_canvas() {
   // console.log(canvas.clientWidth, canvas.clientHeight);
   redraw();
 }
-
-// TODO: finish descriptions of all the settings
-// TODO: use snake case for all variable names? also just clean up code
-// TODO: save settings as vars in URL & add button to copy that URL to clipboard

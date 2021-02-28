@@ -17,3 +17,4 @@ Create your own fractals [here](https://nathansolomon1678.github.io/fractals)!
 ![](gourmet%20cabbage.png)
 ![](zvzvzvzvzvzvzvvzzzvzvzvzvzvzvzvvzzvzzvZVvzvv.png)
 ![](Phnglui%20mglwnafh%20Cthulhu%20Rlyeh%20wgahnagl%20fhtagn.png)
+![](shimmery%20dirt.png)
