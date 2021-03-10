@@ -6,6 +6,7 @@ layout: default
 
 Create your own fractals [here](https://nathansolomon1678.github.io/fractals)!
 
+![](faeryflower.png)
 ![](withering%20sanity.png)
 ![](adrenaline-inducing%20despair.png)
 ![](soul-suffocating%20sorrow.png)
