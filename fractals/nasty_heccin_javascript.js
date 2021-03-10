@@ -49,7 +49,7 @@ function redraw() {
   gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
   gl.uniform2fv(gl.getUniformLocation(program, "crosshair"), [crosshair_x, crosshair_y]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
-  gl.uniform1i(gl.getUniformLocation(program, "color_exterior"), document.getElementById("coloring method").value === "color exterior");
+  gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), document.getElementById("coloring method").value);
   gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), document.getElementById("max iters").value);
   gl.uniform1f(gl.getUniformLocation(program, "divergence_limit"), document.getElementById("divergence limit").value);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);

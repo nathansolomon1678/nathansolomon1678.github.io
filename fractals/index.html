@@ -32,13 +32,14 @@
       <li>
         <label for="coloring method">Coloring method:</label>
         <select id="coloring method" onchange="redraw()" class="setting">
-          <option value="color exterior" selected="selected">Outside of shape</option>
-          <option value="color interior">Inside of shape</option>
+          <option value=0 selected="selected">Iterations to divergence</option>
+          <option value=1>Final magnitude</option>
+          <option value=2>Orbit trap</option>
         </select>
       </li>
       <li>
         <label for="max iters">Maximum iterations: </label>
-        <input id="max iters" type="number" value=100 min=0 max=150 step=1 onchange="redraw()" class="setting">
+        <input id="max iters" type="number" value=100 min=0 max=300 step=1 onchange="redraw()" class="setting">
       </li>
       <li>
         <label for="divergnce limit">Divergence limit: </label>
@@ -149,7 +150,7 @@
     uniform int fractal_type;
     uniform int colorscheme;
     uniform float colorfullness;
-    uniform bool color_exterior;
+    uniform int coloring_method;
     uniform bool julify;
     uniform bool terrace;
 
@@ -220,13 +221,14 @@
       vec2 original_z = vertex_position * window / scale_factor + center;
       vec2 last_z = original_z;
       vec2 z = original_z;
+      float distance_to_orbit_trap = 1000000.;
       for (int i = 0; i <= max_iterations; i++) {
         if (julify) {
           z = iterate(z, crosshair, fractal_type);
         } else {
           z = iterate(z, original_z, fractal_type);
         }
-        if (color_exterior) {
+        if (coloring_method == 0) {
           // Color by how many iterations it takes to diverge
           if (magnitude(z) > divergence_limit) {
             float float_iters = float(i) + log(divergence_limit / magnitude(last_z)) /
@@ -236,7 +238,7 @@
           } else if (i == max_iterations) {
             fragmentColor = vec4(0., 0., 0., 1.);
           }
-        } else {
+        } else if (coloring_method == 1) {
           // Color by the log of the magnitude after interating a whole bunch
           if (magnitude(z) > divergence_limit) {
             fragmentColor = vec4(0., 0., 0., 1.);
@@ -244,6 +246,9 @@
           } else {
             fragmentColor = color(log(magnitude(z)));
           }
+        } else if (coloring_method == 2) {
+          distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_limit));
+          fragmentColor = color(log(distance_to_orbit_trap));
         }
         last_z = z;
       }
