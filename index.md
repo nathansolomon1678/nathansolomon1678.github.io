@@ -1,13 +1,12 @@
 ---
 layout: default
 ---
-
 # Welcome to my website!
 
 Click on one of the links below to:
 
-* Explore some nifty [escape time fractals](fractals)!
+* Explore my [gallery](fractals/gallery) of nifty escape-time fractals, or [create your own](fractals)!
 
-* View a [gallery](fractals/gallery) of fractals
+* Make & eat some [food](food)
 
-* Make & eat [food](food)
+* Follow me on [Instagram](https://www.instagram.com/nat.han_solo.mon)

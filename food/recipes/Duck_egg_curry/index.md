@@ -9,6 +9,7 @@ layout: default
 * 5 Potatoes
 * 1 Onion
 * 1 bulb Garlic
+* 1 cup diced or pureed tomatoes
 * 1/4 Cup of Oil
 * 1/2 Cup of Water
 * 1 Teaspoon Turmeric
@@ -20,4 +21,4 @@ layout: default
 Peel the onion, cut into thin strips. Peel the garlic and mince. Peel the hard boiled eggs and then slit them until they reach the yolk (You can cut 1-2 times).
 
 ## Cooking Instructions
-Grab a medium pot, add the oil and turmeric and paprika . Stir the pot until thoroughly mixed. Add the whole onion and wait for it to caramelize.  Continue stirring and add garlic and stir. Add the water and mix thoroughly. Add the eggs and mix, then do the same with the potatoes. Add the fish sauce or alternative, and let sit until potatoes are fully cooked and comes to a boil.
+Grab a medium pot, add the oil and turmeric and paprika . Stir the pot until thoroughly mixed. Add the whole onion and wait for it to caramelize.  Continue stirring and add garlic and stir. Add the water and mix thoroughly. Add the tomatoes, then egg, then potatoes, mixing after each addition. Add the fish sauce or alternative, and let sit until potatoes are fully cooked and comes to a boil.

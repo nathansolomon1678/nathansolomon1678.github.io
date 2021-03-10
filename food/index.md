@@ -3,10 +3,11 @@ layout: default
 ---
 # Cookbook
 
-See the [recipe list](#recipe-list) below
+See the [recipe list](#recipe-list) below.
+
+This "cookbook" serves as my personal collection of foods that I like making.
 
 ## Recipe list
-
 [Duck egg curry](recipes/Duck_egg_curry)
 
 [Eggplant and tofu](recipes/Eggplant_and_tofu)
