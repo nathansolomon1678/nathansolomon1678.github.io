@@ -8,5 +8,6 @@ with open(f'recipes/{directory_name}/index.md', 'w+') as file:
     file.write('---\n' +
                'layout: default\n' +
                '---\n' +
-              f'# {food}\n')
+              f'# {food}\n' +
+               '## Ingredients')
 os.system(f'nvim recipes/{directory_name}/index.md')

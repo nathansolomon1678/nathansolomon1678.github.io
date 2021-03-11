@@ -20,4 +20,6 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [`Rice cakes`](recipes/Rice_cakes)
 
+[`Rice with kimchi and eggs`](recipes/Rice_with_kimchi_and_eggs)
+
 [`Tomato soup`](recipes/Tomato_soup)
