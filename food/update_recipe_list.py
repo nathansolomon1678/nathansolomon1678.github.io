@@ -6,6 +6,6 @@ with open('index.md') as file:
 for recipe_name in sorted(os.listdir('recipes')):
     recipe_name = recipe_name.split('.md')[0]
     human_readable_recipe_name = recipe_name.replace('_', ' ')
-    file_contents += f'\n[{human_readable_recipe_name}](recipes/{recipe_name})\n'
+    file_contents += f'\n[`{human_readable_recipe_name}`](recipes/{recipe_name})\n'
 with open('index.md', 'w') as file:
     file.write(file_contents)

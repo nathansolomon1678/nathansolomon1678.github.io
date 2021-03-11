@@ -5,13 +5,19 @@ layout: default
 
 See the [recipe list](#recipe-list) below.
 
-This "cookbook" serves as my personal collection of foods that I like making.
+This "cookbook" serves as my personal collection of foods that I like making. Many of these are not real recipes; they're just ingredient lists to inspire a meal.
+
+![](https://cdn140.picsart.com/302729068096211.png)
 
 ## Recipe list
-[Duck egg curry](recipes/Duck_egg_curry)
+[`Cabbage and fruit salad`](recipes/Cabbage_and_fruit_salad)
 
-[Eggplant and tofu](recipes/Eggplant_and_tofu)
+[`Duck egg curry`](recipes/Duck_egg_curry)
 
-[Greek salad](recipes/Greek_salad)
+[`Eggplant and tofu`](recipes/Eggplant_and_tofu)
 
-[Rice cakes](recipes/Rice_cakes)
+[`Greek salad`](recipes/Greek_salad)
+
+[`Rice cakes`](recipes/Rice_cakes)
+
+[`Tomato soup`](recipes/Tomato_soup)
