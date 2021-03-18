@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-# Cabbage & fruit salad
+# Purple cabbage & fruit salad
 > Credit: Inspired by a dish from Rasta Mama's Kitchen. This is just a simplified version. Find the original at [https://therastamamaskitchen.com/wp/catering-menu/](https://therastamamaskitchen.com/wp/catering-menu/)
 
 ## Ingredients

@@ -10,3 +10,4 @@ layout: default
 * Feta cheese
 * Lemon juice
 * Kalamata olives
+* Artichoke hearts (optional)

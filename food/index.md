@@ -12,8 +12,6 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 ## Recipe list
 [`Bread`](recipes/Bread)
 
-[`Cabbage and fruit salad`](recipes/Cabbage_and_fruit_salad)
-
 [`Duck egg curry`](recipes/Duck_egg_curry)
 
 [`Eggplant and tofu`](recipes/Eggplant_and_tofu)
@@ -22,7 +20,9 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [`Lentils`](recipes/Lentils)
 
-[`Rice cakes`](recipes/Rice_cakes)
+[`Purple cabbage and fruit salad`](recipes/Purple_cabbage_and_fruit_salad)
+
+[`Rice cake pasta`](recipes/Rice_cake_pasta)
 
 [`Rice with kimchi and eggs`](recipes/Rice_with_kimchi_and_eggs)
 
