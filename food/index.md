@@ -10,6 +10,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 ![](https://cdn140.picsart.com/302729068096211.png)
 
 ## Recipe list
+[`Bread`](recipes/Bread)
+
 [`Cabbage and fruit salad`](recipes/Cabbage_and_fruit_salad)
 
 [`Duck egg curry`](recipes/Duck_egg_curry)
@@ -17,6 +19,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 [`Eggplant and tofu`](recipes/Eggplant_and_tofu)
 
 [`Greek salad`](recipes/Greek_salad)
+
+[`Lentils`](recipes/Lentils)
 
 [`Rice cakes`](recipes/Rice_cakes)
 
