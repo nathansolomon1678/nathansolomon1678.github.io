@@ -5,7 +5,7 @@ layout: default
 
 Click on one of the links below to:
 
-* Explore my [gallery](fractals/gallery) of nifty escape-time fractals, or [create your own](fractals)!
+* Create some [nifty escape-time fractals](fractals)!
 
 * Make & eat some [food](food)
 
