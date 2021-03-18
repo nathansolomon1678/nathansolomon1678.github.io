@@ -12,6 +12,7 @@ var center_y = 0;
 var crosshair_x = 0;
 var crosshair_y = 0;
 var scale_factor = 1.;
+var julify = false;
 var mouse_is_down = false;
 var moved_mouse_since_last_click = false;
 
@@ -53,10 +54,10 @@ function redraw() {
   gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), document.getElementById("max iters").value);
   gl.uniform1f(gl.getUniformLocation(program, "divergence_limit"), document.getElementById("divergence limit").value);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);
-  gl.uniform1i(gl.getUniformLocation(program, "julify"), document.getElementById("julify").checked);
-  gl.uniform1i(gl.getUniformLocation(program, "terrace"), document.getElementById("terrace").checked);
+  gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
   gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
   gl.uniform1f(gl.getUniformLocation(program, "colorfullness"), document.getElementById("colorfullness").value);
+  gl.uniform1f(gl.getUniformLocation(program, "color_offset"), document.getElementById("color offset").value / 100);
   gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
   document.getElementById("display view settings").innerHTML =
     "Scale factor: "      + scale_factor.toPrecision(3) + "<br>" +
@@ -94,12 +95,18 @@ function getRenderingContext() {
 
 function hideSidebar() {
   document.getElementById("theDivWithAllTheStuff").style.display = "none";
-  document.getElementById("showSidebarButton").style.display = "block";
+  document.getElementById("openSidebarButton").style.display = "block";
 }
 
-function showSidebar() {
+function openSidebar() {
   document.getElementById("theDivWithAllTheStuff").style.display = "block";
-  document.getElementById("showSidebarButton").style.display = "none";
+  document.getElementById("openSidebarButton").style.display = "none";
+}
+
+function toggle_julia_set() {
+  julify = !julify;
+  redraw();
+  document.getElementById("julify").innerHTML = julify ? "Show original" : "Show Julia set";
 }
 
 function setMouseCoords() {
@@ -134,7 +141,6 @@ function zoom(event) {
 }
 
 function set_crosshair() {
-  var julify = document.getElementById("julify").checked;
   if (!julify) {
     setMouseCoords();
     crosshair_x = mouse_x;
