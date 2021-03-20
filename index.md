@@ -11,13 +11,16 @@ Click on one of the links below to:
 * Follow me on [Instagram](https://www.instagram.com/nat.han_solo.mon)
 
 # Fractal gallery
+All of these pictures can easily be recreated using the webpage linked above.
 ![](gallery/Rachel%27s%20colorscheme.png)
 ![](gallery/Faeryflower.png)
+![](gallery/Creepy%20chaos.png)
+![](gallery/Zesty%20heartache.png)
+![](gallery/Zlzvzvlbzblz.png)
+![](gallery/Gourmet%20cabbage.png)
+![](gallery/Beet%20colored%20fractal.png)
 ![](gallery/Soul-suffocating%20sorrow.png)
 ![](gallery/Heart.png)
-![](gallery/Phnglui%20mglwnafh%20Cthulhu%20Rlyeh%20wgahnagl%20fhtagn.png)
 ![](gallery/Adrenaline-inducing%20despair.png)
-![](gallery/Zesty%20heartache.png)
+![](gallery/Lightning.png)
 ![](gallery/Withering%20sanity.png)
-![](gallery/Gourmet%20cabbage.png)
-![](gallery/Porcelain%20galaxies.png)
