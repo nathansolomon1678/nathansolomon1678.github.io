@@ -8,9 +8,8 @@
   <script src="nasty_heccin_javascript.js" type="text/javascript"> </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body onresize="resize_canvas()">
-  <!-- There are separate buttons for dismissing and reopening the sidebar,
-  but only one of them will be visible at a time. This one starts hidden. -->
+
+<body onresize="redraw()">
   <button id=openSidebarButton onclick="openSidebar()" style="float: left; display: none; position: absolute">
     open<br>sidebar
   </button>
@@ -39,25 +38,24 @@
         </select>
       </li>
       <li>
-        <label for="max iters">\(maxIterations\): </label>
-        <input id="max iters" type="number" value=100 min=0 max=300 step=1 onchange="redraw()" class="setting">
+        <label for="max iterations">Max iterations: </label>
+        <input id="max iterations" type="number" value=100 min=0 max=300 step=1 onchange="redraw()" class="setting">
       </li>
       <li>
-        <label for="divergnce limit">\(divergenceLimit\): </label>
-        <input id="divergence limit" type="number" value=2 min=0 max=1000000 step=.1 onchange="redraw()" class="setting">
+        <label for="divergnce threshold">Divergence threshold: </label>
+        <input id="divergence threshold" type="number" value=2 min=0 max=1000000 step=.1 onchange="redraw()" class="setting">
       </li>
       <li>
         <label for="colorscheme">Colorscheme: </label>
         <select id="colorscheme" onchange="redraw()" class="setting">
           <option value=0 selected="selected">Default</option>
           <option value=1>Experimental</option>
-          <option value=2>Dad's</option>
-          <option value=3>Rachel's</option>
+          <option value=2>Rachel's</option>
         </select>
       </li>
       <li>
-        <label for="colorfullness">Colorfullness: </label>
-        <input id="colorfullness" type="number" value=10 min=-100 max=100 step=1 onchange="redraw()" class="setting">
+        <label for="colorfulness">Colorfulness: </label>
+        <input id="colorfulness" type="number" value=10 min=-100 max=100 step=1 onchange="redraw()" class="setting">
       </li>
       <li>
         <label for="color offset">Color offset: </label>
@@ -97,22 +95,23 @@
         <p>The fractal type is defined by the function repeatedly applied to points. The functions are defined <a href="#types-of-fractals">here</a>.</p>
       <h3>Coloring method</h3>
         <h4>Terraced</h4>
-        <p>This method colors each pixel based off of the smallest value \(n\) for which the magnitude of \((x_n, y_n)\) exceeds the \(divergenceLimit\). If it never diverges, it colors the pixel black.</p>
+        <p>This method colors each pixel based off of the smallest value \(n\) for which the magnitude of \((x_n, y_n)\) exceeds the divergence threshold. If it never diverges, it colors the pixel black.</p>
         <h4>Smooth</h4>
-        <p>This is similar to the "Terraced" coloring method, except that it adds a correction term to smoothen out the colors. This coloring method looks best when \(divergenceLimit\) is very large.</p>
+        <p>This is similar to the "Terraced" coloring method, except that it adds a correction term to smoothen out the colors. This coloring method looks best when the divergence threshold is very large.</p>
         <h4>Interior</h4>
-        <p>With this method all points that diverge are colored black, and the rest are colored based on how far from the origin they get after \(maxIterations\) iterations.</p>
+        <p>With this method all points that diverge are colored black, and the rest are colored based on how far from the origin they get after the maximum number of iterations.</p>
         <h4>Rings</h4>
-        <p>This method colors each pixel based off of the smallest distance that \((x_n,y_n)\) gets to a ring centered at the origin, with radius equal to the \(divergenceLimit\). It looks best when \(divergenceLimit\) is below about 2.</p>
-      <h3>Maximum iterations</h3>
+        <p>This method colors each pixel based off of the smallest distance that \((x_n,y_n)\) gets to a ring centered at the origin, with radius equal to the divergence threshold. It looks best when that threshold is below about 2.</p>
+      <h3>Max iterations</h3>
         </p>This is the maximum number of times the function is applied to \((x, y)\). Lag is proportional to this value, so keep it below 1000 to avoid crashing your computer, and below 100 for best performance.</p>
-      <h3>Divergence limit</h3>
+      <h3>Divergence threshold</h3>
         <p>This is the threshold that \(||(x, y)||\) must exceed in order to "diverge". Or if you're coloring with the "Rings" method, it's the radius of the ring.</p>
-      <h3>Colorscheme, colorfullness, & color offset</h3>
+      <h3>Colorscheme, colorfulness, & color offset</h3>
         <p>These settings are purely cosmetic. Fiddle with them. See what happens.</p>
-        <p>Also, note that colorfullness can be negative.</p>
+        <p>Also, note that colorfulness can be negative.</p>
       <h3>Julia set</h3>
         <p>For each point on one of the original fractals, we can create another fractal that imitates the characteristics of the original near that point. For example, if you place the crosshair at a zigzaggy-lightningy region of the Mandelbrot fractal, the corresponding Julia fractal will be zigzaggy and lightningy everywhere. If you place it at a spirally region, the entire Julia set will be spirally. Julia sets work by replacing \(x_0\) and \(y_0\) in the iterated function with constants \(c_x\) and \(c_y\) -- the \(x\) and \(y\) coordinates of the crosshair.</p>
+
     <h2 id="types-of-fractals">What are these types of fractals?</h2>
       <h3>Mandelbrot</h3>
         <p>The Mandelbrot fractal is objectively the most interesting and beautiful fractal that exists, even better than Romanesco broccoli.
@@ -124,18 +123,21 @@
         <p>This is a fractal that I found by randomly experimenting with the equations:
         $$ x_{n+1} = x_n * y_n + x_0 $$
         $$ y_{n+1} = |y_n| - |x_n| + y_0 $$
-        It looks best when \(divergenceLimit\) is large.</p>
+        It looks best when the divergence threshold is large.</p>
       <h3>Burning ship</h3>
         <p>This one also uses equations very similar to the Mandelbrot fractal:
         $$ x_{n+1} = x_n^2 - y_n^2 + x_0 $$
         $$ y_{n+1} = -2 |x_n y_n| + y_0 $$
         At first glance, this might not look as interesting as the other fractals. Keep looking, though -- there are some really interesting fractals to be found by coloring the interiors of its' Julia sets.</p>
 
+    <h2>This website doesn't work!</h2>
+      <p>If it isn't working, and refreshing doesn't fix it, you might have WebGL disabled on your browser (it is a security risk). If that's not the problem, please open a <a href="https://github.com/nathansolomon1678/nathansolomon1678.github.io/issues/new">github issue</a> to report it.</p>
+
     <h2>Credits & stuff</h2>
       <p>For more info (including source code and a gallery of my favorite fractals), go back to <a href="https://nathansolomon1678.github.io">the home page</a> of this site.</p>
   </div>
 
-  <canvas id="theCanvas" onwheel="zoom(event)" onmousedown="mouse_down()" onmouseup="mouse_up()" onmousemove="mouse_move()">
+  <canvas id="theCanvas" onwheel="zoom(event)" onmousedown="mouse_down(event)" onmouseup="mouse_up(event)" onmousemove="mouse_move(event)">
     Your browser does not seem to support HTML5 canvas.
   </canvas>
 
@@ -159,10 +161,10 @@
     uniform vec2 center;
     uniform float scale_factor;
     uniform int max_iterations;
-    uniform float divergence_limit;
+    uniform float divergence_threshold;
     uniform int fractal_type;
     uniform int colorscheme;
-    uniform float colorfullness;
+    uniform float colorfulness;
     uniform int coloring_method;
     uniform float color_offset;
     uniform bool julify;
@@ -184,49 +186,39 @@
       vec3 magenta = vec3(.6, .2, .4);
       vec3 gold    = vec3(1., 1., .7);
       vec3 green   = vec3(.2, .8, .4);
-      x = fract(x) * 4.;
+      // Need to take abs(x) instead of x, because fract(negative integer) evaluates to -1???
+      x = fract(abs(x)) * 4.;
            if (x < 1.) { return mix(navy,   green, fract(x)); }
       else if (x < 2.) { return mix(green,   gold, fract(x)); }
       else if (x < 3.) { return mix(gold, magenta, fract(x)); }
-      else             { return mix(magenta, navy, fract(x)); }
-    }
-    vec3 dads_colorscheme(float x) {
-      x = fract(x) * 3.;
-      vec3 teal   = vec3(.4, .9, .8);
-      vec3 purple = vec3(.5, .2, .8);
-      vec3 gold   = vec3(1., .8, .1);
-           if (x < 1.) { return mix(teal, purple, fract(x)); }
-      else if (x < 2.) { return mix(purple, gold, fract(x)); }
-      else if (x < 3.) { return mix(gold,   teal, fract(x)); }
+      else if (x < 4.) { return mix(magenta, navy, fract(x)); }
     }
     vec3 rachels_colorscheme(float x) {
-      x = fract(x) * 4.;
       vec3 maroon = vec3(.2, .0, .1);
       vec3 orange = vec3(1., .5, .1);
       vec3 purple = vec3(.1, 0., .3);
       vec3 white  = vec3(1., 1., 1.);
+      x = fract(abs(x)) * 4.;
            if (x < 1.) { return mix(maroon, purple, fract(x)); }
-      else if (x < 2.) { return mix(purple,  white, fract(x)); }
-      else if (x < 3.) { return mix(white,  orange, fract(x)); }
+      else if (x < 2.) { return mix(purple, white , fract(x)); }
+      else if (x < 3.) { return mix(white , orange, fract(x)); }
       else if (x < 4.) { return mix(orange, maroon, fract(x)); }
     }
 
     vec4 color(float x) {
-      float real_colorfullness = colorfullness;
+      float real_colorfulness = colorfulness;
       if (coloring_method == 0 || coloring_method == 1) {
-        real_colorfullness /= 500.;
+        real_colorfulness /= 500.;
       } else if (coloring_method == 2 || coloring_method == 3) {
-        real_colorfullness /= 100.;
+        real_colorfulness /= 100.;
       }
-      x = x * real_colorfullness + color_offset;
+      x = x * real_colorfulness + color_offset;
 
       if (colorscheme == 0) {
         return vec4(default_colorscheme(x), 1);
       } else if (colorscheme == 1) {
         return vec4(experimental_colorscheme(x), 1.);
       } else if (colorscheme == 2) {
-        return vec4(dads_colorscheme(x), 1.);
-      } else if (colorscheme == 3) {
         return vec4(rachels_colorscheme(x), 1.);
       }
     }
@@ -275,7 +267,7 @@
         }
         if (coloring_method == 0) {
           // Color by how many iterations it takes to diverge
-          if (magnitude(z) > divergence_limit) {
+          if (magnitude(z) > divergence_threshold) {
             fragmentColor = color(float(i));
             break;
           } else if (i == max_iterations) {
@@ -283,8 +275,8 @@
           }
         } else if (coloring_method == 1) {
           // Same as above, but smooth instead of terraced
-          if (magnitude(z) > divergence_limit) {
-            float float_iters = float(i) + log(divergence_limit / magnitude(last_z)) /
+          if (magnitude(z) > divergence_threshold) {
+            float float_iters = float(i) + log(divergence_threshold / magnitude(last_z)) /
                                            log(magnitude(z) / magnitude(last_z));
             fragmentColor = color(float_iters);
             break;
@@ -293,14 +285,14 @@
           }
         } else if (coloring_method == 2) {
           // Color by the log of the magnitude after iterating a whole bunch
-          if (magnitude(z) > divergence_limit) {
+          if (magnitude(z) > divergence_threshold) {
             fragmentColor = vec4(0., 0., 0., 1.);
             break;
           } else {
             fragmentColor = color(log(magnitude(z)));
           }
         } else if (coloring_method == 3) {
-          distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_limit));
+          distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_threshold));
           fragmentColor = color(-log(distance_to_orbit_trap));
         }
         last_z = z;

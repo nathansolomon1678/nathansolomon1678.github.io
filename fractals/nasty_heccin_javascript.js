@@ -46,17 +46,17 @@ function onload(event) {
 }
 
 function redraw() {
-  gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.width, canvas.height]);
+  gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.clientWidth, canvas.clientHeight]);
   gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
   gl.uniform2fv(gl.getUniformLocation(program, "crosshair"), [crosshair_x, crosshair_y]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
   gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), document.getElementById("coloring method").value);
-  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), document.getElementById("max iters").value);
-  gl.uniform1f(gl.getUniformLocation(program, "divergence_limit"), document.getElementById("divergence limit").value);
+  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), document.getElementById("max iterations").value);
+  gl.uniform1f(gl.getUniformLocation(program, "divergence_threshold"), document.getElementById("divergence threshold").value);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);
   gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);
   gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
-  gl.uniform1f(gl.getUniformLocation(program, "colorfullness"), document.getElementById("colorfullness").value);
+  gl.uniform1f(gl.getUniformLocation(program, "colorfulness"), document.getElementById("colorfulness").value);
   gl.uniform1f(gl.getUniformLocation(program, "color_offset"), document.getElementById("color offset").value / 100);
   gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
   document.getElementById("display view settings").innerHTML =
@@ -110,8 +110,8 @@ function toggle_julia_set() {
 }
 
 function setMouseCoords() {
-  mouse_x = (2 * (event.pageX - event.target.offsetLeft) - canvas.width ) / Math.min(canvas.width, canvas.height);
-  mouse_y = (2 * (event.pageY - event.target.offsetTop ) - canvas.height) / Math.min(canvas.width, canvas.height);
+  mouse_x = (2 * (event.pageX - event.target.offsetLeft) - canvas.clientWidth ) / Math.min(canvas.clientWidth, canvas.clientHeight);
+  mouse_y = (2 * (event.pageY - event.target.offsetTop ) - canvas.clientHeight) / Math.min(canvas.clientWidth, canvas.clientHeight);
   mouse_y *= -1;  // Because JS canvases are weird
   mouse_x = mouse_x / scale_factor + center_x;
   mouse_y = mouse_y / scale_factor + center_y;
@@ -150,13 +150,15 @@ function set_crosshair() {
 }
 
 function mouse_down(event) {
-  mouse_is_down = true;
-  moved_mouse_since_last_click = false;
+  if (event.button == 0) {
+    mouse_is_down = true;
+    moved_mouse_since_last_click = false;
+  }
   setMouseCoords(event);
 }
 function mouse_up(event) {
   mouse_is_down = false;
-  if (!moved_mouse_since_last_click) {
+  if (event.button == 0 && !moved_mouse_since_last_click) {
     set_crosshair();
   }
 }
@@ -173,10 +175,4 @@ function mouse_move(event) {
     setMouseCoords(event);
     redraw();
   }
-}
-
-function resize_canvas() {
-  // TODO: make this work
-  // console.log(canvas.clientWidth, canvas.clientHeight);
-  redraw();
 }
