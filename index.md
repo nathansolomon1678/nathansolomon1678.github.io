@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+<meta name="google-site-verification" content="cM-c2Mqqx-OdhWnyVNpGAhET_ajCfEqRsc7pLtSAyPo" />
 # Welcome to my website!
 Click on one of the links below to:
 
