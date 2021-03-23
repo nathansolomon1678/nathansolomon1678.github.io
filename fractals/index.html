@@ -177,6 +177,20 @@
       return sqrt(square(z.x) + square(z.y));
     }
 
+    float cubic_interpolation(float a, float b, float c, float d, float x) {
+      // Returns f(x), where f is a cubic function, f(-1)=a, f(0)=b, f(1)=c, & f(2)=d
+      return b +
+             x * (.5 * c - .5 * a) +
+             x * x * (a - 2.5 * b + 2. * c - .5 * d) +
+             x * x * x * (-.5 * a + 1.5 * b - 1.5 * c + .5 * d);
+    }
+
+    vec3 mix_cubic(vec3 color0, vec3 color1, vec3 color2, vec3 color3, float x) {
+      return vec3(cubic_interpolation(color0.r, color1.r, color2.r, color3.r, x),
+                  cubic_interpolation(color0.g, color1.g, color2.g, color3.g, x),
+                  cubic_interpolation(color0.b, color1.b, color2.b, color3.b, x));
+    }
+
     // COLORSCHEMES
     vec3 default_colorscheme(float x) {
       x *= 6.28318530718;
@@ -189,23 +203,24 @@
       vec3 magenta = vec3(.6, .2, .4);
       vec3 gold    = vec3(1., 1., .7);
       vec3 green   = vec3(.2, .8, .4);
-      // Need to take abs(x) instead of x, because fract(negative integer) evaluates to -1???
-      x = fract(abs(x)) * 4.;
-           if (x < 1.) { return mix(navy,   green, fract(x)); }
-      else if (x < 2.) { return mix(green,   gold, fract(x)); }
-      else if (x < 3.) { return mix(gold, magenta, fract(x)); }
-      else if (x < 4.) { return mix(magenta, navy, fract(x)); }
+      x = fract(x) * 4.;
+           if (x < 1.) { return mix_cubic(magenta, navy   , green  , gold   , fract(x)); }
+      else if (x < 2.) { return mix_cubic(navy   , green  , gold   , magenta, fract(x)); }
+      else if (x < 3.) { return mix_cubic(green  , gold   , magenta, navy   , fract(x)); }
+      else if (x < 4.) { return mix_cubic(gold   , magenta, navy   , green  , fract(x)); }
+      else             { return navy; }
     }
     vec3 rachels_colorscheme(float x) {
       vec3 maroon = vec3(.2, .0, .1);
       vec3 orange = vec3(1., .5, .1);
       vec3 purple = vec3(.1, 0., .3);
       vec3 white  = vec3(1., 1., 1.);
-      x = fract(abs(x)) * 4.;
-           if (x < 1.) { return mix(maroon, purple, fract(x)); }
-      else if (x < 2.) { return mix(purple, white , fract(x)); }
-      else if (x < 3.) { return mix(white , orange, fract(x)); }
-      else if (x < 4.) { return mix(orange, maroon, fract(x)); }
+      x = fract(x) * 4.;
+           if (x < 1.) { return mix_cubic(orange, maroon, purple, white , fract(x)); }
+      else if (x < 2.) { return mix_cubic(maroon, purple, white , orange, fract(x)); }
+      else if (x < 3.) { return mix_cubic(purple, white , orange, maroon, fract(x)); }
+      else if (x < 4.) { return mix_cubic(white , orange, maroon, purple, fract(x)); }
+      else             { return maroon; }
     }
 
     vec4 color(float x) {
