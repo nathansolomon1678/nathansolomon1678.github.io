@@ -26,4 +26,6 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [`Rice with kimchi and eggs`](recipes/Rice_with_kimchi_and_eggs)
 
+[`Scallion pancakes`](recipes/Scallion_pancakes)
+
 [`Tomato soup`](recipes/Tomato_soup)
