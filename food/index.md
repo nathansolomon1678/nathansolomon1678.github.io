@@ -20,6 +20,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [`Lentils`](recipes/Lentils)
 
+[`Potato chowder`](recipes/Potato_chowder)
+
 [`Purple cabbage and fruit salad`](recipes/Purple_cabbage_and_fruit_salad)
 
 [`Rice cake pasta`](recipes/Rice_cake_pasta)

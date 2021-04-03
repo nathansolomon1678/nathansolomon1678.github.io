@@ -5,7 +5,7 @@ layout: default
 > Credit: [https://sallysbakingaddiction.com/homemade-artisan-bread/](https://sallysbakingaddiction.com/homemade-artisan-bread/)
 
 ## Serving size
-Makes one loaf
+Makes one loaf (you probably want a double batch)
 
 ## Ingredients
 * 3+1/4 cups flour (or bread flour)
@@ -16,4 +16,4 @@ Makes one loaf
 * Cornmeal (optional)
 
 ## Instructions
-Dissolve salt and yeast (and add-ins?) in water. Gradually add flour and knead it a bunch, so that it becomes chewier. Let it rise in a warm place until it's sufficiently poofy -- it should roughly double in size. If you're using cornmeal, sprinkle it on a baking sheet. Shape the bread and place it on the baking sheet, let it rise a final time in the oven, and then bake it. The cooking time is around 25 minutes and the temperature is around 450 Fahrenheit, but that will depend on the thickness of the bread.
+Dissolve salt and yeast (and add-ins?) in water. Gradually add flour and knead it a bunch, so that it becomes chewier. Let it rise in a warm place until it's sufficiently poofy -- it should roughly double in size. If you're using cornmeal, sprinkle it on a baking sheet to prevent the bread from sticking. Shape the bread and place it on the baking sheet, let it rise a final time in the oven, and then bake it on the bottom shelf of the oven until it sounds hollow. It should be golden-brown on the top. The cooking time is around 30 minutes and the temperature is around 450 Fahrenheit, but that will depend on the thickness of the bread.
