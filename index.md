@@ -25,5 +25,7 @@ All of these pictures can easily be recreated using the webpage linked above.
 ![](gallery/Adrenaline-inducing%20despair.png)
 ![](gallery/Lightning.png)
 ![](gallery/Rgrhgrhaghhagrhahrharehber.png)
+![](gallery/Zvvvzzxvzxzxvzxbnzxvzbfzfzxfzbfb.png)
+![](gallery/Wallpaper.png)
 ![](gallery/Wonk.png)
 ![](gallery/Withering%20sanity.png)

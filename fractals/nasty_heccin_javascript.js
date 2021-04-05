@@ -46,12 +46,16 @@ function onload(event) {
 }
 
 function redraw() {
+  var max_iterations_widget = document.getElementById("max iterations");
+  if (max_iterations_widget.value > max_iterations_widget.max) {
+    max_iterations_widget.value = max_iterations_widget.max;
+  }
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.clientWidth, canvas.clientHeight]);
   gl.uniform2fv(gl.getUniformLocation(program, "center"), [center_x, center_y]);
   gl.uniform2fv(gl.getUniformLocation(program, "crosshair"), [crosshair_x, crosshair_y]);
   gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
   gl.uniform1i(gl.getUniformLocation(program, "coloring_method"), document.getElementById("coloring method").value);
-  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), document.getElementById("max iterations").value);
+  gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations_widget.value);
   gl.uniform1f(gl.getUniformLocation(program, "divergence_threshold"), document.getElementById("divergence threshold").value);
   gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);
   gl.uniform1i(gl.getUniformLocation(program, "julify"), julify);

@@ -42,7 +42,7 @@
       </li>
       <li>
         <label for="max iterations">Max iterations: </label>
-        <input id="max iterations" type="number" value=100 min=0 max=300 step=1 onchange="redraw()" class="setting">
+        <input id="max iterations" type="number" value=100 min=0 max=500 step=1 onchange="redraw()" class="setting">
       </li>
       <li>
         <label for="divergnce threshold">Divergence threshold: </label>
@@ -106,7 +106,7 @@
         <h4>Rings</h4>
         <p>This method colors each pixel based off of the smallest distance that \((x_n,y_n)\) gets to a ring centered at the origin, with radius equal to the divergence threshold. It looks best when that threshold is below about 2.</p>
       <h3>Max iterations</h3>
-        </p>This is the maximum number of times the function is applied to \((x, y)\). Lag is proportional to this value, so keep it below 1000 to avoid crashing your computer, and below 100 for best performance.</p>
+        </p>This is the maximum number of times the function is applied to \((x, y)\). Lag is proportional to this value, so keep it below 100 for best performance.</p>
       <h3>Divergence threshold</h3>
         <p>This is the threshold that \(||(x, y)||\) must exceed in order to "diverge". Or if you're coloring with the "Rings" method, it's the radius of the ring.</p>
       <h3>Colorscheme, colorfulness, & color offset</h3>
