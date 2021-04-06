@@ -46,8 +46,12 @@ function onload(event) {
 }
 
 function redraw() {
+  // For number widgets, it's possible to enter a number outside of the range (above the max),
+  // but with for max_iterations only, that can cause problems, so we want to block that from happening
   var max_iterations_widget = document.getElementById("max iterations");
-  if (max_iterations_widget.value > max_iterations_widget.max) {
+  // Below is a perfect example of why everybody hates javascript. It's literally interpreting the value
+  // of a number widget as a string :vomit:
+  if (parseInt(max_iterations_widget.value) > parseInt(max_iterations_widget.max)) {
     max_iterations_widget.value = max_iterations_widget.max;
   }
   gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), [canvas.clientWidth, canvas.clientHeight]);
@@ -62,6 +66,7 @@ function redraw() {
   gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
   gl.uniform1f(gl.getUniformLocation(program, "colorfulness"), document.getElementById("colorfulness").value);
   gl.uniform1f(gl.getUniformLocation(program, "color_offset"), document.getElementById("color offset").value / 100);
+  // The triangle fan will cover the entire canvas, so the fragment shader can apply to the whole thing
   gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
   document.getElementById("display view settings").innerHTML =
     "Scale factor: "      + scale_factor.toPrecision(3) + "<br>" +
@@ -92,7 +97,7 @@ function getRenderingContext() {
     alert("Your browser or device may not support WebGL");
   }
   gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearColor(0., 0., 0., 1.);
   gl.clear(gl.COLOR_BUFFER_BIT);
   return gl;
 }
@@ -101,12 +106,10 @@ function hideSidebar() {
   document.getElementById("theDivWithAllTheStuff").style.display = "none";
   document.getElementById("openSidebarButton").style.display = "block";
 }
-
 function openSidebar() {
   document.getElementById("theDivWithAllTheStuff").style.display = "block";
   document.getElementById("openSidebarButton").style.display = "none";
 }
-
 function toggle_julia_set() {
   julify = !julify;
   redraw();
@@ -122,7 +125,7 @@ function setMouseCoords() {
 }
 
 function clamp(x, min, max) {
-  if (min >= max) { console.log("oof"); }
+  if (min >= max) { alert("oof"); }
   if (x < min) { return min; }
   else if (x > max) { return max; }
   else { return x; }
