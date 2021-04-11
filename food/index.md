@@ -10,24 +10,30 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 ![](https://cdn140.picsart.com/302729068096211.png)
 
 ## Recipe list
-[`Bread`](recipes/Bread)
+[Bread](recipes/Bread){: .btn}
 
-[`Duck egg curry`](recipes/Duck_egg_curry)
+[Coconut-lemongrass curry](recipes/Coconut-lemongrass_curry){: .btn}
 
-[`Eggplant and tofu`](recipes/Eggplant_and_tofu)
+[Duck egg curry](recipes/Duck_egg_curry){: .btn}
 
-[`Greek salad`](recipes/Greek_salad)
+[Eggplant and tofu](recipes/Eggplant_and_tofu){: .btn}
 
-[`Lentils`](recipes/Lentils)
+[Finnish pancake](recipes/Finnish_pancake){: .btn}
 
-[`Potato chowder`](recipes/Potato_chowder)
+[Greek salad](recipes/Greek_salad){: .btn}
 
-[`Purple cabbage and fruit salad`](recipes/Purple_cabbage_and_fruit_salad)
+[Lentils](recipes/Lentils){: .btn}
 
-[`Rice cake pasta`](recipes/Rice_cake_pasta)
+[Potato chowder](recipes/Potato_chowder){: .btn}
 
-[`Rice with kimchi and eggs`](recipes/Rice_with_kimchi_and_eggs)
+[Purple cabbage and fruit salad](recipes/Purple_cabbage_and_fruit_salad){: .btn}
 
-[`Scallion pancakes`](recipes/Scallion_pancakes)
+[Rice cake pasta](recipes/Rice_cake_pasta){: .btn}
 
-[`Tomato soup`](recipes/Tomato_soup)
+[Rice with kimchi and eggs](recipes/Rice_with_kimchi_and_eggs){: .btn}
+
+[Scallion pancakes](recipes/Scallion_pancakes){: .btn}
+
+[Snickerdoodles](recipes/Snickerdoodles){: .btn}
+
+[Tomato soup](recipes/Tomato_soup){: .btn}
