@@ -316,7 +316,7 @@
         last_z = z;
       }
       if (!julify) {
-        draw_crosshair(crosshair, original_z, vec3(1.));
+        draw_crosshair(crosshair, original_z, vec3(1.) - fragmentColor.xyz / 3.);
       }
     }
   </script>

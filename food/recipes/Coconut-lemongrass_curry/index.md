@@ -20,6 +20,7 @@ layout: default
 * White mushrooms
 * Butternut squash
 * Green beans
+* Baby corn
 * Jalepeno/serrano slices
 
 ## Cooking instructions
