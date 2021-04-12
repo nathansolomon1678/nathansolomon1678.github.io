@@ -2,17 +2,17 @@
 title: Nathan's website
 layout: default
 ---
-# Welcome to my website!
-Click on one of the links below to:
+# Cool stuff
+[Create some nifty escape-time fractals!](fractals){: .btn}
+[Cookbook & food ideas](food){: .btn}
+[Follow me on Instagram](https://www.instagram.com/nat.han_solo.mon){: .btn}
 
-* Create some [nifty escape-time fractals](fractals)!
+# Programming side projects
+[Gibberish generator (chemistry homework bot)](https://nathansolomon1678.github.io/chem_hw){: .btn}
+[Version-control for my playlists](https://nathansolomon1678.github.io/Moosic){: .btn}
 
-* Make & eat some [food](food)
-
-* Follow me on [Instagram](https://www.instagram.com/nat.han_solo.mon)
-
-# Fractal gallery
-All of these pictures can easily be recreated using the webpage linked above.
+# Fractal wallpaper gallery
+All of these pictures can easily be recreated using [this webpage](fractals).
 ![](gallery/Bonkers.png)
 ![](gallery/Faeryflower.png)
 ![](gallery/Zesty%20heartache.png)
