@@ -7,16 +7,23 @@ layout: default
 
 These are all for ideas. Don't combine all of them:
 * Spinach
-* Bay leaves
 * Carrots
-* Onion
-* Lemon or lime juice
-* Garlic
-* Salt
 * Tomatoes
-* Cumin
-* Pepper
+* Onion
+* Garlic
+* Ginger
 * Vegetable or olive oil
+* Lemon or lime juice
+* Salt
+* Pepper
+* Cumin
+* Turmeric
+* Paprika
+* Cloves
+* Bay leaves
+* Cardamom
+* Cinnamon
+* Cilantro
 
 ## Cooking instructions
 ¯\\\_(ツ)\_/¯

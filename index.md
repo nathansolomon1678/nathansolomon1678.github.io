@@ -4,11 +4,14 @@ layout: default
 ---
 # Cool stuff
 [Create some nifty escape-time fractals!](fractals){: .btn}
+
 [Cookbook & food ideas](food){: .btn}
+
 [Follow me on Instagram](https://www.instagram.com/nat.han_solo.mon){: .btn}
 
 # Programming side projects
 [Gibberish generator (chemistry homework bot)](https://nathansolomon1678.github.io/chem_hw){: .btn}
+
 [Version-control for my playlists](https://nathansolomon1678.github.io/Moosic){: .btn}
 
 # Fractal wallpaper gallery

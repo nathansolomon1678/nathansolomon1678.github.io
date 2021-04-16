@@ -10,30 +10,32 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 ![](https://cdn140.picsart.com/302729068096211.png)
 
 ## Recipe list
-[Bread](recipes/Bread){: .btn}
+[Bread](Bread){: .btn}
 
-[Coconut-lemongrass curry](recipes/Coconut-lemongrass_curry){: .btn}
+[Coconut-lemongrass curry](Coconut-lemongrass_curry){: .btn}
 
-[Duck egg curry](recipes/Duck_egg_curry){: .btn}
+[Duck egg curry](Duck_egg_curry){: .btn}
 
-[Eggplant and tofu](recipes/Eggplant_and_tofu){: .btn}
+[Eggplant and tofu](Eggplant_and_tofu){: .btn}
 
-[Finnish pancake](recipes/Finnish_pancake){: .btn}
+[Finnish pancake](Finnish_pancake){: .btn}
 
-[Greek salad](recipes/Greek_salad){: .btn}
+[Greek salad](Greek_salad){: .btn}
 
-[Lentils](recipes/Lentils){: .btn}
+[Lemon bars](Lemon_bars){: .btn}
 
-[Potato chowder](recipes/Potato_chowder){: .btn}
+[Lentils](Lentils){: .btn}
 
-[Purple cabbage and fruit salad](recipes/Purple_cabbage_and_fruit_salad){: .btn}
+[Potato chowder](Potato_chowder){: .btn}
 
-[Rice cake pasta](recipes/Rice_cake_pasta){: .btn}
+[Purple cabbage and fruit salad](Purple_cabbage_and_fruit_salad){: .btn}
 
-[Rice with kimchi and eggs](recipes/Rice_with_kimchi_and_eggs){: .btn}
+[Rice cake pasta](Rice_cake_pasta){: .btn}
 
-[Scallion pancakes](recipes/Scallion_pancakes){: .btn}
+[Rice with kimchi and eggs](Rice_with_kimchi_and_eggs){: .btn}
 
-[Snickerdoodles](recipes/Snickerdoodles){: .btn}
+[Scallion pancakes](Scallion_pancakes){: .btn}
 
-[Tomato soup](recipes/Tomato_soup){: .btn}
+[Snickerdoodles](Snickerdoodles){: .btn}
+
+[Tomato soup](Tomato_soup){: .btn}
