@@ -5,7 +5,7 @@ layout: default
 > Credit: Melody Tun, June 6th 2020
 
 ## Ingredients
-* 15 Eggs
+* 15 Duck eggs
 * 5 Potatoes
 * 1 Onion
 * 1 bulb Garlic

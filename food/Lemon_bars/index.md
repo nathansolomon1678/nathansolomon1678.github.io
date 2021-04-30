@@ -8,13 +8,13 @@ Serving size: makes one 9"\*13" baking sheet
 ![](lemon_bar.jpg)
 
 ## Ingredients
-### Crust
+### Shortbread crust
 * 7/4 cups flour
 * 1/4 cup cornstarch
 * 1 cup powdered sugar
 * 1 cup (2 sticks) butter (salted)
 
-### Filling
+### Custard filling
 * 6 eggs
 * 3 cups sugar
 * 1 cup lemon juice (I used meyer lemons)
