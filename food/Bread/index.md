@@ -7,6 +7,9 @@ layout: default
 ## Serving size
 Makes one loaf (you probably want a double batch)
 
+![](rosemary_baguettes.jpg)
+*Above: A double recipe (two loaves) of bread with garlic powder and fresh rosemary*
+
 ## Ingredients
 * 13/4 cups flour (or bread flour)
 * One packet (or 2 tsp) active yeast

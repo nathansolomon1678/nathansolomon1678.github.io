@@ -5,6 +5,8 @@ layout: default
 > Credit: Based on recipe from [https://www.onceuponachef.com/recipes/luscious-lemon-squares.html](https://www.onceuponachef.com/recipes/luscious-lemon-squares.html)
 Serving size: makes one 9"\*13" baking sheet
 
+![](lemon_bar.jpg)
+
 ## Ingredients
 ### Crust
 * 7/4 cups flour
