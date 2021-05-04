@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+  <title>Clifford attractors</title>
   <meta charset="utf-8"/>
   <meta name="author" content="Nathan Solomon">
   <link href="website_fashion_police.css" rel="stylesheet" type="text/css"/>
@@ -18,21 +19,32 @@
     </button>
     <h1>Clifford attractors</h1>
     <h2>Settings</h2>
+    <ul>
       <li>
         <label for="A">\(A=\)</label>
-        <input id="A" type="number" value=1.7 min=-3 max=3 step=.1 onchange="redraw()" class="setting">
+        <input id="A" type="number" value=1.7 min=-3 max=3 step=.01 onchange="redraw()" class="setting">
       </li>
       <li>
         <label for="B">\(B=\)</label>
-        <input id="B" type="number" value=1.7 min=-3 max=3 step=.1 onchange="redraw()" class="setting">
+        <input id="B" type="number" value=1.7 min=-3 max=3 step=.01 onchange="redraw()" class="setting">
       </li>
       <li>
         <label for="C">\(C=\)</label>
-        <input id="C" type="number" value=.6 min=-3 max=3 step=.1 onchange="redraw()" class="setting">
+        <input id="C" type="number" value=.6 min=-3 max=3 step=.01 onchange="redraw()" class="setting">
       </li>
       <li>
         <label for="D">\(D=\)</label>
-        <input id="D" type="number" value=1.2 min=-3 max=3 step=.1 onchange="redraw()" class="setting">
+        <input id="D" type="number" value=1.2 min=-3 max=3 step=.01 onchange="redraw()" class="setting">
+      </li>
+      <br>
+      <li>
+        <label for="Iterations">Iterations:</label>
+        <input id="Iterations" type="number" value=8 min=0 max=50 step=1 onchange="redraw()" class="setting">
+      </li>
+      <br>
+      <li>
+        <label for="Number of points">Number of points:</label>
+        <input id="Number of points" type="number" value=100000 min=0 max=100000 step=1 onchange="redraw()" class="setting">
       </li>
     </ul>
   </div>
@@ -61,7 +73,7 @@
     out vec4 fragmentColor;
 
     void main() {
-        fragmentColor = vec4(0., 1., 0., 1.);
+        fragmentColor = vec4(1., .5, 0., 1.);
     }
   </script>
 </body>

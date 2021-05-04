@@ -9,12 +9,16 @@ var a = 0;
 var b = 0;
 var c = 0;
 var d = 0;
+var iterations = 0;
+var numPoints = 0;
 
 function setConstants() {
   a = document.getElementById("A").value;
   b = document.getElementById("B").value;
   c = document.getElementById("C").value;
   d = document.getElementById("D").value;
+  iterations = document.getElementById("Iterations").value;
+  numPoints = document.getElementById("Number of points").value;
 }
 
 function onload(event) {
@@ -50,10 +54,10 @@ function redraw() {
   setConstants();
 
   var points = []
-  for (var i = 0; i < 50000; i++) {
+  for (var i = 0; i < numPoints; i++) {
     var new_point = randomPoint();
-    new_point = [new_point[0] * Math.max(canvas.width, canvas.height) / canvas.width  / 2.,
-                 new_point[1] * Math.max(canvas.width, canvas.height) / canvas.height / 2.];
+    new_point = [new_point[0] * Math.max(canvas.width, canvas.height) / canvas.width  / 3.,
+                 new_point[1] * Math.max(canvas.width, canvas.height) / canvas.height / 3.];
     points.push(new_point[0], new_point[1]);
   }
   const vertexArray = new Float32Array(points);
@@ -88,7 +92,7 @@ function randomPoint() {
     Math.random() * 2. - 1.,
     Math.random() * 2. - 1.,
   ];
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < iterations; i++) {
     coords = clifford(coords);
   }
   return coords;
