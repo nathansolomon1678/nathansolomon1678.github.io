@@ -20,6 +20,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Finnish pancake](Finnish_pancake){: .btn}
 
+[Graham cracker toffee](Graham_cracker_toffee){: .btn}
+
 [Greek salad](Greek_salad){: .btn}
 
 [Lemon bars](Lemon_bars){: .btn}
