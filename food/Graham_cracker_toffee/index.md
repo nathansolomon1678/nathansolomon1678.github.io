@@ -9,7 +9,7 @@ layout: default
 * 3/4 cups butter (3/2 sticks)
 * 1/2 cup brown sugar
 * about 3/2 cups chocolate chips
-* about 1 cup chopped walnuts
+* about 1 cup chopped walnuts or almonds
 * coarse salt (like sea salt)
 
 ## Instructions

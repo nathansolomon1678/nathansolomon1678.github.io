@@ -14,5 +14,5 @@ These are all very approximate:
 * Water
 
 ## Instructions
-Cut potatoes into cubes. Melt butter and cook onions in there. Add everything else. Add water until potatoes are covered. Cook. If you make this for multiple days, it'll get better each day ass the potatoes soften and dissolve more.
+Cut potatoes into cubes. Melt butter and cook onions in there. Add everything else. Add water until potatoes are covered. Cook. If you make this for multiple days, it'll get better each day as the potatoes soften and dissolve more.
 Serve with toasted french bread.
