@@ -1,0 +1,15 @@
+---
+layout: default
+---
+# Stir-fried gnocchi
+## Ingredients
+* Gnocchi
+* Sun-dried tomatoes
+* Olive oil
+* Spinach
+* Salt
+* Pepper
+* Parmesan cheese
+
+## Instructions
+Fry everything for about 15 minutes, until gnocchi are starting to get crispy. Only add the tomatoes, spinach, and cheese towards the end, to avoid overcooking them. Be sure to stir so that the gnocchi get fully coated in oil.

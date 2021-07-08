@@ -40,4 +40,6 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Snickerdoodles](Snickerdoodles){: .btn}
 
+[Stir-fried gnocchi](Stir-fried_gnocchi){: .btn}
+
 [Tomato soup](Tomato_soup){: .btn}

@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 import os
 
 food = input('What is the name of the new food?\n')
