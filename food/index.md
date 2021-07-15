@@ -28,6 +28,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Lentils](Lentils){: .btn}
 
+[Mac and cheese](Mac_and_cheese){: .btn}
+
 [Potato chowder](Potato_chowder){: .btn}
 
 [Purple cabbage and fruit salad](Purple_cabbage_and_fruit_salad){: .btn}
@@ -37,6 +39,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 [Rice with kimchi and eggs](Rice_with_kimchi_and_eggs){: .btn}
 
 [Scallion pancakes](Scallion_pancakes){: .btn}
+
+[Sesame balls](Sesame_balls){: .btn}
 
 [Snickerdoodles](Snickerdoodles){: .btn}
 
