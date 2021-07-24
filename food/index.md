@@ -10,6 +10,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 ![](https://cdn140.picsart.com/302729068096211.png)
 
 ## Recipe list
+[Blueberry cake](Blueberry_cake){: .btn}
+
 [Bread](Bread){: .btn}
 
 [Coconut-lemongrass curry](Coconut-lemongrass_curry){: .btn}
