@@ -5,14 +5,16 @@ var gl;
 var program;
 var vertexBuffer;
 var canvas;
-var mouse_x = 0;
-var mouse_y = 0;
+
 var center_x;
 var center_y;
 var crosshair_x;
 var crosshair_y;
 var scale_factor;
 var julify;
+
+var mouse_x = 0;
+var mouse_y = 0;
 var mouse_is_down = false;
 var moved_mouse_since_last_click = false;
 
@@ -20,16 +22,19 @@ function onload(event) {
     canvas = document.getElementById("theCanvas");
     if (!(gl = getRenderingContext()))
         return;
-    var source = document.getElementById("vert-shader").innerHTML;
+    // Vertex and fragment shader source code is stored inside <script> tags of index.html
+    var source = document.getElementById("vert-shader").innerText;
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, source);
     gl.compileShader(vertexShader);
     console.log(gl.getShaderInfoLog(vertexShader));
-    source = document.getElementById("frag-shader").innerHTML;
+
+    source = document.getElementById("frag-shader").innerText;
     var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, source);
     gl.compileShader(fragmentShader);
     console.log(gl.getShaderInfoLog(fragmentShader));
+
     program = gl.createProgram();
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
@@ -40,7 +45,8 @@ function onload(event) {
     gl.deleteShader(fragmentShader);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         alert(gl.getProgramInfoLog(program));
-    } 
+    }
+
     initializeAttributes();
     get_URL_params();
     redraw();
@@ -67,7 +73,7 @@ function redraw() {
     gl.uniform1i( gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
     gl.uniform1f( gl.getUniformLocation(program, "colorfulness"), document.getElementById("colorfulness").value);
     gl.uniform1f( gl.getUniformLocation(program, "color_offset"), document.getElementById("color offset").value / 100);
-    // The triangle fan will cover the entire canvas, so the fragment shader can apply to the whole thing
+
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 
     document.getElementById("display view settings").innerHTML =
@@ -79,6 +85,9 @@ function redraw() {
 }
 
 function initializeAttributes() {
+    // This array represents 4 (x,y) points
+    // Those points define a single triangle fan, which in this case is a rectangle covering the whole canvas
+    // The fragment shader then colors points in that rectangle, so it applies to the whole canvas
     const vertexArray = new Float32Array([-1., -1., 1., -1., 1., 1., -1., 1.]);
     vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -116,7 +125,7 @@ function openSidebar() {
 function toggle_julia_set() {
     julify = !julify;
     redraw();
-    document.getElementById("julify").innerHTML = julify ? "Show original" : "Show Julia set";
+    document.getElementById("julify").innerText = julify ? "Show original" : "Show Julia set";
 }
 
 function setMouseCoords() {
@@ -203,26 +212,26 @@ function get_URL_params() {
     crosshair_x                                 = parseFloat(parameters.get("crosshair_x")          ?? 0);
     crosshair_y                                 = parseFloat(parameters.get("crosshair_y")          ?? 0);
     if (julify) {
-        document.getElementById("julify").innerHTML = "Show original";
+        document.getElementById("julify").innerText = "Show original";
     }
 }
 
 function update_link() {
     var url_with_params = new URL("https://nathansolomon1678.github.io/fractals");
-    url_with_params.searchParams.append("fractal_type", document.getElementById("fractal type").value);
-    url_with_params.searchParams.append("coloring_method", document.getElementById("coloring method").value);
-    url_with_params.searchParams.append("max_iterations", document.getElementById("max iterations").value);
+    url_with_params.searchParams.append("fractal_type",         document.getElementById("fractal type").value);
+    url_with_params.searchParams.append("coloring_method",      document.getElementById("coloring method").value);
+    url_with_params.searchParams.append("max_iterations",       document.getElementById("max iterations").value);
     url_with_params.searchParams.append("divergence_threshold", document.getElementById("divergence threshold").value);
-    url_with_params.searchParams.append("colorscheme", document.getElementById("colorscheme").value);
-    url_with_params.searchParams.append("colorfulness", document.getElementById("colorfulness").value);
-    url_with_params.searchParams.append("color_offset", document.getElementById("color offset").value);
+    url_with_params.searchParams.append("colorscheme",          document.getElementById("colorscheme").value);
+    url_with_params.searchParams.append("colorfulness",         document.getElementById("colorfulness").value);
+    url_with_params.searchParams.append("color_offset",         document.getElementById("color offset").value);
     url_with_params.searchParams.append("julify", julify);
     url_with_params.searchParams.append("scale_factor", scale_factor);
     url_with_params.searchParams.append("center_x", center_x);
     url_with_params.searchParams.append("center_y", center_y);
     url_with_params.searchParams.append("crosshair_x", crosshair_x);
     url_with_params.searchParams.append("crosshair_y", crosshair_y);
-    document.getElementById("URL").href = url_with_params;
-    document.getElementById("URL").innerHTML = url_with_params;
+    document.getElementById("URL").href = url_with_params.href;
+    document.getElementById("URL").innerText = url_with_params.href;
 }
 

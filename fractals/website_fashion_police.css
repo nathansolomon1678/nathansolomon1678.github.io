@@ -24,6 +24,10 @@ ul {
   list-style: "\2605";
 }
 
+a {
+    word-wrap: break-word;
+}
+
 #theDivWithAllTheStuff {
   border: 3px solid #999999;
   border-radius: 20px;

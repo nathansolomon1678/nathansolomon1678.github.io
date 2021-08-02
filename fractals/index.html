@@ -316,6 +316,7 @@
             fragmentColor = color(log(magnitude(z)));
           }
         } else if (coloring_method == 3) {
+          // Color based on how close z gets to a ring around the origin with radius equal to the divergence threshold
           distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_threshold));
           fragmentColor = color(-log(distance_to_orbit_trap));
         }
