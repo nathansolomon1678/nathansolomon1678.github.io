@@ -25,7 +25,7 @@
     <ul>
       <li>
         <label for="fractal type">Fractal type:</label>
-        <select id="fractal type" onchange="redraw()" class="setting">
+        <select id="fractal type" onchange="redraw()">
           <option value=0 selected="selected">Mandelbrot</option>
           <option value=1>Heart</option>
           <option value=2>Burning ship</option>
@@ -33,7 +33,7 @@
       </li>
       <li>
         <label for="coloring method">Coloring method:</label>
-        <select id="coloring method" onchange="redraw()" class="setting">
+        <select id="coloring method" onchange="redraw()">
           <option value=0 selected="selected">Terraced</option>
           <option value=1>Smooth</option>
           <option value=2>Interior</option>
@@ -42,15 +42,15 @@
       </li>
       <li>
         <label for="max iterations">Max iterations: </label>
-        <input id="max iterations" type="number" value=200 min=0 max=500 step=1 onchange="redraw()" class="setting">
+        <input id="max iterations" type="number" value=200 min=0 max=500 step=1 onchange="redraw()">
       </li>
       <li>
         <label for="divergnce threshold">Divergence threshold: </label>
-        <input id="divergence threshold" type="number" value=2 min=0 max=1000000 step=.1 onchange="redraw()" class="setting">
+        <input id="divergence threshold" type="number" value=2 min=0 max=1000000 step=.1 onchange="redraw()">
       </li>
       <li>
         <label for="colorscheme">Colorscheme: </label>
-        <select id="colorscheme" onchange="redraw()" class="setting">
+        <select id="colorscheme" onchange="redraw()">
           <option value=0>Classic</option>
           <option value=1>Experimental</option>
           <option value=2 selected="selected">Rachel's</option>
@@ -58,16 +58,17 @@
       </li>
       <li>
         <label for="colorfulness">Colorfulness: </label>
-        <input id="colorfulness" type="number" value=20 min=-100 max=100 step=1 onchange="redraw()" class="setting">
+        <input id="colorfulness" type="number" value=20 min=-100 max=100 step=1 onchange="redraw()">
       </li>
       <li>
         <label for="color offset">Color offset: </label>
-        <input id="color offset" type="range" class="slider" value=0 onchange="redraw()" class="setting">
+        <input id="color offset" type="range" class="slider" value=0 onchange="redraw()">
       </li>
     </ul>
-    <button id="julify" onclick="toggle_julia_set()" class="setting">
+    <button id="julify" onclick="toggle_julia_set()">
       Show Julia set modification of fractal (instead of the original)
     </button>
+    <br>
     <br>
     <code id="display view settings">Loading...</code>
 
@@ -132,6 +133,9 @@
         $$ x_{n+1} = x_n^2 - y_n^2 + x_0 $$
         $$ y_{n+1} = -2 |x_n y_n| + y_0 $$
         At first glance, this might not look as interesting as the other fractals. Keep looking, though -- there are some really interesting fractals to be found by coloring the interiors of its Julia sets.</p>
+
+    <h2>Save image settings</h2>
+    <a id="URL" href="">https://nathansolomon1678.github.io/fractals</a>
 
     <h2>This website doesn't work!</h2>
       <p>If it isn't working, and refreshing doesn't fix it, you might have WebGL disabled on your browser (it is a security risk). If that's not the problem, please open a <a href="https://github.com/nathansolomon1678/nathansolomon1678.github.io/issues/new">github issue</a> to report it.</p>
