@@ -14,6 +14,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Bread](Bread){: .btn}
 
+[Brunswick stew](Brunswick_stew){: .btn}
+
 [Coconut-lemongrass curry](Coconut-lemongrass_curry){: .btn}
 
 [Duck egg curry](Duck_egg_curry){: .btn}
@@ -31,6 +33,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 [Lentils](Lentils){: .btn}
 
 [Mac and cheese](Mac_and_cheese){: .btn}
+
+[Mangoes to munch on](Mangoes_to_munch_on){: .btn}
 
 [Potato chowder](Potato_chowder){: .btn}
 
