@@ -1,7 +1,8 @@
 ---
-title: Nathan's website
 layout: default
 ---
+{% include head.html %}
+
 # Cool stuff
 [Create some nifty escape-time fractals!](fractals){: .btn}
 
