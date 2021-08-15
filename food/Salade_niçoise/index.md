@@ -1,0 +1,38 @@
+---
+layout: default
+---
+# Salade niçoise
+## Ingredients
+* 1 head romaine lettuce
+* 4 cups red or gold potatoes
+* 1 can garbanzo beans
+* 1 beet
+* 1/3 can kidney beans
+* 12 oz frozen green beans
+* 1/3 can hearts of palm
+* Several tomatoes
+* More kalamata olives than you can count
+
+### Potato sauce
+* Olive oil
+* Dijon mustard
+* Minced garlic
+* Marjaran
+* Thyme
+* Sage
+* Basil
+* Salt
+* Pepper
+* Oregano
+
+### Dressing
+* Minced shallot
+* Red wine vinegar
+* Olive oil
+* Dijon mustard
+* Salt
+* Pepper
+* Rosemary
+
+## Instructions
+Cube potatoes and coat them in sauce, then roast them. Slice romaine lettuce with a knife. Boil beets, then cut them into strips. Mix everything together, except the dressing. Then put the dressing on.

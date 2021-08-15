@@ -44,6 +44,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Rice with kimchi and eggs](Rice_with_kimchi_and_eggs){: .btn}
 
+[Salade niçoise](Salade_niçoise){: .btn}
+
 [Scallion pancakes](Scallion_pancakes){: .btn}
 
 [Sesame balls](Sesame_balls){: .btn}
