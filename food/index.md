@@ -18,8 +18,6 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Coconut-lemongrass curry](Coconut-lemongrass_curry){: .btn}
 
-[Duck egg curry](Duck_egg_curry){: .btn}
-
 [Eggplant and tofu](Eggplant_and_tofu){: .btn}
 
 [Finnish pancake](Finnish_pancake){: .btn}
@@ -36,6 +34,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Mangoes to munch on](Mangoes_to_munch_on){: .btn}
 
+[Peach tea gummies](Peach_tea_gummies){: .btn}
+
 [Potato chowder](Potato_chowder){: .btn}
 
 [Purple cabbage and fruit salad](Purple_cabbage_and_fruit_salad){: .btn}
@@ -43,6 +43,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 [Rice cake pasta](Rice_cake_pasta){: .btn}
 
 [Rice with kimchi and eggs](Rice_with_kimchi_and_eggs){: .btn}
+
+[Roasted roots](Roasted_roots){: .btn}
 
 [Salade niçoise](Salade_niçoise){: .btn}
 
