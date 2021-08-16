@@ -16,6 +16,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Brunswick stew](Brunswick_stew){: .btn}
 
+[Cauliflower and leek soup](Cauliflower_and_leek_soup){: .btn}
+
 [Coconut-lemongrass curry](Coconut-lemongrass_curry){: .btn}
 
 [Eggplant and tofu](Eggplant_and_tofu){: .btn}
@@ -53,6 +55,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 [Sesame balls](Sesame_balls){: .btn}
 
 [Snickerdoodles](Snickerdoodles){: .btn}
+
+[Sticky rice with mangoes](Sticky_rice_with_mangoes){: .btn}
 
 [Stir-fried gnocchi](Stir-fried_gnocchi){: .btn}
 
