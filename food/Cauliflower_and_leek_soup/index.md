@@ -12,9 +12,7 @@ layout: default
 * Veggie stock
 * Salt
 * Pepper
-* Textured vegetable protein
-* Paprika
-* Liquid smoke
+* Bacon bits (or substitute made from TVP, paprika, liquid smoke, & salt)
 
 ## Instructions
-Prepare "bacon bits" from TVP, paprika, liquid smoke, and salt. Caramelize onions and leeks in a pot, then add everythin else and simmer until softened. Blend that, then add "bacon bits" as garnish.
+Caramelize onions and leeks in a pot, then add everything except bacon and simmer until softened. Blend that, then add crumbled bacon as garnish.

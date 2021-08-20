@@ -17,7 +17,7 @@ layout: default
 * Olive oil
 * Dijon mustard
 * Minced garlic
-* Marjaran
+* Marjoram
 * Thyme
 * Sage
 * Basil
