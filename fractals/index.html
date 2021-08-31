@@ -12,7 +12,16 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 </head>
-{% include analytics.html %}
+
+<!-- The following HTML is taken from https://morotsman.github.io/blog,/google/analytics,/jekyll,/github/pages/2020/07/07/add-google-analytics.html -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-206139197-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-206139197-1');
+</script>
 
 <body onresize="redraw()">
   <button id=openSidebarButton onclick="openSidebar()" style="float: left; display: none; position: absolute">
