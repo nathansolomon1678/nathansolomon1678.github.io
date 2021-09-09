@@ -36,6 +36,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 
 [Mangoes to munch on](Mangoes_to_munch_on){: .btn}
 
+[Massaman curry](Massaman_curry){: .btn}
+
 [Orzo with mushrooms](Orzo_with_mushrooms){: .btn}
 
 [Peach tea gummies](Peach_tea_gummies){: .btn}

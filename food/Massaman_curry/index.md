@@ -1,0 +1,33 @@
+---
+layout: default
+---
+# Massaman curry
+> Credit: inspired by [this wikipedia article](https://en.wikipedia.org/wiki/Massaman_curry)
+
+## Ingredients
+* Golden potatoes
+* Tempeh
+* Onions
+* Garlic
+* Chilies
+* Oil
+* Cumin
+* Coriander
+* Cloves
+* Cinnamon
+* Cardamom
+* Nutmeg
+* Galanga
+* Coconut milk
+* Orange juice
+* Tamarind paste
+* Water
+* Bay leaves
+* Wild lime leaves
+* Lemongrass
+* Anise
+* Salt
+* Crushed peanuts
+
+# Insturctions
+Stew everything for a while, until the potatoes become as soft as butter and the broth becomes a thick stew. Serve with sticky rice.
