@@ -13,20 +13,13 @@ h2 {
     font-size: 30px;
 }
 
-a {
-    color: #fff;
-    font-size: 20px;
-    text-decoration: none;
-}
-
 p {
     color: #fff;
     font-size: 20px;
 }
 
-.fancy-link {
+a {
     color: #5af;
-    font-size: 20px;
     text-decoration: underline;
 }
 
@@ -58,7 +51,8 @@ p {
 .menu-button {
     float: left;
     text-align: center;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
     border: 1px solid #999;
     background-color: #000;
     color: #fff;
