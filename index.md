@@ -13,10 +13,10 @@ layout: default
 Click one of these images to modify it:
 
 [![](gallery/image2.png)](fractals/?fractal_type=2&coloring_method=2&max_iterations=100&divergence_threshold=1&colorscheme=0&colorfulness=100&color_offset=0&julify=true&scale_factor=80&center_x=-0.404&center_y=-0.354&crosshair_x=-0.45045&crosshair_y=0.65393)
+[![](gallery/image20.png)](fractals/?fractal_type=2&coloring_method=2&max_iterations=500&divergence_threshold=1.1&colorscheme=0&colorfulness=300&color_offset=87&julify=true&scale_factor=11&center_x=-0.44&center_y=0.33&crosshair_x=-0.9969&crosshair_y=0.2553)
 [![](gallery/image5.png)](fractals/?fractal_type=2&coloring_method=3&max_iterations=150&divergence_threshold=0.6&colorscheme=0&colorfulness=30&color_offset=0&julify=true&scale_factor=55&center_x=0.5&center_y=-0.11&crosshair_x=0.3551&crosshair_y=-0.1009)
 [![](gallery/image3.png)](fractals?fractal_type=1&coloring_method=3&max_iterations=10&divergence_threshold=0.1&colorscheme=2&colorfulness=-4&color_offset=70&julify=true&scale_factor=2.8&center_x=1.4&center_y=1.25&crosshair_x=-1&crosshair_y=0)
 [![](gallery/image7.png)](fractals/?fractal_type=1&coloring_method=3&max_iterations=30&divergence_threshold=2.1&colorscheme=2&colorfulness=8&color_offset=0&julify=true&scale_factor=0.5&center_x=0&center_y=0&crosshair_x=1&crosshair_y=0)
-[![](gallery/image20.png)](fractals/?fractal_type=2&coloring_method=2&max_iterations=500&divergence_threshold=1.1&colorscheme=0&colorfulness=300&color_offset=87&julify=true&scale_factor=11&center_x=-0.44&center_y=0.33&crosshair_x=-0.9969&crosshair_y=0.2553)
 [![](gallery/image19.png)](fractals/?fractal_type=0&coloring_method=0&max_iterations=500&divergence_threshold=2.2295&colorscheme=2&colorfulness=100&color_offset=72&julify=true&scale_factor=1.4&center_x=0&center_y=0&crosshair_x=-0.7523&crosshair_y=-0.05965)
 [![](gallery/image4.png)](fractals/?fractal_type=2&coloring_method=1&max_iterations=200&divergence_threshold=200&colorscheme=2&colorfulness=9&color_offset=60&julify=false&scale_factor=930&center_x=-1.8608&center_y=0.0008)
 [![](gallery/image6.png)](fractals/?fractal_type=2&coloring_method=3&max_iterations=350&divergence_threshold=0.6&colorscheme=0&colorfulness=100&color_offset=75&julify=false&scale_factor=20000&center_x=0.36435&center_y=-0.34007)

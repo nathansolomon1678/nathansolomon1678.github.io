@@ -52,6 +52,7 @@
         </select>
       </li>
       <li>
+        <!-- TODO: use JS to figure out what a reasonable limit is, and alert user if they go above that limit -->
         <label for="max iterations">Max iterations: </label>
         <input id="max iterations" type="number" value=200 min=0 max=5000 step=1 onchange="redraw()">
       </li>
