@@ -1,0 +1,18 @@
+{
+    "Ingredients": {
+        "Soup": [
+            "Canned tomato soup",
+            "Milk"
+        ],
+        "Grilled cheese sandwich": [
+            "Sourdough bread",
+            "Cheddar Cheese",
+            "Butter",
+            "Dill pickle slices"
+        ],
+        "Other sides": [
+            "Saltine crackers (for dipping)",
+            "Lemonade"
+        ]
+    }
+}

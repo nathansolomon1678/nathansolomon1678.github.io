@@ -22,3 +22,5 @@ for recipe in recipe_names:
     readme_file_contents += f'\n[{human_readable_recipe_name}]({recipe}){{: .btn}}\n'
 with open('index.md', 'w') as file:
     file.write(readme_file_contents)
+
+import update_html
