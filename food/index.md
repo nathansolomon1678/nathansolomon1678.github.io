@@ -10,6 +10,8 @@ This "cookbook" serves as my personal collection of foods that I like making. Ma
 ![](https://cdn140.picsart.com/302729068096211.png)
 
 ## Recipe list
+[Basil popcorn thingies](Basil_popcorn_thingies){: .btn}
+
 [Blueberry cake](Blueberry_cake){: .btn}
 
 [Bread](Bread){: .btn}
