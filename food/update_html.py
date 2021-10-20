@@ -2,7 +2,7 @@
 import os
 import json
 
-recipe_names = sorted([recipe for recipe in os.listdir('.') if os.path.isdir(recipe)])
+recipe_names = sorted([recipe for recipe in os.listdir('.') if os.path.isdir(recipe) and recipe != '__pycache__'])
 for recipe_name in recipe_names:
     human_readable_recipe_name = recipe_name.replace('_', ' ')
     with open(f'{recipe_name}/recipe.json') as file:
@@ -10,7 +10,7 @@ for recipe_name in recipe_names:
     source = recipe.get('Source')
     source_html = '' if source is None else f'\n<p>Source: based on <a href={source}>{source}</a></p>'
     serving_size = recipe.get('Serving size')
-    serving_size_html = '' if serving_size is None else f'\n<h2>Serving size</h2>\n<p>{serving_size}</p>'
+    serving_size_html = '' if serving_size is None else f'\n<p>Serving size: {serving_size}</p>'
     pictures = recipe.get('Pictures')
     pictures_html = ''
     if pictures is not None:
@@ -19,22 +19,22 @@ for recipe_name in recipe_names:
     ingredients = recipe.get('Ingredients')
     if isinstance(ingredients, list):
         # Proceed normally, since it's just an ingredients list
-        ingredients_html = '\n<h2>Ingredients</h2>\n<ul>'
+        ingredients_html = '\n<hr><h2>Ingredients</h2>\n<ul>'
         for ingredient in ingredients:
             ingredients_html += f'\n<li>{ingredient}</li>'
         ingredients_html += '\n</ul>'
     elif isinstance(ingredients, dict):
         # This means the ingredients list is broken into subcategories
-        ingredients_html = '\n<h2>Ingredients</h2>'
+        ingredients_html = '\n<hr><h2>Ingredients</h2>'
         for subcategory, ingredient_list in ingredients.items():
             ingredients_html += f'\n<h3>{subcategory}</h3>\n<ul>'
             for ingredient in ingredient_list:
                 ingredients_html += f'\n<li>{ingredient}</li>'
             ingredients_html += '\n</ul>'
     instructions = recipe.get('Instructions')
-    instructions_html = '' if instructions is None else f'\n<h2>Instructions</h2>\n<p>{instructions}</p>'
+    instructions_html = '' if instructions is None else f'\n<hr><h2>Instructions</h2>\n<p>{instructions}</p>'
     serving_suggestion = recipe.get('Serving suggestion')
-    serving_suggestion_html = '' if serving_suggestion is None else f'\n<h2>Serving suggestion</h2>\n<p>{serving_suggestion}</p>'
+    serving_suggestion_html = '' if serving_suggestion is None else f'\n<h2>Serving suggestion</h2><hr>\n<p>{serving_suggestion}</p>'
 
     html = f"""
     <!Doctype HTML>
@@ -57,7 +57,7 @@ for recipe_name in recipe_names:
         </script>
         <body>
             <div id="main">
-                <h1>{human_readable_recipe_name}</h1>
+                <h1>{human_readable_recipe_name}</h1><hr>
                 {source_html}
                 {serving_size_html}
                 {pictures_html}

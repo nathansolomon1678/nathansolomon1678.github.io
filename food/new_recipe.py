@@ -4,13 +4,19 @@ import os
 food = input('What is the name of the new food?\n')
 directory_name = food.replace(' ', '_')
 os.mkdir(directory_name)
-with open(f'{directory_name}/index.md', 'w+') as file:
-    file.write('---\n' +
-               'layout: default\n' +
-               '---\n' +
-              f'# {food}\n' +
-               '## Ingredients')
-os.system(f'nvim {directory_name}/index.md')
+with open(f'{directory_name}/recipe.json', 'w+') as file:
+    file.write("""
+{
+    "Source": "",
+    "Serving size": "",
+    "Pictures": {
+    },
+    "Ingredients": [
+    ],
+    "Instructions": "",
+    "Serving suggestion": ""
+}""")
+os.system(f'nvim {directory_name}/recipe.json')
 
 # After closing the file, update the recipe list
 with open('index.md') as file:
