@@ -2,7 +2,9 @@
 import os
 import json
 
-recipe_names = sorted([recipe for recipe in os.listdir('.') if os.path.isdir(recipe) and recipe != '__pycache__'])
+recipe_names = sorted([recipe for recipe in os.listdir('.') if os.path.isdir(recipe)])
+if '_site' in recipe_names: recipe_names.remove('_site')
+if '__pycache__' in recipe_names: recipe_names.remove('__pycache__')
 for recipe_name in recipe_names:
     human_readable_recipe_name = recipe_name.replace('_', ' ')
     with open(f'{recipe_name}/recipe.json') as file:
@@ -36,37 +38,36 @@ for recipe_name in recipe_names:
     serving_suggestion = recipe.get('Serving suggestion')
     serving_suggestion_html = '' if serving_suggestion is None else f'\n<h2>Serving suggestion</h2><hr>\n<p>{serving_suggestion}</p>'
 
-    html = f"""
-    <!Doctype HTML>
-    <html>
-        <head>
-            <link rel="stylesheet" href="../recipe.css">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta charset="utf-8"/>
-            <meta name="author" content="Nathan Solomon">
-            <title>{human_readable_recipe_name}</title>
-        </head>
-        <!-- The following HTML is taken from https://morotsman.github.io/blog,/google/analytics,/jekyll,/github/pages/2020/07/07/add-google-analytics.html -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-206139197-1"></script>
-        <script>
-        	window.dataLayer = window.dataLayer || [];
-        	function gtag(){{dataLayer.push(arguments);}}
-        	gtag('js', new Date());
-        
-        	gtag('config', 'UA-206139197-1');
-        </script>
-        <body>
-            <div id="main">
-                <h1>{human_readable_recipe_name}</h1><hr>
-                {source_html}
-                {serving_size_html}
-                {pictures_html}
-                {ingredients_html}
-                {instructions_html}
-                {serving_suggestion_html}
-            </div>
-        </body>
-    </html>
-    """
+    html = f"""<!Doctype HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="../recipe.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8"/>
+        <meta name="author" content="Nathan Solomon">
+        <title>{human_readable_recipe_name}</title>
+    </head>
+    <!-- The following HTML is taken from https://morotsman.github.io/blog,/google/analytics,/jekyll,/github/pages/2020/07/07/add-google-analytics.html -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-206139197-1"></script>
+    <script>
+    	window.dataLayer = window.dataLayer || [];
+    	function gtag(){{dataLayer.push(arguments);}}
+    	gtag('js', new Date());
+    
+    	gtag('config', 'UA-206139197-1');
+    </script>
+    <body>
+        <div id="main">
+            <h1>{human_readable_recipe_name}</h1><hr>
+            {source_html}
+            {serving_size_html}
+            {pictures_html}
+            {ingredients_html}
+            {instructions_html}
+            {serving_suggestion_html}
+        </div>
+    </body>
+</html>
+"""
     with open(f'{recipe_name}/index.html', 'w+') as file:
         file.write(html)
