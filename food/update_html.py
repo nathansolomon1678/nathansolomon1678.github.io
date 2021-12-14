@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import os
 import json
+import os
+import re
 
 recipe_names = sorted([recipe for recipe in os.listdir('.') if os.path.isdir(recipe)])
 if '_site' in recipe_names: recipe_names.remove('_site')
@@ -71,3 +72,25 @@ for recipe_name in recipe_names:
 """
     with open(f'{recipe_name}/index.html', 'w+') as file:
         file.write(html)
+
+
+recipe_names = sorted([recipe for recipe in os.listdir('.') if os.path.isdir(recipe)])
+if '_site'       in recipe_names: recipe_names.remove('_site')
+if '__pycache__' in recipe_names: recipe_names.remove('__pycache__')
+
+with open('index.html') as file:
+    html_file_contents = file.read()
+
+recipe_list_html = '<div id="recipe-list">'
+for recipe in recipe_names:
+    human_readable_recipe_name = recipe.replace('_', ' ')
+    recipe_list_html += f'\n<a href="{recipe}"><div class="recipe-button"><p>{human_readable_recipe_name}</p></div></a>'
+recipe_list_html += '\n            </div>'
+recipe_list_html += '\n        </div>'
+recipe_list_html += '\n    </body>'
+recipe_list_html += '\n</html>'
+
+regex = re.compile('<div id=\"recipe-list\">.*', re.DOTALL)
+html_file_contents = re.sub(regex, recipe_list_html, html_file_contents)
+with open('index.html', 'w') as file:
+    file.write(html_file_contents)
