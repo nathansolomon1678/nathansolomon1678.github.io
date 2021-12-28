@@ -11,9 +11,9 @@ for recipe_name in recipe_names:
     with open(f'{recipe_name}/recipe.json') as file:
         recipe = json.load(file)
     source = recipe.get('Source')
-    source_html = '' if source is None else f'\n<p>Source: based on <a href={source}>{source}</a></p>'
+    source_html = '' if source is None else f'\n<p><strong>Source:</strong> based on <a href={source}>{source}</a></p>'
     serving_size = recipe.get('Serving size')
-    serving_size_html = '' if serving_size is None else f'\n<p>Serving size: {serving_size}</p>'
+    serving_size_html = '' if serving_size is None else f'\n<p><strong>Serving size:</strong> {serving_size}</p>'
     pictures = recipe.get('Pictures')
     pictures_html = ''
     if pictures is not None:
