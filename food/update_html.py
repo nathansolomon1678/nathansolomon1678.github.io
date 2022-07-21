@@ -38,7 +38,7 @@ for recipe_name in recipe_names:
     instructions = recipe.get('Instructions')
     instructions_html = '' if instructions is None else f'\n<hr><h2>Instructions</h2>\n<p>{instructions}</p>'
     serving_suggestion = recipe.get('Serving suggestion')
-    serving_suggestion_html = '' if serving_suggestion is None else f'\n<h2>Serving suggestion</h2><hr>\n<p>{serving_suggestion}</p>'
+    serving_suggestion_html = '' if serving_suggestion is None else f'\n<hr><h2>Serving suggestion</h2>\n<p>{serving_suggestion}</p>'
 
     html = f"""<!Doctype HTML>
 <html>
