@@ -16,10 +16,10 @@ static const struct {
     float x, y;
     float r, g, b;
 } vertices[4] = {
-    { -0.6f, -0.4f, 1.f, 0.f, 0.f },
-    {  0.6f, -0.4f, 0.f, 1.f, 0.f },
-    {  0.6f,  0.4f, .5f, 0.f, 0.f },
-    {   0.f,  0.6f, 0.f, 0.f, 1.f }
+    { -1.f, -1.f, 1.f, 0.f, 0.f },
+    {  1.f, -1.f, 0.f, 1.f, 0.f },
+    {  1.f,  1.f, .5f, 0.f, 0.f },
+    { -1.f,  1.f, 0.f, 0.f, 1.f }
 };
 
 std::string file_contents(std::string filename) {
@@ -39,14 +39,15 @@ static void error_callback(int error, const char* description) {
 }
  
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
 }
  
 int main(void) {
     GLFWwindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
-    GLint mvp_location, vpos_location, vcol_location;
+    GLint vpos_location;
  
     glfwSetErrorCallback(error_callback);
  
@@ -56,7 +57,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
  
-    window = glfwCreateWindow(1920, 1080, "Escape-time fractal generator", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "Escape-time fractals", NULL, NULL);
     if (!window) {
         glfwTerminate();
         exit(EXIT_FAILURE);
@@ -74,31 +75,33 @@ int main(void) {
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_c_str, NULL);
     glCompileShader(vertex_shader);
+    GLchar* error_message;
+    glGetShaderInfoLog(vertex_shader, 100000, NULL, error_message);
+    std::cout << error_message << std::endl;
  
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_shader_c_str, NULL);
     glCompileShader(fragment_shader);
+    glGetShaderInfoLog(fragment_shader, 100000, NULL, error_message);
+    std::cout << error_message << std::endl;
  
     program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
     glLinkProgram(program);
+
+    glGetProgramInfoLog(program, 100000, NULL, error_message);
+    std::cout << error_message << std::endl;
  
-    mvp_location = glGetUniformLocation(program, "MVP");
     vpos_location = glGetAttribLocation(program, "vPos");
-    vcol_location = glGetAttribLocation(program, "vCol");
  
     glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(vertices[0]), (void*) 0);
-    glEnableVertexAttribArray(vcol_location);
-    glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(vertices[0]), (void*) (sizeof(float) * 2));
 
     while (!glfwWindowShouldClose(window)) {
         float ratio;
         int width, height;
-        mat4x4 m, p, mvp;
  
         glfwGetFramebufferSize(window, &width, &height);
         ratio = width / (float) height;
@@ -106,13 +109,7 @@ int main(void) {
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
  
-        mat4x4_identity(m);
-        mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-        mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-        mat4x4_mul(mvp, p, m);
- 
         glUseProgram(program);
-        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
  
         glfwSwapBuffers(window);
