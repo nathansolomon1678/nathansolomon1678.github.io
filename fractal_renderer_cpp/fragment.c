@@ -103,48 +103,48 @@ vec2 iterate(vec2 z, vec2 c, int type) {
 
 void main() {
   vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
-  vec2 original_z = (2. * position + vec2(1.)) * window / scale_factor + center;
+  vec2 original_z = position * window / scale_factor + center;
   gl_FragColor = vec4(original_z.x, original_z.y, .5, 1.);
-  /// vec2 last_z = original_z;
-  /// vec2 z = original_z;
-  /// float distance_to_orbit_trap = 1000000.;
-  /// for (int i = 0; i <= max_iterations; i++) {
-  ///   if (julify) {
-  ///     z = iterate(z, crosshair, fractal_type);
-  ///   } else {
-  ///     z = iterate(z, original_z, fractal_type);
-  ///   }
-  ///   if (coloring_method == 0) {
-  ///     // Color by how many iterations it takes to diverge
-  ///     if (magnitude(z) > divergence_threshold) {
-  ///       gl_FragColor = color(float(i));
-  ///       break;
-  ///     } else if (i == max_iterations) {
-  ///       gl_FragColor = vec4(0., 0., 0., 1.);
-  ///     }
-  ///   } else if (coloring_method == 1) {
-  ///     // Same as above, but smooth instead of terraced
-  ///     if (magnitude(z) > divergence_threshold) {
-  ///       float float_iters = float(i) + log(divergence_threshold / magnitude(last_z)) /
-  ///                                      log(magnitude(z) / magnitude(last_z));
-  ///       gl_FragColor = color(float_iters);
-  ///       break;
-  ///     } else if (i == max_iterations) {
-  ///       gl_FragColor = vec4(0., 0., 0., 1.);
-  ///     }
-  ///   } else if (coloring_method == 2) {
-  ///     // Color by the log of the magnitude after iterating a whole bunch
-  ///     if (magnitude(z) > divergence_threshold) {
-  ///       gl_FragColor = vec4(0., 0., 0., 1.);
-  ///       break;
-  ///     } else {
-  ///       gl_FragColor = color(log(magnitude(z)));
-  ///     }
-  ///   } else if (coloring_method == 3) {
-  ///     // Color based on how close z gets to a ring around the origin with radius equal to the divergence threshold
-  ///     distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_threshold));
-  ///     gl_FragColor = color(-log(distance_to_orbit_trap));
-  ///   }
-  ///   last_z = z;
-  /// }
+  vec2 last_z = original_z;
+  vec2 z = original_z;
+  float distance_to_orbit_trap = 1000000.;
+  for (int i = 0; i <= max_iterations; i++) {
+    if (julify) {
+      z = iterate(z, crosshair, fractal_type);
+    } else {
+      z = iterate(z, original_z, fractal_type);
+    }
+    if (coloring_method == 0) {
+      // Color by how many iterations it takes to diverge
+      if (magnitude(z) > divergence_threshold) {
+        gl_FragColor = color(float(i));
+        break;
+      } else if (i == max_iterations) {
+        gl_FragColor = vec4(0., 0., 0., 1.);
+      }
+    } else if (coloring_method == 1) {
+      // Same as above, but smooth instead of terraced
+      if (magnitude(z) > divergence_threshold) {
+        float float_iters = float(i) + log(divergence_threshold / magnitude(last_z)) /
+                                       log(magnitude(z) / magnitude(last_z));
+        gl_FragColor = color(float_iters);
+        break;
+      } else if (i == max_iterations) {
+        gl_FragColor = vec4(0., 0., 0., 1.);
+      }
+    } else if (coloring_method == 2) {
+      // Color by the log of the magnitude after iterating a whole bunch
+      if (magnitude(z) > divergence_threshold) {
+        gl_FragColor = vec4(0., 0., 0., 1.);
+        break;
+      } else {
+        gl_FragColor = color(log(magnitude(z)));
+      }
+    } else if (coloring_method == 3) {
+      // Color based on how close z gets to a ring around the origin with radius equal to the divergence threshold
+      distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_threshold));
+      gl_FragColor = color(-log(distance_to_orbit_trap));
+    }
+    last_z = z;
+  }
 }

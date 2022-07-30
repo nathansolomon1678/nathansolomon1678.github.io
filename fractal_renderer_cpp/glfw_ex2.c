@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
  
 static float canvas_dimensions[] = {1920., 1080.};
 static float center[] = {0., 0.};
@@ -123,6 +124,8 @@ int main(void) {
  
         glUseProgram(program);
 
+        crosshair[0] = cos(glfwGetTime()) - .5;
+        crosshair[1] = sin(glfwGetTime()) / 2.;
 
         glUniform2fv(glGetUniformLocation(program, "canvas_dimensions"), 1, canvas_dimensions);
         glUniform2fv(glGetUniformLocation(program, "center"), 1, center);
@@ -132,8 +135,8 @@ int main(void) {
         glUniform1i( glGetUniformLocation(program, "max_iterations"), 100);
         glUniform1f( glGetUniformLocation(program, "divergence_threshold"), 1000.);
         glUniform1i( glGetUniformLocation(program, "fractal_type"), 0);
-        glUniform1i( glGetUniformLocation(program, "julify"), false);
-        glUniform1i( glGetUniformLocation(program, "colorscheme"), 0);
+        glUniform1i( glGetUniformLocation(program, "julify"), true);
+        glUniform1i( glGetUniformLocation(program, "colorscheme"), 2);
         glUniform1f( glGetUniformLocation(program, "colorfulness"), 20.);
         glUniform1f( glGetUniformLocation(program, "color_offset"), 0.);
 
