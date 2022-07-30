@@ -12,6 +12,12 @@
 #include <fstream>
 #include <sstream>
  
+static float canvas_dimensions[] = {1920., 1080.};
+static float center[] = {0., 0.};
+static float crosshair[] = {.1, .9};
+
+
+
 static const struct {
     float x, y;
     float r, g, b;
@@ -72,6 +78,7 @@ int main(void) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
  
+    // Compile vertex shader
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_c_str, NULL);
     glCompileShader(vertex_shader);
@@ -79,17 +86,22 @@ int main(void) {
     glGetShaderInfoLog(vertex_shader, 100000, NULL, error_message);
     std::cout << error_message << std::endl;
  
+    // Compile fragment shader
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_shader_c_str, NULL);
     glCompileShader(fragment_shader);
     glGetShaderInfoLog(fragment_shader, 100000, NULL, error_message);
     std::cout << error_message << std::endl;
  
+    // Compile & link program
     program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
     glLinkProgram(program);
-
+    glDetachShader(program, vertex_shader);
+    glDetachShader(program, fragment_shader);
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
     glGetProgramInfoLog(program, 100000, NULL, error_message);
     std::cout << error_message << std::endl;
  
@@ -110,6 +122,22 @@ int main(void) {
         glClear(GL_COLOR_BUFFER_BIT);
  
         glUseProgram(program);
+
+
+        glUniform2fv(glGetUniformLocation(program, "canvas_dimensions"), 1, canvas_dimensions);
+        glUniform2fv(glGetUniformLocation(program, "center"), 1, center);
+        glUniform2fv(glGetUniformLocation(program, "crosshair"), 1, crosshair);
+        glUniform1f( glGetUniformLocation(program, "scale_factor"), 1.);
+        glUniform1i( glGetUniformLocation(program, "coloring_method"), 0);
+        glUniform1i( glGetUniformLocation(program, "max_iterations"), 100);
+        glUniform1f( glGetUniformLocation(program, "divergence_threshold"), 1000.);
+        glUniform1i( glGetUniformLocation(program, "fractal_type"), 0);
+        glUniform1i( glGetUniformLocation(program, "julify"), false);
+        glUniform1i( glGetUniformLocation(program, "colorscheme"), 0);
+        glUniform1f( glGetUniformLocation(program, "colorfulness"), 20.);
+        glUniform1f( glGetUniformLocation(program, "color_offset"), 0.);
+
+
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
  
         glfwSwapBuffers(window);
