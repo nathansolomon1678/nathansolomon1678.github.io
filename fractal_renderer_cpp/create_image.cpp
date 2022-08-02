@@ -73,7 +73,6 @@ void saveImage(char* filepath, GLFWwindow* w) {
  
 int main(void) {
     GLFWwindow* window;
-    //glfwWindowHint(GLFW_SAMPLES, 100);
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint vpos_location;
  
@@ -84,8 +83,11 @@ int main(void) {
  
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GL_FALSE);
+    glfwWindowHint(EGL_SAMPLES, 9);
+    glEnable(EGL_MULTISAMPLE_RESOLVE);
  
-    window = glfwCreateWindow(1920, 1080, "Escape-time fractals", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "Escape-time fractals", glfwGetPrimaryMonitor(), NULL);
     if (!window) {
         glfwTerminate();
         exit(EXIT_FAILURE);
@@ -94,7 +96,6 @@ int main(void) {
     glfwSetKeyCallback(window, key_callback);
  
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
  
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
@@ -133,40 +134,36 @@ int main(void) {
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(vertices[0]), (void*) 0);
 
-    while (!glfwWindowShouldClose(window)) {
-        float ratio;
-        int width, height;
+    float ratio;
+    int width, height;
  
-        glfwGetFramebufferSize(window, &width, &height);
-        ratio = width / (float) height;
+    glfwGetFramebufferSize(window, &width, &height);
+    ratio = width / (float) height;
  
-        glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT);
+    glViewport(0, 0, width, height);
+    glClear(GL_COLOR_BUFFER_BIT);
  
-        glUseProgram(program);
+    glUseProgram(program);
 
-        glUniform2fv(glGetUniformLocation(program, "canvas_dimensions"), 1, canvas_dimensions);
-        glUniform2fv(glGetUniformLocation(program, "center"), 1, center);
-        glUniform2fv(glGetUniformLocation(program, "crosshair"), 1, crosshair);
-        glUniform1f( glGetUniformLocation(program, "scale_factor"), 2.);
-        glUniform1i( glGetUniformLocation(program, "coloring_method"), 0);
-        glUniform1i( glGetUniformLocation(program, "max_iterations"), 1000);
-        glUniform1f( glGetUniformLocation(program, "divergence_threshold"), exp(log_divergence_limit));
-        glUniform1i( glGetUniformLocation(program, "fractal_type"), 0);
-        glUniform1i( glGetUniformLocation(program, "julify"), true);
-        glUniform1i( glGetUniformLocation(program, "colorscheme"), 2);
-        glUniform1f( glGetUniformLocation(program, "colorfulness"), 128);
-        glUniform1f( glGetUniformLocation(program, "color_offset"), .72);
+    glUniform2fv(glGetUniformLocation(program, "canvas_dimensions"), 1, canvas_dimensions);
+    glUniform2fv(glGetUniformLocation(program, "center"), 1, center);
+    glUniform2fv(glGetUniformLocation(program, "crosshair"), 1, crosshair);
+    glUniform1f( glGetUniformLocation(program, "scale_factor"), 2.);
+    glUniform1i( glGetUniformLocation(program, "coloring_method"), 0);
+    glUniform1i( glGetUniformLocation(program, "max_iterations"), 1000);
+    glUniform1f( glGetUniformLocation(program, "divergence_threshold"), exp(log_divergence_limit));
+    glUniform1i( glGetUniformLocation(program, "fractal_type"), 0);
+    glUniform1i( glGetUniformLocation(program, "julify"), true);
+    glUniform1i( glGetUniformLocation(program, "colorscheme"), 2);
+    glUniform1f( glGetUniformLocation(program, "colorfulness"), 128);
+    glUniform1f( glGetUniformLocation(program, "color_offset"), .72);
 
 
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
  
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-        break;
-    }
- 
+    glfwPollEvents();
     saveImage("frame.png", window);
+ 
     glfwDestroyWindow(window);
  
     glfwTerminate();
