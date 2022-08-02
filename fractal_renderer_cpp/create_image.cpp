@@ -6,10 +6,18 @@
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
 
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <cmath>
+#include <vector>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#define STBI_MSC_SECURE_CRT
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
  
 static float canvas_dimensions[] = {1920., 1080.};
 static float center[] = {0., 0.};
@@ -48,9 +56,24 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 }
+
+void saveImage(char* filepath, GLFWwindow* w) {
+    int width, height;
+    glfwGetFramebufferSize(w, &width, &height);
+    GLsizei nrChannels = 3;
+    GLsizei stride = nrChannels * width;
+    stride += (stride % 4) ? (4 - stride % 4) : 0;
+    GLsizei bufferSize = stride * height;
+    std::vector<char> buffer(bufferSize);
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buffer.data());
+    stbi_flip_vertically_on_write(true);
+    stbi_write_png(filepath, width, height, nrChannels, buffer.data(), stride);
+}
  
 int main(void) {
     GLFWwindow* window;
+    //glfwWindowHint(GLFW_SAMPLES, 100);
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint vpos_location;
  
@@ -122,8 +145,6 @@ int main(void) {
  
         glUseProgram(program);
 
-        log_divergence_limit = .2 * cos(glfwGetTime() / 3.);
-
         glUniform2fv(glGetUniformLocation(program, "canvas_dimensions"), 1, canvas_dimensions);
         glUniform2fv(glGetUniformLocation(program, "center"), 1, center);
         glUniform2fv(glGetUniformLocation(program, "crosshair"), 1, crosshair);
@@ -142,8 +163,10 @@ int main(void) {
  
         glfwSwapBuffers(window);
         glfwPollEvents();
+        break;
     }
  
+    saveImage("frame.png", window);
     glfwDestroyWindow(window);
  
     glfwTerminate();
