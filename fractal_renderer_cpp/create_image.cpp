@@ -1,6 +1,3 @@
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
- 
 #include <stdlib.h>
 #include <stdio.h>
 #include <GLES2/gl2.h>
@@ -18,7 +15,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
- 
 static float canvas_dimensions[] = {1920., 1080.};
 static float center[] = {0., 0.};
 static float crosshair[] = {-0.7473245747725605, -0.08322114907049437};
@@ -47,55 +43,22 @@ static const char* vertex_shader_c_str   = vertex_shader_str.c_str();
 static std::string fragment_shader_str   = file_contents("fragment.c");
 static const char* fragment_shader_c_str = fragment_shader_str.c_str();
  
-static void error_callback(int error, const char* description) {
-    fprintf(stderr, "Error: %s\n", description);
-}
- 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-}
-
-void saveImage(char* filepath, GLFWwindow* w) {
-    int width, height;
-    glfwGetFramebufferSize(w, &width, &height);
+void saveImage(char* filepath) {
     GLsizei nrChannels = 3;
-    GLsizei stride = nrChannels * width;
+    GLsizei stride = nrChannels * 1920;
     stride += (stride % 4) ? (4 - stride % 4) : 0;
-    GLsizei bufferSize = stride * height;
+    GLsizei bufferSize = stride * 1080;
     std::vector<char> buffer(bufferSize);
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
-    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buffer.data());
+
+    glReadPixels(0, 0, 1920, 1080, GL_RGB, GL_UNSIGNED_BYTE, buffer.data());
     stbi_flip_vertically_on_write(true);
-    stbi_write_png(filepath, width, height, nrChannels, buffer.data(), stride);
+    stbi_write_png(filepath, 1920, 1080, nrChannels, buffer.data(), stride);
 }
  
 int main(void) {
-    GLFWwindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint vpos_location;
- 
-    glfwSetErrorCallback(error_callback);
- 
-    if (!glfwInit())
-        exit(EXIT_FAILURE);
- 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_DOUBLEBUFFER, GL_FALSE);
-    glfwWindowHint(EGL_SAMPLES, 9);
-    glEnable(EGL_MULTISAMPLE_RESOLVE);
- 
-    window = glfwCreateWindow(1920, 1080, "Escape-time fractals", glfwGetPrimaryMonitor(), NULL);
-    if (!window) {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
- 
-    glfwSetKeyCallback(window, key_callback);
- 
-    glfwMakeContextCurrent(window);
  
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
@@ -134,13 +97,7 @@ int main(void) {
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(vertices[0]), (void*) 0);
 
-    float ratio;
-    int width, height;
- 
-    glfwGetFramebufferSize(window, &width, &height);
-    ratio = width / (float) height;
- 
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, 1920, 1080);
     glClear(GL_COLOR_BUFFER_BIT);
  
     glUseProgram(program);
@@ -159,13 +116,12 @@ int main(void) {
     glUniform1f( glGetUniformLocation(program, "color_offset"), .72);
 
 
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    for (int i = 0; i < 10000; ++i) {
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    }
+
+    char filepath[] = "frame.png"; 
+    saveImage(filepath);
  
-    glfwPollEvents();
-    saveImage("frame.png", window);
- 
-    glfwDestroyWindow(window);
- 
-    glfwTerminate();
     exit(EXIT_SUCCESS);
 }

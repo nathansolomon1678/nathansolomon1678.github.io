@@ -1,4 +1,4 @@
-To compile, use `g++ create_image.cpp -lglfw -lGLESv2`
+To commpile, run `g++ create_image.cpp -lGLESv2`
 
 ### Resources used:
 * [https://stackoverflow.com/questions/45492937/glad-glad-h-no-such-file-or-directory](https://stackoverflow.com/questions/45492937/glad-glad-h-no-such-file-or-directory)
