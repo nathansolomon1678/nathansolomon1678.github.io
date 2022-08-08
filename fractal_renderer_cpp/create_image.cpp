@@ -1,3 +1,6 @@
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <GLES2/gl2.h>
@@ -15,10 +18,22 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
-static float canvas_dimensions[] = {1920., 1080.};
-static float center[] = {0., 0.};
-static float crosshair[] = {-0.7473245747725605, -0.08322114907049437};
-static float log_divergence_limit = 2.;
+static int width =  1920 * 5;
+static int height = 1080 * 5;
+static float canvas_dimensions[] = {(float) width, (float) height};
+
+// FRACTAL PARAMETERS
+static int fractal_type = 2;
+static int coloring_method = 2;
+static int max_iterations = 206;
+static float divergence_threshold = 2.;
+static int colorscheme = 0;
+static int colorfulness = 40;
+static float color_offset = 0.;
+static bool julify = true;
+static float scale_factor = 140.;
+static float center[] = {0., 0.09247};
+static float crosshair[] = {0.359588, -0.08547};
 
 
 static const struct {
@@ -43,22 +58,46 @@ static const char* vertex_shader_c_str   = vertex_shader_str.c_str();
 static std::string fragment_shader_str   = file_contents("fragment.c");
 static const char* fragment_shader_c_str = fragment_shader_str.c_str();
  
+static void error_callback(int error, const char* description) {
+    fprintf(stderr, "Error: %s\n", description);
+}
+
 void saveImage(char* filepath) {
     GLsizei nrChannels = 3;
-    GLsizei stride = nrChannels * 1920;
+    GLsizei stride = nrChannels * width;
     stride += (stride % 4) ? (4 - stride % 4) : 0;
-    GLsizei bufferSize = stride * 1080;
+    GLsizei bufferSize = stride * height;
     std::vector<char> buffer(bufferSize);
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
 
-    glReadPixels(0, 0, 1920, 1080, GL_RGB, GL_UNSIGNED_BYTE, buffer.data());
+    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buffer.data());
     stbi_flip_vertically_on_write(true);
-    stbi_write_png(filepath, 1920, 1080, nrChannels, buffer.data(), stride);
+    stbi_write_png(filepath, width, height, nrChannels, buffer.data(), stride);
 }
  
 int main(void) {
+    GLFWwindow* window;
+
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint vpos_location;
+
+    glfwSetErrorCallback(error_callback);
+
+    if (!glfwInit()) {
+        exit(EXIT_FAILURE);
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GL_FALSE);
+    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+
+    window = glfwCreateWindow(width, height, "Escape-time fractals", NULL, NULL);
+    if (!window) {
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+    glfwMakeContextCurrent(window);
  
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
@@ -68,16 +107,11 @@ int main(void) {
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_c_str, NULL);
     glCompileShader(vertex_shader);
-    GLchar* error_message;
-    glGetShaderInfoLog(vertex_shader, 100000, NULL, error_message);
-    std::cout << error_message << std::endl;
  
     // Compile fragment shader
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_shader_c_str, NULL);
     glCompileShader(fragment_shader);
-    glGetShaderInfoLog(fragment_shader, 100000, NULL, error_message);
-    std::cout << error_message << std::endl;
  
     // Compile & link program
     program = glCreateProgram();
@@ -88,8 +122,6 @@ int main(void) {
     glDetachShader(program, fragment_shader);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    glGetProgramInfoLog(program, 100000, NULL, error_message);
-    std::cout << error_message << std::endl;
  
     vpos_location = glGetAttribLocation(program, "vPos");
  
@@ -97,7 +129,7 @@ int main(void) {
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(vertices[0]), (void*) 0);
 
-    glViewport(0, 0, 1920, 1080);
+    glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT);
  
     glUseProgram(program);
@@ -105,23 +137,24 @@ int main(void) {
     glUniform2fv(glGetUniformLocation(program, "canvas_dimensions"), 1, canvas_dimensions);
     glUniform2fv(glGetUniformLocation(program, "center"), 1, center);
     glUniform2fv(glGetUniformLocation(program, "crosshair"), 1, crosshair);
-    glUniform1f( glGetUniformLocation(program, "scale_factor"), 2.);
-    glUniform1i( glGetUniformLocation(program, "coloring_method"), 0);
-    glUniform1i( glGetUniformLocation(program, "max_iterations"), 1000);
-    glUniform1f( glGetUniformLocation(program, "divergence_threshold"), exp(log_divergence_limit));
-    glUniform1i( glGetUniformLocation(program, "fractal_type"), 0);
-    glUniform1i( glGetUniformLocation(program, "julify"), true);
-    glUniform1i( glGetUniformLocation(program, "colorscheme"), 2);
-    glUniform1f( glGetUniformLocation(program, "colorfulness"), 128);
-    glUniform1f( glGetUniformLocation(program, "color_offset"), .72);
+    glUniform1f( glGetUniformLocation(program, "scale_factor"), scale_factor);
+    glUniform1i( glGetUniformLocation(program, "coloring_method"), coloring_method);
+    glUniform1i( glGetUniformLocation(program, "max_iterations"), max_iterations);
+    glUniform1f( glGetUniformLocation(program, "divergence_threshold"), divergence_threshold);
+    glUniform1i( glGetUniformLocation(program, "fractal_type"), fractal_type);
+    glUniform1i( glGetUniformLocation(program, "julify"), julify);
+    glUniform1i( glGetUniformLocation(program, "colorscheme"), colorscheme);
+    glUniform1f( glGetUniformLocation(program, "colorfulness"), colorfulness);
+    glUniform1f( glGetUniformLocation(program, "color_offset"), color_offset);
 
-
-    for (int i = 0; i < 10000; ++i) {
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    }
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glfwPollEvents();
 
     char filepath[] = "frame.png"; 
     saveImage(filepath);
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
  
     exit(EXIT_SUCCESS);
 }
