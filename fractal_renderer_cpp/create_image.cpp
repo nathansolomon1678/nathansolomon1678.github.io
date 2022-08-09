@@ -25,15 +25,15 @@ static float canvas_dimensions[] = {(float) width, (float) height};
 // FRACTAL PARAMETERS
 static int fractal_type = 2;
 static int coloring_method = 2;
-static int max_iterations = 206;
+static int max_iterations = 300;
 static float divergence_threshold = 2.;
-static int colorscheme = 0;
-static int colorfulness = 40;
-static float color_offset = 0.;
-static bool julify = true;
-static float scale_factor = 140.;
-static float center[] = {0., 0.09247};
-static float crosshair[] = {0.359588, -0.08547};
+static int colorscheme = 2;
+static int colorfulness = -100;
+static float color_offset = .6;
+static bool julify = false;
+static float scale_factor = 7500.;
+static float center[] = {.38148, -.38297};
+static float crosshair[] = {0., 0.};
 
 
 static const struct {
