@@ -12,6 +12,8 @@ uniform float colorfulness;
 uniform int coloring_method;
 uniform float color_offset;
 uniform bool julify;
+uniform float heartiness;
+uniform float rotation_degrees;
 
 varying vec2 position;
 
@@ -88,22 +90,24 @@ vec4 color(float x) {
 vec2 iterate(vec2 z, vec2 c, int type) {
   if (type == 0) {
     // Mandelbrot
-    return c + vec2(square(z.x) - square(z.y),
-                    2. * z.x * z.y);
+    return c + vec2(2. * z.x * z.y,
+                    pow(abs(z.y), 2. - heartiness) - pow(abs(z.x), 2. - heartiness));
   } else if (type == 1) {
-    // Heart
-    return c + vec2(z.x * z.y,
-                    abs(z.y) - abs(z.x));
-  } else if (type == 2) {
     // Burning ship
-    return c + vec2(square(z.x) - square(z.y),
+    return c + vec2(pow(abs(z.x), 2. - heartiness) - pow(abs(z.y), 2. - heartiness),
                     -abs(2. * z.x * z.y));
   }
 }
 
+vec2 rotate(vec2 original_vector, float angle_in_degrees) {
+    float angle = angle_in_degrees * 3.14159265359 / 180.;
+    return vec2(original_vector.x * cos(angle) - original_vector.y * sin(angle),
+                original_vector.x * sin(angle) + original_vector.y * cos(angle));
+}
+
 void main() {
   vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
-  vec2 original_z = position * window / scale_factor + center;
+  vec2 original_z = rotate(position * window, rotation_degrees) / scale_factor + center;
   gl_FragColor = vec4(original_z.x, original_z.y, .5, 1.);
   vec2 last_z = original_z;
   vec2 z = original_z;

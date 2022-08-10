@@ -1,0 +1,9 @@
+Interpolate from:
+
+https://nathansolomon1678.github.io/fractals?fractal_type=1&coloring_method=2&max_iterations=200&divergence_threshold=1000000&colorscheme=0&colorfulness=40&color_offset=72&julify=true&scale_factor=12.107637214309698&center_x=0.37050890711024204&center_y=-0.2169503216870559&crosshair_x=0.3608216499434019&crosshair_y=-0.20765343702662284
+
+to:
+
+https://nathansolomon1678.github.io/fractals?fractal_type=1&coloring_method=2&max_iterations=200&divergence_threshold=1000000&colorscheme=0&colorfulness=40&color_offset=72&julify=true&scale_factor=28.2709967195756&center_x=0.21932619920506408&center_y=0.3190920716503567&crosshair_x=0.36998823982343304&crosshair_y=-0.21322932593519825
+
+while the "heartiness" parameter is around .59 (so the exponent is 1.41)

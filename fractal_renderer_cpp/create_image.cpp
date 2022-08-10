@@ -23,7 +23,7 @@ static int height = 1080 * 5;
 static float canvas_dimensions[] = {(float) width, (float) height};
 
 // FRACTAL PARAMETERS
-static int fractal_type = 2;
+static int fractal_type = 1;
 static int coloring_method = 2;
 static int max_iterations = 300;
 static float divergence_threshold = 2.;
@@ -34,7 +34,8 @@ static bool julify = false;
 static float scale_factor = 7500.;
 static float center[] = {.38148, -.38297};
 static float crosshair[] = {0., 0.};
-
+static float heartiness = 0.;
+static float rotation_degrees = 30.;
 
 static const struct {
     float x, y;
@@ -146,6 +147,8 @@ int main(void) {
     glUniform1i( glGetUniformLocation(program, "colorscheme"), colorscheme);
     glUniform1f( glGetUniformLocation(program, "colorfulness"), colorfulness);
     glUniform1f( glGetUniformLocation(program, "color_offset"), color_offset);
+    glUniform1f( glGetUniformLocation(program, "heartiness"), heartiness);
+    glUniform1f( glGetUniformLocation(program, "rotation_degrees"), rotation_degrees);
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glfwPollEvents();
