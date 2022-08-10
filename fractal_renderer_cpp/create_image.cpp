@@ -22,20 +22,20 @@ static int width =  1920 * 5;
 static int height = 1080 * 5;
 static float canvas_dimensions[] = {(float) width, (float) height};
 
-// FRACTAL PARAMETERS
-static int fractal_type = 1;
-static int coloring_method = 2;
-static int max_iterations = 300;
-static float divergence_threshold = 2.;
-static int colorscheme = 2;
-static int colorfulness = -100;
-static float color_offset = .6;
+// FRACTAL PARAMETERS (default values)
+static int fractal_type = 0;
+static int coloring_method = 0;
+static int max_iterations = 20;
+static float divergence_threshold = 20;
+static int colorscheme = 0;
+static int colorfulness = 20;
+static float color_offset = 0;
 static bool julify = false;
-static float scale_factor = 7500.;
-static float center[] = {.38148, -.38297};
-static float crosshair[] = {0., 0.};
-static float heartiness = 0.;
-static float rotation_degrees = 30.;
+static float scale_factor = 1;
+static float center[2] = {0, 0};
+static float crosshair[2] = {0, 0};
+static float heartiness = 0;
+static float rotation_degrees = 0;
 
 static const struct {
     float x, y;
@@ -76,7 +76,60 @@ void saveImage(char* filepath) {
     stbi_write_png(filepath, width, height, nrChannels, buffer.data(), stride);
 }
  
-int main(void) {
+int main(int argc, char* argv[]) {
+    // Begin by getting values from all the flags
+    for (int i = 1; i < argc; ++i) {
+        if (!strcmp(argv[i], "-fractal-type")) {
+            fractal_type = atoi(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-coloring-method")) {
+            coloring_method = atoi(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-max-iterations")) {
+            max_iterations = atoi(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-divergence-threshold")) {
+            divergence_threshold = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-colorscheme")) {
+            colorscheme = atoi(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-colorfulness")) {
+            colorfulness = atoi(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-color-offset")) {
+            color_offset = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-julify")) {
+            julify = true;
+        } else if (!strcmp(argv[i], "-scale-factor")) {
+            scale_factor = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-center-x")) {
+            center[0] = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-center-y")) {
+            center[1] = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-crosshair-x")) {
+            crosshair[0] = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-crosshair-y")) {
+            crosshair[1] = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-heartiness")) {
+            heartiness = atof(argv[i + 1]);
+            ++i;
+        } else if (!strcmp(argv[i], "-rotation-degrees")) {
+            rotation_degrees = atof(argv[i + 1]);
+            ++i;
+        } else {
+            std::cout << "unrecognized option " << argv[i] << ", Terminating program..." << std::endl;
+            return 1;
+        }
+    }
+
+    // Create window, compile shaders, and link the program
     GLFWwindow* window;
 
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
