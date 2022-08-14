@@ -1,7 +1,0 @@
-Interpolate from:
-
-./a.out -fractal-type 1 -coloring-method 2 -max-iterations 200 -divergence-threshold 1000000 -colorscheme 0 -colorfulness 40 -color-offset .72 -julify -scale-factor 12.107637214309698 -center-x 0.37050890711024204 -center-y -0.2169503216870559 -crosshair-x 0.3608216499434019 -crosshair-y -0.2076534370266228 -heartiness .59 -rotation-degrees 0
-
-to:
-
-./a.out -fractal-type 1 -coloring-method 2 -max-iterations 200 -divergence-threshold 1000000 -colorscheme 0 -colorfulness 40 -color-offset .72 -julify -scale-factor 28 -center-x 0.21932619920506408 -center-y 0.3190920716503567 -crosshair-x 0.36998823982343304 -crosshair-y -0.21322932593519825 -heartiness .59 -rotation-degrees 0

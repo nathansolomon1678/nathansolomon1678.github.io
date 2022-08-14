@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-import subprocess
-
-def run(command):
-    subprocess.call(command.split())
+from tools_for_rendering_frames import *
 
 run('g++ create_image.cpp -lGLESv2 -lglfw')
 print('Done compiling')
 
-num_frames = 50
+num_frames = 500
 for i in range(num_frames + 1):
     bleh = i / num_frames
     crosshair_x = (.37416) * bleh + (.3766) * (1 - bleh)
@@ -17,5 +14,5 @@ for i in range(num_frames + 1):
     run(f'convert frame.png -resize 1920x1080 clip1/frame{i}.png')
     print(f'Created clip1/frame{i}.png')
 
-run('ffmpeg -r 10 -f image2 -s 1920x1080 -i clip1/frame%d.png -vcodec libx264 -pix_fmt yuv420p clip1.mp4')
+run('ffmpeg -r 60 -f image2 -s 1920x1080 -i clip1/frame%d.png -vcodec libx264 -pix_fmt yuv420p clip1.mp4')
 print('Done!')
