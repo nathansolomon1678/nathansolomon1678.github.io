@@ -76,6 +76,14 @@
         <label for="color offset">Color offset: </label>
         <input id="color offset" type="range" class="slider" value=0 onchange="redraw()">
       </li>
+      <li>
+        <label for="julification">Julification: </label>
+        <input id="julification" type="range" class="slider" value=0 onchange="redraw()">
+      </li>
+      <li>
+        <label for="heartiness">Heartiness: </label>
+        <input id="heartiness" type="range" class="slider" value=0 onchange="redraw()">
+      </li>
     </ul>
     <button id="julify" onclick="toggle_julia_set()">
       Show Julia set modification of fractal (instead of the original)
@@ -186,6 +194,8 @@
     uniform float colorfulness;
     uniform int coloring_method;
     uniform float color_offset;
+    uniform float julification;
+    uniform float heartiness;
     uniform bool julify;
 
     float square(float x) { return x * x; }
@@ -276,28 +286,30 @@
     vec2 iterate(vec2 z, vec2 c, int type) {
       if (type == 0) {
         // Mandelbrot
-        return c + vec2(square(z.x) - square(z.y),
-                        2. * z.x * z.y);
+        return c + vec2(2. * z.x * z.y,
+                        pow(abs(z.y), 2. - heartiness) - pow(abs(z.x), 2. - heartiness));
       } else if (type == 1) {
-        // Heart
-        return c + vec2(z.x * z.y,
-                        abs(z.y) - abs(z.x));
-      } else if (type == 2) {
         // Burning ship
-        return c + vec2(square(z.x) - square(z.y),
+        return c + vec2(pow(abs(z.x), 2. - heartiness) - pow(abs(z.y), 2. - heartiness),
                         -abs(2. * z.x * z.y));
       }
     }
 
+    vec2 rotate(vec2 original_vector, float angle_in_degrees) {
+        float angle = angle_in_degrees * 3.14159265359 / 180.;
+        return vec2(original_vector.x * cos(angle) - original_vector.y * sin(angle),
+                    original_vector.x * sin(angle) + original_vector.y * cos(angle));
+    }
+
     void main() {
       vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
-      vec2 original_z = vertex_position * window / scale_factor + center;
+      vec2 original_z = rotate(vertex_position * window, 0.) / scale_factor + center;
       vec2 last_z = original_z;
       vec2 z = original_z;
       float distance_to_orbit_trap = 1000000.;
       for (int i = 0; i <= max_iterations; i++) {
         if (julify) {
-          z = iterate(z, crosshair, fractal_type);
+          z = iterate(z, crosshair * julification + original_z * (1. - julification), fractal_type);
         } else {
           z = iterate(z, original_z, fractal_type);
         }

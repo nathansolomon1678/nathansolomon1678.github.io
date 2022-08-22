@@ -68,6 +68,8 @@ function redraw() {
     gl.uniform1i( gl.getUniformLocation(program, "coloring_method"), document.getElementById("coloring method").value);
     gl.uniform1i( gl.getUniformLocation(program, "max_iterations"), max_iterations_widget.value);
     gl.uniform1f( gl.getUniformLocation(program, "divergence_threshold"), document.getElementById("divergence threshold").value);
+    gl.uniform1f( gl.getUniformLocation(program, "julification"), document.getElementById("julification").value / 100.);
+    gl.uniform1f( gl.getUniformLocation(program, "heartiness"), document.getElementById("heartiness").value / 100.);
     gl.uniform1i( gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);
     gl.uniform1i( gl.getUniformLocation(program, "julify"), julify);
     gl.uniform1i( gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
