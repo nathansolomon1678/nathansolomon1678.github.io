@@ -124,6 +124,11 @@ function openSidebar() {
 }
 function toggle_julia_set() {
     julify = !julify;
+    if (!julify) {
+        center_x = 0;
+        center_y = 0;
+        scale_factor = 1;
+    }
     redraw();
     document.getElementById("julify").innerText = julify ? "Show original" : "Show Julia set";
 }
@@ -144,7 +149,7 @@ function clamp(x, min, max) {
 }
 
 function zoom(event) {
-    const min_scale_factor = .01;
+    const min_scale_factor = .2;
     const max_scale_factor = 1000000;
     var zoom_factor = Math.exp(-event.deltaY / 500);
     setMouseCoords();
@@ -154,8 +159,8 @@ function zoom(event) {
     }
     scale_factor *= zoom_factor;
     scale_factor = clamp(scale_factor, min_scale_factor, max_scale_factor)
-    center_x = clamp(center_x, -10, 10);
-    center_y = clamp(center_y, -10, 10);
+    center_x = clamp(center_x, -3, 3);
+    center_y = clamp(center_y, -3, 3);
     redraw();
 }
 
@@ -189,8 +194,8 @@ function mouse_move(event) {
         setMouseCoords(event);
         center_x += old_mouse_x - mouse_x;
         center_y += old_mouse_y - mouse_y;
-        center_x = clamp(center_x, -10, 10);
-        center_y = clamp(center_y, -10, 10);
+        center_x = clamp(center_x, -3, 3);
+        center_y = clamp(center_y, -3, 3);
         setMouseCoords(event);
         redraw();
     }
