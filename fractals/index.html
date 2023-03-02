@@ -47,6 +47,7 @@
           <option value=0>Classic</option>
           <option value=1>Experimental</option>
           <option value=2 selected="selected">Rachel's</option>
+          <option value=3>Sherbet</option>
         </select>
       </li>
       <li>
@@ -198,6 +199,20 @@
       else if (x < 4.) { return mix_cubic(white , purple, maroon, orange, fract(x)); }
       else             { return maroon; }
     }
+    vec3 sherbet_colorscheme(float x) {
+      vec3 grape   = vec3(.43, .08, .74);
+      vec3 magenta = vec3(.55, .25, .40);
+      vec3 peach   = vec3(.91, .64, .48);
+      vec3 blue    = vec3(.36, .51, .55);
+      vec3 green   = vec3(.12, .25, .26);
+      x = fract(x) * 5.;
+           if (x < 1.) { return mix_cubic(grape  , magenta,   peach,    blue, fract(x)); }
+      else if (x < 2.) { return mix_cubic(magenta, peach  ,    blue,   green, fract(x)); }
+      else if (x < 3.) { return mix_cubic(peach  , blue   ,   green,   grape, fract(x)); }
+      else if (x < 4.) { return mix_cubic(blue   , green  ,   grape, magenta, fract(x)); }
+      else if (x < 5.) { return mix_cubic(green  , grape  , magenta,   peach, fract(x)); }
+      else             { return magenta; }
+    }
 
     vec4 color(float x) {
       float real_colorfulness = colorfulness;
@@ -216,6 +231,8 @@
         return vec4(experimental_colorscheme(x), 1.);
       } else if (colorscheme == 2) {
         return vec4(rachels_colorscheme(x), 1.);
+      } else if (colorscheme == 3) {
+        return vec4(sherbet_colorscheme(x), 1.);
       }
     }
 
