@@ -216,14 +216,15 @@
 
     vec4 color(float x) {
       float real_colorfulness = colorfulness;
-      if (coloring_method == 0 || coloring_method == 1) {
+      if (coloring_method == 0) {
         real_colorfulness /= 5000.;
+      } else if (coloring_method == 1) {
+        real_colorfulness /= 300.;
       } else if (coloring_method == 2) {
-        real_colorfulness /= 100.;
+        real_colorfulness /= 50.;
       } else {
         real_colorfulness /= 150.;
       }
-      x = x * real_colorfulness + color_offset;
 
       if (colorscheme == 0) {
         return vec4(classic_colorscheme(x), 1);
@@ -291,10 +292,10 @@
           if (magnitude(z) > divergence_threshold) {
             float float_iters = float(i) + log(divergence_threshold / magnitude(last_z)) /
                                            log(magnitude(z) / magnitude(last_z));
-            fragmentColor = color(float_iters);
+            fragmentColor = color(log(float_iters));
             break;
           } else if (i == max_iterations) {
-            fragmentColor = vec4(0., 0., 0., 1.);
+            fragmentColor = color(log(float(max_iterations + 1)));
           }
         } else if (coloring_method == 2) {
           // Color by the log of the magnitude after iterating a whole bunch
