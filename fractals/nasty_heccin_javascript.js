@@ -206,7 +206,7 @@ function get_URL_params() {
     document.getElementById("fractal type"         ).value = parameters.get("fractal_type")         ?? 0;
     document.getElementById("coloring method"      ).value = parameters.get("coloring_method")      ?? 0;
     document.getElementById("max iterations"       ).value = parameters.get("max_iterations")       ?? 200;
-    document.getElementById("divergence threshold" ).value = parameters.get("divergence_threshold") ?? 1000000;
+    document.getElementById("divergence threshold" ).value = parameters.get("divergence_threshold") ?? 2;
     document.getElementById("colorscheme"          ).value = parameters.get("colorscheme")          ?? 2;
     document.getElementById("colorfulness"         ).value = parameters.get("colorfulness")         ?? 20;
     document.getElementById("color offset"         ).value = parameters.get("color_offset")         ?? 0;
