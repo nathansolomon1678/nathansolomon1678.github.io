@@ -26,11 +26,15 @@ a {
 #main {
     max-width: 1000px;
     margin: auto;
+    padding-left: 10px;
+    padding-right: 14px;
 }
 
 #header {
     max-width: 1000px;
     margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #menu-container {
@@ -53,7 +57,8 @@ a {
     text-align: center;
     padding-left: 10px;
     padding-right: 10px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
     border: 1px solid #888;
@@ -72,6 +77,10 @@ img {
     max-width: 100%;
     max-height: 100%;
     border: 2px solid #888;
-    border-radius: 40px;
+    border-radius: min(50px, 10vw);
     margin-bottom: 15px;
+}
+
+img:hover {
+    border-color: white;
 }

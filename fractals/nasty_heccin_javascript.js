@@ -17,6 +17,8 @@ var mouse_x = 0;
 var mouse_y = 0;
 var mouse_is_down = false;
 var moved_mouse_since_last_click = false;
+var cloud_x = 0;
+var cloud_y = 0;
 
 function onload(event) {
     canvas = document.getElementById("theCanvas");
@@ -53,6 +55,7 @@ function onload(event) {
 }
 
 function redraw() {
+    // TODO: fix bug that makes stuff look weird when the canvas is resized, especially when the window isn't resized
     // For number widgets, it's possible to enter a number outside of the range (above the max),
     // but with for max_iterations only, that can cause problems, so we want to block that from happening
     var max_iterations_widget = document.getElementById("max iterations");
@@ -67,12 +70,16 @@ function redraw() {
     gl.uniform1f( gl.getUniformLocation(program, "scale_factor"), scale_factor);
     gl.uniform1i( gl.getUniformLocation(program, "coloring_method"), document.getElementById("coloring method").value);
     gl.uniform1i( gl.getUniformLocation(program, "max_iterations"), max_iterations_widget.value);
-    gl.uniform1f( gl.getUniformLocation(program, "divergence_threshold"), document.getElementById("divergence threshold").value);
+    gl.uniform1f( gl.getUniformLocation(program, "divergence_threshold"), document.getElementById("radius").value);
     gl.uniform1i( gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);
     gl.uniform1i( gl.getUniformLocation(program, "julify"), julify);
     gl.uniform1i( gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
     gl.uniform1f( gl.getUniformLocation(program, "colorfulness"), document.getElementById("colorfulness").value);
     gl.uniform1f( gl.getUniformLocation(program, "color_offset"), document.getElementById("color offset").value / 100);
+    gl.uniform1f( gl.getUniformLocation(program, "cloud_amp"), document.getElementById("cloud amplitude").value);
+    gl.uniform1f( gl.getUniformLocation(program, "cloud_mult"), document.getElementById("cloud jaggedness").value / 100);
+    gl.uniform1f( gl.getUniformLocation(program, "cloud_x"), cloud_x);
+    gl.uniform1f( gl.getUniformLocation(program, "cloud_y"), cloud_y);
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 
@@ -124,14 +131,15 @@ function openSidebar() {
 }
 function toggle_julia_set() {
     julify = !julify;
-    if (!julify) {
-        center_x = 0;
-        center_y = 0;
-        scale_factor = 1;
-    }
     redraw();
     document.getElementById("julify").innerText = julify ? "Show original" : "Show Julia set";
 }
+function rerandomize_clouds() {
+    cloud_x = Math.random() * 10;
+    cloud_y = Math.random() * 10;
+    redraw();
+}
+
 
 function setMouseCoords() {
     mouse_x = (2 * (event.pageX - event.target.offsetLeft) - canvas.clientWidth ) / Math.min(canvas.clientWidth, canvas.clientHeight);
@@ -203,19 +211,23 @@ function mouse_move(event) {
 
 function get_URL_params() {
     const parameters = (new URL(window.location.href)).searchParams;
-    document.getElementById("fractal type"         ).value = parameters.get("fractal_type")         ?? 0;
-    document.getElementById("coloring method"      ).value = parameters.get("coloring_method")      ?? 0;
-    document.getElementById("max iterations"       ).value = parameters.get("max_iterations")       ?? 200;
-    document.getElementById("divergence threshold" ).value = parameters.get("divergence_threshold") ?? 2;
-    document.getElementById("colorscheme"          ).value = parameters.get("colorscheme")          ?? 2;
-    document.getElementById("colorfulness"         ).value = parameters.get("colorfulness")         ?? 20;
-    document.getElementById("color offset"         ).value = parameters.get("color_offset")         ?? 0;
-    julify                                                 =(parameters.get("julify")               ?? false) == "true";
-    scale_factor                                = parseFloat(parameters.get("scale_factor")         ?? 1);
-    center_x                                    = parseFloat(parameters.get("center_x")             ?? 0);
-    center_y                                    = parseFloat(parameters.get("center_y")             ?? 0);
-    crosshair_x                                 = parseFloat(parameters.get("crosshair_x")          ?? 0);
-    crosshair_y                                 = parseFloat(parameters.get("crosshair_y")          ?? 0);
+    document.getElementById("fractal type"    ).value = parameters.get("fractal_type")         ?? 0;
+    document.getElementById("coloring method" ).value = parameters.get("coloring_method")      ?? 0;
+    document.getElementById("max iterations"  ).value = parameters.get("max_iterations")       ?? 200;
+    document.getElementById("radius"          ).value = parameters.get("divergence_threshold") ?? 2;
+    document.getElementById("colorscheme"     ).value = parameters.get("colorscheme")          ?? 2;
+    document.getElementById("colorfulness"    ).value = parameters.get("colorfulness")         ?? 20;
+    document.getElementById("color offset"    ).value = parameters.get("color_offset")         ?? 0;
+    document.getElementById("cloud amplitude" ).value = parameters.get("cloud_amp")            ?? 0;
+    document.getElementById("cloud jaggedness").value = parameters.get("cloud_mult")           ?? 50;
+    julify                                           =(parameters.get("julify")       ?? false) == "true";
+    scale_factor                          = parseFloat(parameters.get("scale_factor") ?? 1);
+    center_x                              = parseFloat(parameters.get("center_x")     ?? 0);
+    center_y                              = parseFloat(parameters.get("center_y")     ?? 0);
+    crosshair_x                           = parseFloat(parameters.get("crosshair_x")  ?? 0);
+    crosshair_y                           = parseFloat(parameters.get("crosshair_y")  ?? 0);
+    cloud_x                               = parseFloat(parameters.get("cloud_x")      ?? 0);
+    cloud_y                               = parseFloat(parameters.get("cloud_y")      ?? 0);
     if (julify) {
         document.getElementById("julify").innerText = "Show original";
     }
@@ -223,19 +235,37 @@ function get_URL_params() {
 
 function update_link() {
     var url_with_params = new URL("https://nathansolomon1678.github.io/fractals");
-    url_with_params.searchParams.append("fractal_type",         document.getElementById("fractal type").value);
-    url_with_params.searchParams.append("coloring_method",      document.getElementById("coloring method").value);
-    url_with_params.searchParams.append("max_iterations",       document.getElementById("max iterations").value);
-    url_with_params.searchParams.append("divergence_threshold", document.getElementById("divergence threshold").value);
-    url_with_params.searchParams.append("colorscheme",          document.getElementById("colorscheme").value);
-    url_with_params.searchParams.append("colorfulness",         document.getElementById("colorfulness").value);
-    url_with_params.searchParams.append("color_offset",         document.getElementById("color offset").value);
-    url_with_params.searchParams.append("julify", julify);
-    url_with_params.searchParams.append("scale_factor", scale_factor);
-    url_with_params.searchParams.append("center_x", center_x);
-    url_with_params.searchParams.append("center_y", center_y);
-    url_with_params.searchParams.append("crosshair_x", crosshair_x);
-    url_with_params.searchParams.append("crosshair_y", crosshair_y);
+    url_with_params.searchParams.append("fractal_type",             document.getElementById("fractal type").value);
+    url_with_params.searchParams.append("coloring_method",          document.getElementById("coloring method").value);
+    url_with_params.searchParams.append("max_iterations",           document.getElementById("max iterations").value);
+    url_with_params.searchParams.append("colorscheme",              document.getElementById("colorscheme").value);
+    url_with_params.searchParams.append("colorfulness",             document.getElementById("colorfulness").value);
+    if (document.getElementById("color offset") != 0) {
+        url_with_params.searchParams.append("color_offset",         document.getElementById("color offset").value);
+    }
+    if (document.getElementById("radius").value != 2) {
+        url_with_params.searchParams.append("divergence_threshold", document.getElementById("radius").value);
+    }
+    if (document.getElementById("cloud amplitude").value != 0) {
+        url_with_params.searchParams.append("cloud_amp",            document.getElementById("cloud amplitude").value);
+        url_with_params.searchParams.append("cloud_mult",           document.getElementById("cloud jaggedness").value);
+        url_with_params.searchParams.append("cloud_x", cloud_x);
+        url_with_params.searchParams.append("cloud_y", cloud_y);
+    }
+    if (julify) {
+        url_with_params.searchParams.append("julify", julify);
+    }
+    if (scale_factor != 1) {
+        url_with_params.searchParams.append("scale_factor", scale_factor);
+    }
+    if (center_x != 0 || center_y != 0) {
+        url_with_params.searchParams.append("center_x", center_x);
+        url_with_params.searchParams.append("center_y", center_y);
+    }
+    if (crosshair_x != 0 || crosshair_y != 0) {
+        url_with_params.searchParams.append("crosshair_x", crosshair_x);
+        url_with_params.searchParams.append("crosshair_y", crosshair_y);
+    }
     document.getElementById("URL").href = url_with_params.href;
     document.getElementById("URL").innerText = url_with_params.href;
 }

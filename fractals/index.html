@@ -82,10 +82,21 @@
         <input id="max iterations" type="number" value=200 min=0 max=5000 step=1 onchange="redraw()">
       </li>
       <li>
-        <label for="divergnce threshold">Divergence threshold: </label>
-        <input id="divergence threshold" type="number" value=2 min=0 max=1000000 step=.1 onchange="redraw()">
+        <label for="radius">Radius: </label>
+        <input id="radius" type="number" value=2 min=0 max=1000000 step=.1 onchange="redraw()">
+      </li>
+      <li>
+        <label for="cloud amplitude">Cloud amplitude: </label>
+        <input id="cloud amplitude" type="number" value=0 min=0 max=1 step=.02 onchange="redraw()">
+      </li>
+      <li>
+        <label for="cloud jaggedness">Cloud jaggedness: </label>
+        <input id="cloud jaggedness" type="range" class="slider" value=50 onchange="redraw()">
       </li>
     </ul>
+    <button id="rerandomize clouds" onclick="rerandomize_clouds()">
+      Re-randomize clouds
+    </button>
 
     <h2>Save image settings</h2>
     <a id="URL" href="">https://nathansolomon1678.github.io/fractals</a>
@@ -104,14 +115,17 @@
     <h2>What are escape-time fractals?</h2>
     <p>See these links for great explanations:<br>
     <ul>
-      <li><a href="https://morr.cc/mandelbrot/">https://morr.cc/mandelbrot/</a></li>
-      <li><a href="https://acko.net/blog/how-to-fold-a-julia-fractal/">https://acko.net/blog/how-to-fold-a-julia-fractal/</a></li>
-      <li><a href="https://en.wikipedia.org/wiki/Fractal">This wikipedia article</a></li>
+      <li><a href="https://morr.cc/mandelbrot">https://morr.cc/mandelbrot</a></li>
+      <li><a href="https://acko.net/blog/how-to-fold-a-julia-fractal">https://acko.net/blog/how-to-fold-a-julia-fractal</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Fractal">https://en.wikipedia.org/wiki/Fractal</a></li>
     </ul>
     </p>
 
     <h2>Crosshair & Julia sets</h2>
     <p>Click on the canvas to place a crosshair, than click the "show Julia set" button to create another fractal based on how the original fractal looks near that point. For example, if you place the crosshair at a zigzaggy-lightningy region of the Mandelbrot fractal, the corresponding Julia fractal will be zigzaggy and lightningy everywhere. If you place it at a spirally region, the entire Julia set will be spirally. If you can't place the crosshair by clicking, toggle the "show orginal" button to go back to the original fractal.</p>
+
+    <h2>Main site</h2>
+    <a href="https://nathansolomon1678.github.io">https://nathansolomon1678.github.io</a>
 
   </div>
 
@@ -148,10 +162,41 @@
     uniform float julification;
     uniform float heartiness;
     uniform bool julify;
+    uniform float cloud_amp;
+    uniform float cloud_mult;
+    uniform float cloud_x;
+    uniform float cloud_y;
 
     float square(float x) { return x * x; }
     float magnitude(vec2 z) {
       return sqrt(square(z.x) + square(z.y));
+    }
+
+    // Taken from https://thebookofshaders.com/13/
+    float random2d(vec2 pos) {
+      return fract(sin(dot(pos.xy, vec2(12.9898,78.233)))*43758.5453123);
+    }
+    float noise2d(vec2 pos) {
+      vec2 i = floor(pos);
+      vec2 f = fract(pos);
+      float a = random2d(i);
+      float b = random2d(i + vec2(1., 0.));
+      float c = random2d(i + vec2(0., 1.));
+      float d = random2d(i + vec2(1., 1.));
+      vec2 u = f * f * (3. - 2. * f);
+      return mix(a, b, u.x) +
+                (c - a) * u.y * (1. - u.x) +
+                (d - b) * u.x * u.y - .5;
+    }
+    float brownian_noise(vec2 pos) {
+        float value = 0.0;
+        float amplitude = .5 * cloud_amp;
+        for (int i = 0; i < 20; i++) {
+            value += amplitude * noise2d(pos);
+            pos *= 2.;
+            amplitude *= cloud_mult;
+        }
+        return value;
     }
 
     float cubic_interpolation(float a, float b, float c, float d, float x) {
@@ -222,10 +267,12 @@
         real_colorfulness /= 300.;
       } else if (coloring_method == 2) {
         real_colorfulness /= 50.;
-      } else {
+      } else if (coloring_method == 3) {
         real_colorfulness /= 150.;
       }
       x = x * real_colorfulness + color_offset;
+      vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
+      x += brownian_noise(vertex_position * window + vec2(cloud_x, cloud_y));
 
       if (colorscheme == 0) {
         return vec4(classic_colorscheme(x), 1);
@@ -274,6 +321,10 @@
       vec2 last_z = original_z;
       vec2 z = original_z;
       float distance_to_orbit_trap = 1000000.;
+
+      float color_value = 0.;
+      bool color_black = false;
+
       for (int i = 0; i <= max_iterations; i++) {
         if (julify) {
           z = iterate(z, crosshair, fractal_type);
@@ -283,35 +334,40 @@
         if (coloring_method == 0) {
           // Color by how many iterations it takes to diverge
           if (magnitude(z) > divergence_threshold) {
-            fragmentColor = color(float(i));
+            color_value = float(i);
             break;
           } else if (i == max_iterations) {
-            fragmentColor = vec4(0., 0., 0., 1.);
+            color_black = true;
           }
         } else if (coloring_method == 1) {
           // Same as above, but smooth instead of terraced
           if (magnitude(z) > divergence_threshold) {
             float float_iters = float(i) + log(divergence_threshold / magnitude(last_z)) /
                                            log(magnitude(z) / magnitude(last_z));
-            fragmentColor = color(log(float_iters));
+            color_value = log(float_iters);
             break;
           } else if (i == max_iterations) {
-            fragmentColor = color(log(float(i + 1)));
+            color_value = log(float(i + 1));
           }
         } else if (coloring_method == 2) {
           // Color by the log of the magnitude after iterating a whole bunch
           if (magnitude(z) > divergence_threshold) {
-            fragmentColor = vec4(0., 0., 0., 1.);
+            color_black = true;
             break;
           } else {
-            fragmentColor = color(log(magnitude(z)));
+            color_value = log(magnitude(z));
           }
         } else if (coloring_method == 3) {
-          // Color based on how close z gets to a ring around the origin with radius equal to the divergence threshold
+          // Color based on how close z gets to a ring around the origin with radius = divergence_threshold
           distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_threshold));
-          fragmentColor = color(-log(distance_to_orbit_trap));
+          color_value = -log(distance_to_orbit_trap);
         }
         last_z = z;
+      }
+      if (color_black) {
+        fragmentColor = vec4(0., 0., 0., 1.);
+      } else {
+        fragmentColor = color(color_value);
       }
       if (!julify) {
         draw_crosshair(crosshair, original_z, vec3(1.) - fragmentColor.xyz / 3.);
