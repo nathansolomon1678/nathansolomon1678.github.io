@@ -1,5 +1,9 @@
 "use strict"
 window.addEventListener("load", onload, false);
+// TODO: see this page to fix error that occurs when you make max_iterations way too high and the site crashes:
+// https://www.khronos.org/webgl/wiki/HandlingContextLost
+// TODO: fix bug that makes stuff look weird when the canvas is resized, especially when the window isn't resized
+// TODO: add option to render with higher precision floats and with MSAA
 
 var gl;
 var program;
@@ -11,7 +15,8 @@ var center_y;
 var crosshair_x;
 var crosshair_y;
 var scale_factor;
-var julify;
+var julification;
+var heartiness;
 
 var mouse_x = 0;
 var mouse_y = 0;
@@ -22,8 +27,9 @@ var cloud_y = 0;
 
 function onload(event) {
     canvas = document.getElementById("theCanvas");
-    if (!(gl = getRenderingContext()))
+    if (!(gl = getRenderingContext())) {
         return;
+    }
     // Vertex and fragment shader source code is stored inside <script> tags of index.html
     var source = document.getElementById("vert-shader").innerText;
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -55,7 +61,19 @@ function onload(event) {
 }
 
 function redraw() {
-    // TODO: fix bug that makes stuff look weird when the canvas is resized, especially when the window isn't resized
+    if (document.getElementById("julification").value == 0) {
+        document.getElementById("julify").innerText = "show Julia set modification of fractal";
+    } else {
+        document.getElementById("julify").innerText = "show original fractal";
+    }
+    if (document.getElementById("cloud amplitude").value == 0) {
+        document.getElementById("cloud jaggedness li").style.display = "none";
+        document.getElementById("rerandomize clouds" ).style.display = "none";
+    } else {
+        document.getElementById("cloud jaggedness li").style.display = "list-item";
+        document.getElementById("rerandomize clouds" ).style.display = "inline";
+    }
+
     // For number widgets, it's possible to enter a number outside of the range (above the max),
     // but with for max_iterations only, that can cause problems, so we want to block that from happening
     var max_iterations_widget = document.getElementById("max iterations");
@@ -72,7 +90,8 @@ function redraw() {
     gl.uniform1i( gl.getUniformLocation(program, "max_iterations"), max_iterations_widget.value);
     gl.uniform1f( gl.getUniformLocation(program, "divergence_threshold"), document.getElementById("radius").value);
     gl.uniform1i( gl.getUniformLocation(program, "fractal_type"), document.getElementById("fractal type").value);
-    gl.uniform1i( gl.getUniformLocation(program, "julify"), julify);
+    gl.uniform1f( gl.getUniformLocation(program, "julification"), document.getElementById("julification").value / 100);
+    gl.uniform1f( gl.getUniformLocation(program, "heartiness"), document.getElementById("heartiness").value / 100);
     gl.uniform1i( gl.getUniformLocation(program, "colorscheme"), document.getElementById("colorscheme").value);
     gl.uniform1f( gl.getUniformLocation(program, "colorfulness"), document.getElementById("colorfulness").value);
     gl.uniform1f( gl.getUniformLocation(program, "color_offset"), document.getElementById("color offset").value / 100);
@@ -130,13 +149,24 @@ function openSidebar() {
     document.getElementById("openSidebarButton").style.display = "none";
 }
 function toggle_julia_set() {
-    julify = !julify;
+    if (document.getElementById("julification").value == 0) {
+        document.getElementById("julification").value = 100;
+    } else {
+        document.getElementById("julification").value = 0;
+    }
     redraw();
-    document.getElementById("julify").innerText = julify ? "Show original" : "Show Julia set";
 }
 function rerandomize_clouds() {
     cloud_x = Math.random() * 10;
     cloud_y = Math.random() * 10;
+    redraw();
+}
+function toggle_fractal_type() {
+    if (document.getElementById("fractal type").value == 1) {
+        document.getElementById("heartiness").value = 100;
+    } else {
+        document.getElementById("heartiness").value = 0;
+    }
     redraw();
 }
 
@@ -173,7 +203,7 @@ function zoom(event) {
 }
 
 function set_crosshair() {
-    if (!julify) {
+    if (document.getElementById("julification").value == 0) {
         setMouseCoords();
         crosshair_x = mouse_x;
         crosshair_y = mouse_y;
@@ -219,8 +249,9 @@ function get_URL_params() {
     document.getElementById("colorfulness"    ).value = parameters.get("colorfulness")         ?? 20;
     document.getElementById("color offset"    ).value = parameters.get("color_offset")         ?? 0;
     document.getElementById("cloud amplitude" ).value = parameters.get("cloud_amp")            ?? 0;
-    document.getElementById("cloud jaggedness").value = parameters.get("cloud_mult")           ?? 50;
-    julify                                           =(parameters.get("julify")       ?? false) == "true";
+    document.getElementById("cloud jaggedness").value = parameters.get("cloud_mult")           ?? 70;
+    document.getElementById("julification"    ).value = parameters.get("julification")         ?? 0;
+    document.getElementById("heartiness"      ).value = parameters.get("heartiness")           ?? 0;
     scale_factor                          = parseFloat(parameters.get("scale_factor") ?? 1);
     center_x                              = parseFloat(parameters.get("center_x")     ?? 0);
     center_y                              = parseFloat(parameters.get("center_y")     ?? 0);
@@ -228,8 +259,8 @@ function get_URL_params() {
     crosshair_y                           = parseFloat(parameters.get("crosshair_y")  ?? 0);
     cloud_x                               = parseFloat(parameters.get("cloud_x")      ?? 0);
     cloud_y                               = parseFloat(parameters.get("cloud_y")      ?? 0);
-    if (julify) {
-        document.getElementById("julify").innerText = "Show original";
+    if (document.getElementById("julification").value > 0) {
+        document.getElementById("julify").innerText = "show original fractal";
     }
 }
 
@@ -246,14 +277,17 @@ function update_link() {
     if (document.getElementById("radius").value != 2) {
         url_with_params.searchParams.append("divergence_threshold", document.getElementById("radius").value);
     }
+    if (document.getElementById("julification").value > 0) {
+        url_with_params.searchParams.append("julification",         document.getElementById("julification").value);
+    }
+    if (document.getElementById("heartiness").value > 0) {
+        url_with_params.searchParams.append("heartiness",           document.getElementById("heartiness").value);
+    }
     if (document.getElementById("cloud amplitude").value != 0) {
         url_with_params.searchParams.append("cloud_amp",            document.getElementById("cloud amplitude").value);
         url_with_params.searchParams.append("cloud_mult",           document.getElementById("cloud jaggedness").value);
         url_with_params.searchParams.append("cloud_x", cloud_x);
         url_with_params.searchParams.append("cloud_y", cloud_y);
-    }
-    if (julify) {
-        url_with_params.searchParams.append("julify", julify);
     }
     if (scale_factor != 1) {
         url_with_params.searchParams.append("scale_factor", scale_factor);

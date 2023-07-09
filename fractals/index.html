@@ -7,8 +7,8 @@
   <meta name="description" content="Playground for creating pictures of various escape-time fractals">
   <meta name="keywords" content="fractals, escape-time, mandelbrot, heart, burning ship, julia">
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link href="website_fashion_police.css" rel="stylesheet" type="text/css"/>
-  <script src="nasty_heccin_javascript.js" type="text/javascript"> </script>
+  <link href="index.css" rel="stylesheet" type="text/css"/>
+  <script src="index.js" type="text/javascript"> </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
@@ -35,11 +35,24 @@
     <ul>
       <li>
         <label for="fractal type">Fractal type:</label>
-        <select id="fractal type" onchange="redraw()">
+        <select id="fractal type" onchange="toggle_fractal_type()">
           <option value=0 selected="selected">Mandelbrot</option>
           <option value=1>Heart</option>
           <option value=2>Burning ship</option>
         </select>
+      </li>
+      <li>
+        <label for="coloring method">Coloring method:</label>
+        <select id="coloring method" onchange="redraw()">
+          <option value=0 selected="selected">Terraced</option>
+          <option value=1>Smooth</option>
+          <option value=2>Interior</option>
+          <option value=3>Rings</option>
+        </select>
+      </li>
+      <li>
+        <label for="max iterations">Max iterations: </label>
+        <input id="max iterations" type="number" value=200 min=0 max=5000 step=1 onchange="redraw()">
       </li>
       <li>
         <label for="colorscheme">Colorscheme: </label>
@@ -60,42 +73,37 @@
       </li>
     </ul>
     <button id="julify" onclick="toggle_julia_set()">
-      Show Julia set modification of fractal (instead of the original)
+      show Julia set modification of fractal
     </button>
     <br>
     <br>
     <code id="display view settings">Loading...</code>
 
-    <h2>Advanced Settings</h2>
+    <h2>Advanced settings</h2>
     <ul>
-      <li>
-        <label for="coloring method">Coloring method:</label>
-        <select id="coloring method" onchange="redraw()">
-          <option value=0 selected="selected">Terraced</option>
-          <option value=1>Smooth</option>
-          <option value=2>Interior</option>
-          <option value=3>Rings</option>
-        </select>
-      </li>
-      <li>
-        <label for="max iterations">Max iterations: </label>
-        <input id="max iterations" type="number" value=200 min=0 max=5000 step=1 onchange="redraw()">
-      </li>
       <li>
         <label for="radius">Radius: </label>
         <input id="radius" type="number" value=2 min=0 max=1000000 step=.1 onchange="redraw()">
       </li>
       <li>
+        <label for="julification">Interpolate from original to Julia fractal: </label>
+        <input id="julification" type="range" class="slider" value=0 onchange="redraw()">
+      </li>
+      <li>
+        <label for="heartiness">Interpolate from Mandelbrot to heart: </label>
+        <input id="heartiness" type="range" class="slider" value=0 onchange="redraw()">
+      </li>
+      <li>
         <label for="cloud amplitude">Cloud amplitude: </label>
         <input id="cloud amplitude" type="number" value=0 min=0 max=1 step=.02 onchange="redraw()">
       </li>
-      <li>
+      <li id="cloud jaggedness li">
         <label for="cloud jaggedness">Cloud jaggedness: </label>
-        <input id="cloud jaggedness" type="range" class="slider" value=50 onchange="redraw()">
+        <input id="cloud jaggedness" type="range" class="slider" value=70 onchange="redraw()">
       </li>
     </ul>
     <button id="rerandomize clouds" onclick="rerandomize_clouds()">
-      Re-randomize clouds
+      re-randomize clouds
     </button>
 
     <h2>Save image settings</h2>
@@ -122,7 +130,7 @@
     </p>
 
     <h2>Crosshair & Julia sets</h2>
-    <p>Click on the canvas to place a crosshair, than click the "show Julia set" button to create another fractal based on how the original fractal looks near that point. For example, if you place the crosshair at a zigzaggy-lightningy region of the Mandelbrot fractal, the corresponding Julia fractal will be zigzaggy and lightningy everywhere. If you place it at a spirally region, the entire Julia set will be spirally. If you can't place the crosshair by clicking, toggle the "show orginal" button to go back to the original fractal.</p>
+    <p>Click on the canvas to place a crosshair, than click the "show Julia set modification of fractal" button to create another fractal based on how the original fractal looks near that point. For example, if you place the crosshair at a zigzaggy-lightningy region of the Mandelbrot fractal, the corresponding Julia fractal will be zigzaggy and lightningy everywhere. If you place it at a spirally region, the entire Julia set will be spirally. If you can't place the crosshair by clicking, toggle the "show orginal fractal" button to go back to the original fractal, then try again.</p>
 
     <h2>Main site</h2>
     <a href="https://nathansolomon1678.github.io">https://nathansolomon1678.github.io</a>
@@ -161,7 +169,6 @@
     uniform float color_offset;
     uniform float julification;
     uniform float heartiness;
-    uniform bool julify;
     uniform float cloud_amp;
     uniform float cloud_mult;
     uniform float cloud_x;
@@ -301,16 +308,16 @@
 
     vec2 iterate(vec2 z, vec2 c, int type) {
       if (type == 0) {
-        // Mandelbrot
-        return c + vec2(square(z.x) - square(z.y),
+        // Mandelbrot or heart
+        return c + vec2(pow(abs(z.x), 2. - heartiness) - pow(abs(z.y), 2. - heartiness),
                         2. * z.x * z.y);
       } else if (type == 1) {
         // Heart
-        return c + vec2(z.x * z.y,
-                        abs(z.y) - abs(z.x));
+        return c + vec2(2. * z.x * z.y,
+                        pow(abs(z.y), 2. - heartiness) - pow(abs(z.x), 2. - heartiness));
       } else if (type == 2) {
         // Burning ship
-        return c + vec2(square(z.x) - square(z.y),
+        return c + vec2(pow(abs(z.x), 2. - heartiness) - pow(abs(z.y), 2. - heartiness),
                         -abs(2. * z.x * z.y));
       }
     }
@@ -320,17 +327,14 @@
       vec2 original_z = vertex_position * window / scale_factor + center;
       vec2 last_z = original_z;
       vec2 z = original_z;
+      vec2 c = julification * crosshair + (1. - julification) * original_z;
       float distance_to_orbit_trap = 1000000.;
 
       float color_value = 0.;
       bool color_black = false;
 
       for (int i = 0; i <= max_iterations; i++) {
-        if (julify) {
-          z = iterate(z, crosshair, fractal_type);
-        } else {
-          z = iterate(z, original_z, fractal_type);
-        }
+        z = iterate(z, c, fractal_type);
         if (coloring_method == 0) {
           // Color by how many iterations it takes to diverge
           if (magnitude(z) > divergence_threshold) {
@@ -369,7 +373,7 @@
       } else {
         fragmentColor = color(color_value);
       }
-      if (!julify) {
+      if (julification == 0.) {
         draw_crosshair(crosshair, original_z, vec3(1.) - fragmentColor.xyz / 3.);
       }
     }
