@@ -99,10 +99,10 @@
       </li>
       <li id="cloud jaggedness li">
         <label for="cloud jaggedness">Cloud jaggedness: </label>
-        <input id="cloud jaggedness" type="range" class="slider" value=70 onchange="redraw()">
+        <input id="cloud jaggedness" type="range" class="slider" value=50 onchange="redraw()">
       </li>
     </ul>
-    <button id="rerandomize clouds" onclick="rerandomize_clouds()">
+    <button id="rerandomize clouds" onclick="rerandomize_clouds(); redraw();">
       re-randomize clouds
     </button>
 
@@ -179,8 +179,19 @@
       return sqrt(square(z.x) + square(z.y));
     }
 
+    // A single iteration of Bob Jenkins' One-At-A-Time hashing algorithm.
+    int hash(int x) {
+      x += ( x << 10u );
+      x ^= ( x >>  6u );
+      x += ( x <<  3u );
+      x ^= ( x >> 11u );
+      x += ( x << 15u );
+      return x;
+    }
     // Taken from https://thebookofshaders.com/13/
     float random2d(vec2 pos) {
+      pos.x = float(hash(int(pos.x)));
+      pos.y = float(hash(int(pos.y)));
       return fract(sin(dot(pos.xy, vec2(12.9898,78.233)))*43758.5453123);
     }
     float smooth_noise(vec2 pos) {
@@ -197,7 +208,7 @@
     }
     float noise2d(vec2 pos) {
         float value = 0.0;
-        float amplitude = .5 * cloud_amp;
+        float amplitude = cloud_amp * (1.5 - cloud_mult);
         for (int i = 0; i < 15; i++) {
             value += amplitude * smooth_noise(pos);
             pos *= mat2(1.6, 1.2, -1.2, 1.6);

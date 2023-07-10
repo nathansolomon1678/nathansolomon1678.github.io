@@ -97,7 +97,7 @@ function redraw() {
     gl.uniform1f( gl.getUniformLocation(program, "colorfulness"), document.getElementById("colorfulness").value);
     gl.uniform1f( gl.getUniformLocation(program, "color_offset"), document.getElementById("color offset").value / 100);
     gl.uniform1f( gl.getUniformLocation(program, "cloud_amp"), document.getElementById("cloud amplitude").value);
-    gl.uniform1f( gl.getUniformLocation(program, "cloud_mult"), document.getElementById("cloud jaggedness").value / 100);
+    gl.uniform1f( gl.getUniformLocation(program, "cloud_mult"), Math.sqrt(document.getElementById("cloud jaggedness").value / 100));
     gl.uniform1f( gl.getUniformLocation(program, "cloud_x"), cloud_x);
     gl.uniform1f( gl.getUniformLocation(program, "cloud_y"), cloud_y);
 
@@ -158,9 +158,8 @@ function toggle_julia_set() {
     redraw();
 }
 function rerandomize_clouds() {
-    cloud_x = Math.random() * 10;
-    cloud_y = Math.random() * 10;
-    redraw();
+    cloud_x = Math.random() * 10000;
+    cloud_y = Math.random() * 10000;
 }
 function toggle_fractal_type() {
     if (document.getElementById("fractal type").value == 1) {
@@ -250,7 +249,7 @@ function get_URL_params() {
     document.getElementById("colorfulness"    ).value = parameters.get("colorfulness")         ?? 20;
     document.getElementById("color offset"    ).value = parameters.get("color_offset")         ?? 0;
     document.getElementById("cloud amplitude" ).value = parameters.get("cloud_amp")            ?? 0;
-    document.getElementById("cloud jaggedness").value = parameters.get("cloud_mult")           ?? 70;
+    document.getElementById("cloud jaggedness").value = parameters.get("cloud_mult")           ?? 50;
     document.getElementById("julification"    ).value = parameters.get("julification")         ?? 0;
     document.getElementById("heartiness"      ).value = parameters.get("heartiness")           ?? 0;
     scale_factor                          = parseFloat(parameters.get("scale_factor") ?? 1);
@@ -284,7 +283,9 @@ function update_link() {
     if (document.getElementById("heartiness").value > 0) {
         url_with_params.searchParams.append("heartiness",           document.getElementById("heartiness").value);
     }
-    if (document.getElementById("cloud amplitude").value != 0) {
+    if (document.getElementById("cloud amplitude").value == 0) {
+        rerandomize_clouds();
+    } else {
         url_with_params.searchParams.append("cloud_amp",            document.getElementById("cloud amplitude").value);
         url_with_params.searchParams.append("cloud_mult",           document.getElementById("cloud jaggedness").value);
         url_with_params.searchParams.append("cloud_x", cloud_x);
