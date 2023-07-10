@@ -39,8 +39,10 @@ a {
   top: 0px;
   bottom: 0px;
   right: 0px;
-  max-width: 380px;
+  width: calc(100vw - 42px);
+  max-width: 400px;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 div::-webkit-scrollbar-thumb {
