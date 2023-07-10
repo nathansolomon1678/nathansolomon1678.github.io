@@ -4,6 +4,7 @@ window.addEventListener("load", onload, false);
 // https://www.khronos.org/webgl/wiki/HandlingContextLost
 // TODO: fix bug that makes stuff look weird when the canvas is resized, especially when the window isn't resized
 // TODO: add option to render with higher precision floats and with MSAA
+// TODO: run tests on other computers and browsers to make sure it still runs quickly and doesn't look funny
 
 var gl;
 var program;

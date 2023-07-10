@@ -129,7 +129,7 @@
     </ul>
     </p>
 
-    <h2>Crosshair & Julia sets</h2>
+    <h2>Crosshair & Julia sets<h2>
     <p>Click on the canvas to place a crosshair, than click the "show Julia set modification of fractal" button to create another fractal based on how the original fractal looks near that point. For example, if you place the crosshair at a zigzaggy-lightningy region of the Mandelbrot fractal, the corresponding Julia fractal will be zigzaggy and lightningy everywhere. If you place it at a spirally region, the entire Julia set will be spirally. If you can't place the crosshair by clicking, toggle the "show orginal fractal" button to go back to the original fractal, then try again.</p>
 
     <h2>Main site</h2>
@@ -183,7 +183,7 @@
     float random2d(vec2 pos) {
       return fract(sin(dot(pos.xy, vec2(12.9898,78.233)))*43758.5453123);
     }
-    float noise2d(vec2 pos) {
+    float smooth_noise(vec2 pos) {
       vec2 i = floor(pos);
       vec2 f = fract(pos);
       float a = random2d(i);
@@ -195,12 +195,12 @@
                 (c - a) * u.y * (1. - u.x) +
                 (d - b) * u.x * u.y - .5;
     }
-    float brownian_noise(vec2 pos) {
+    float noise2d(vec2 pos) {
         float value = 0.0;
         float amplitude = .5 * cloud_amp;
-        for (int i = 0; i < 20; i++) {
-            value += amplitude * noise2d(pos);
-            pos *= 2.;
+        for (int i = 0; i < 15; i++) {
+            value += amplitude * smooth_noise(pos);
+            pos *= mat2(1.6, 1.2, -1.2, 1.6);
             amplitude *= cloud_mult;
         }
         return value;
@@ -279,7 +279,7 @@
       }
       x = x * real_colorfulness + color_offset;
       vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
-      x += brownian_noise(vertex_position * window + vec2(cloud_x, cloud_y));
+      x += noise2d(vertex_position * window + vec2(cloud_x, cloud_y));
 
       if (colorscheme == 0) {
         return vec4(classic_colorscheme(x), 1);
