@@ -189,10 +189,12 @@
       return x;
     }
     // Taken from https://thebookofshaders.com/13/
+    // Note that taking the sine of a very large number will have precision issues, which is why
+    // the output from hash is bitshifted left by 10 (divided by 1024)
     float random2d(vec2 pos) {
-      pos.x = float(hash(int(pos.x)));
-      pos.y = float(hash(int(pos.y)));
-      return fract(sin(dot(pos.xy, vec2(12.9898,78.233)))*43758.5453123);
+      pos.x = float(hash(int(pos.x)) << 10);
+      pos.y = float(hash(int(pos.y)) << 10);
+      return fract(sin(dot(pos.xy, vec2(12.9898, 78.233))) * 43758.5453123);
     }
     float smooth_noise(vec2 pos) {
       vec2 i = floor(pos);
@@ -207,8 +209,8 @@
                 (d - b) * u.x * u.y - .5;
     }
     float noise2d(vec2 pos) {
-        float value = 0.0;
-        float amplitude = cloud_amp * (1.5 - cloud_mult);
+        float value = 0.;
+        float amplitude = cloud_amp * (1.3 - cloud_mult);
         for (int i = 0; i < 15; i++) {
             value += amplitude * smooth_noise(pos);
             pos *= mat2(1.6, 1.2, -1.2, 1.6);
@@ -292,15 +294,10 @@
       vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
       x += noise2d(vertex_position * window + vec2(cloud_x, cloud_y));
 
-      if (colorscheme == 0) {
-        return vec4(classic_colorscheme(x), 1);
-      } else if (colorscheme == 1) {
-        return vec4(experimental_colorscheme(x), 1.);
-      } else if (colorscheme == 2) {
-        return vec4(rachels_colorscheme(x), 1.);
-      } else if (colorscheme == 3) {
-        return vec4(sherbet_colorscheme(x), 1.);
-      }
+           if (colorscheme == 0) { return vec4(classic_colorscheme(x), 1); }
+      else if (colorscheme == 1) { return vec4(experimental_colorscheme(x), 1.); }
+      else if (colorscheme == 2) { return vec4(rachels_colorscheme(x), 1.); }
+      else if (colorscheme == 3) { return vec4(sherbet_colorscheme(x), 1.); }
     }
 
     void draw_crosshair(vec2 center, vec2 pixel_coord, vec3 color) {
@@ -317,18 +314,32 @@
       }
     }
 
+    // Using this function instead of pow solves a major bug that occurs only sometimes
+    // on some computers in some browsers, where b is an integer but that is not known at
+    // compile time. When that happens, pow(a, b) returns something that is definitely not
+    // a^b, but I can't figure out what it actually is. I'm pretty sure it's not even a
+    // monomial. I have no idea why this happens, since I double checked that (1) a and b
+    // are both positive whenever I use pow(a, b), and (2) pow(a, b) is indeed equivalent
+    // to exp(b * log(a)), meaning that returns the same incorrect value in the same rare
+    // scenarios (which I still don't know how to reproduce).
+    float power(float a, float b) {
+           if (b == 1.) { return a; }
+      else if (b == 2.) { return a * a; }
+      else              { return pow(a, b); }
+    }
+
     vec2 iterate(vec2 z, vec2 c, int type) {
       if (type == 0) {
         // Mandelbrot
-        return c + vec2(pow(abs(z.x), 2. - heartiness) - pow(abs(z.y), 2. - heartiness),
+        return c + vec2(power(abs(z.x), 2. - heartiness) - power(abs(z.y), 2. - heartiness),
                         2. * z.x * z.y);
       } else if (type == 1) {
         // Heart
         return c + vec2(2. * z.x * z.y,
-                        pow(abs(z.y), 2. - heartiness) - pow(abs(z.x), 2. - heartiness));
+                        power(abs(z.y), 2. - heartiness) - power(abs(z.x), 2. - heartiness));
       } else if (type == 2) {
         // Burning ship
-        return c + vec2(pow(abs(z.x), 2. - heartiness) - pow(abs(z.y), 2. - heartiness),
+        return c + vec2(power(abs(z.x), 2. - heartiness) - power(abs(z.y), 2. - heartiness),
                         -abs(2. * z.x * z.y));
       }
     }

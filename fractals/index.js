@@ -16,8 +16,6 @@ var center_y;
 var crosshair_x;
 var crosshair_y;
 var scale_factor;
-var julification;
-var heartiness;
 
 var mouse_x = 0;
 var mouse_y = 0;
