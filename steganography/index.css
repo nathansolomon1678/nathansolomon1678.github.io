@@ -35,7 +35,7 @@ textarea {
     overflow-x: hidden;
     background-color: black;
     color: #0c0;
-    max-width: 100%;
+    max-width: calc(100% - 20px);
     border-radius: 5px;
     border: 1px solid #555;
     padding: 5px;
