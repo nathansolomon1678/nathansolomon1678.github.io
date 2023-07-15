@@ -1,0 +1,36 @@
+<!Doctype HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
+        <meta name="author" content="Nathan Solomon">
+        <script src="index.js" type="text/javascript"> </script>
+        <title>Steganography</title>
+    </head>
+    <body>
+        <div id="main-div">
+            <label><p>Upload a PNG file to get started: <br></p>
+                <input type="file" id="input-file" accept="image/png" onchange="change_input_file()" />
+            </label>
+            <br>
+            <br>
+            <label for="original-img"><p>Original image: <br></p>
+                <canvas id="original-img"></canvas>
+            </label>
+            <p id="img-dimensions">Image dimensions: 0 by 0 pixels</p>
+            <label for="current-message"><p>Current hidden message: <br></p>
+                <textarea id="current-message" rows=10 cols=100 value="" maxlength=1000 wrap="hard" readonly></textarea>
+            </label>
+            <br>
+            <br>
+            <label for="new-message"><p>New hidden message: <br></p>
+                <textarea id="new-message" rows=10 cols=100 value="" maxlength=1000 wrap="hard"></textarea>
+            </label>
+            <br>
+            <canvas id="modified-img" hidden></canvas>
+            <br>
+            <button id="download-img" onclick="download_img()">Download modified image</button>
+        </div>
+    </body>
+</html>
