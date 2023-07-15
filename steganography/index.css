@@ -93,3 +93,8 @@ button:hover {
 input[type="file"] {
   color: #0c0;
 }
+
+a {
+    color: #5af;
+    text-decoration: underline;
+}

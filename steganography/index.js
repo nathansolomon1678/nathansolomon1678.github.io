@@ -80,8 +80,6 @@ function change_input_file() {
                 get_message();
             };
         };
-    } else {
-        alert("File could not be uploaded correctly.");
     }
 }
 
