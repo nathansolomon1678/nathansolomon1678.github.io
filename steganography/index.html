@@ -10,27 +10,43 @@
     </head>
     <body>
         <div id="main-div">
+            <h1>Steganography</h1>
+            <hr>
+            <p>
+                This online tool allows you to read and hide messages in pictures without visibly changing them. For example, a 1920 by 1080 picture can be modified to contain all of The Great Gatsby (299 kB) and all of Frankenstein (438 kB) without changing the color of any pixel by more than 0.4%.
+                <br>
+                <br>
+                If you want to hide a message in a picture and make it impossible for eavesdroppers to prove that there is a hidden message, it is recommended that you encrypt your message (so that if someone uploads it to this site and looks at the "Original hidden message", it will be gibberish), and also choose the picture carefully. The picture should not have any predictable patters, meaning
+            </p>
+            <ul>
+                <li>It is not a copy of a stock image or any other picture that can be found online</li>
+                <li>Do not use an image where any region is a solid color, a perfect gradient, or perfectly monochrome</li>
+                <li>Do not use an image that has undergone lossy compression</li>
+            </ul>
+            <p>
+                Note that modifying your image in any way after hiding your message in it (resizing, recoloring, converting to another file format, etc.) can erase or change the hidden message, even if the picture looks exactly the same as before.
+            </p>
+            <hr>
+            <br>
             <label><p>Upload a PNG file to get started: <br></p>
-                <input type="file" id="input-file" accept="image/png" onchange="change_input_file()" />
+                <input type="file" id="input-file" accept="image/png" onchange="change_input_file()"></input>
             </label>
             <br>
-            <br>
-            <label for="original-img"><p>Original image: <br></p>
+            <label for="original-img"><h2>Original image:</h2>
                 <canvas id="original-img"></canvas>
             </label>
             <p id="img-dimensions">Image dimensions: 0 by 0 pixels</p>
-            <label for="current-message"><p>Current hidden message: <br></p>
-                <textarea id="current-message" rows=10 cols=100 value="" maxlength=1000 wrap="hard" readonly></textarea>
+            <label for="current-message"><h2>Original hidden message:</h2>
+                <textarea id="current-message" rows=10 cols=100 value="" maxLength=1000 wrap="hard" readonly></textarea>
             </label>
             <br>
-            <br>
-            <label for="new-message"><p>New hidden message: <br></p>
-                <textarea id="new-message" rows=10 cols=100 value="" maxlength=1000 wrap="hard"></textarea>
+            <label for="new-message"><h2>New hidden message:</h2>
+                <textarea id="new-message" rows=10 cols=100 value="" maxLength=1000 wrap="hard"></textarea>
             </label>
-            <br>
             <canvas id="modified-img" hidden></canvas>
             <br>
-            <button id="download-img" onclick="download_img()">Download modified image</button>
+            <br>
+            <button id="download-img" onclick="download_img()" display="block">Download modified image</button>
         </div>
     </body>
 </html>

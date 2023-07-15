@@ -16,6 +16,10 @@ function onload_html() {
     old_ctx    = old_canvas.getContext("2d");
     new_canvas = document.getElementById("modified-img");
     new_ctx    = new_canvas.getContext("2d");
+    old_ctx.font = "20px sans-serif";
+    old_ctx.fillStyle = "white";
+    old_ctx.textAlign = "center";
+    old_ctx.fillText("No image uploaded yet", old_canvas.width / 2, old_canvas.height / 2);
 }
 
 function binary_to_utf8(binary_str) {
@@ -51,9 +55,7 @@ function get_message() {
         if (i % 4 == 3) { continue; }  // Assume alpha value is the same for all pixels, so changing that would be suspicious
         binary_str += img_data.data[i] % 2;
     }
-    var message = binary_to_utf8(binary_str);
-    document.getElementById("current-message").maxlength = message.length;
-    document.getElementById("current-message").value = message;
+    document.getElementById("current-message").value = binary_to_utf8(binary_str);
 }
 
 function change_input_file() {
@@ -67,8 +69,11 @@ function change_input_file() {
         file_reader.onload = function() {
             img.src = this.result;
             img.onload = function() {
+                const max_chars_hidden = Math.floor(img.width * img.height * 3 / 8);
                 document.getElementById("img-dimensions").innerHTML = "Image dimensions: " + img.width + " by " + img.height +
-                    " pixels. This is enough to hide a " + Math.floor(img.width * img.height * 3 / 8) + " byte message.";
+                    " pixels. This is enough to hide a " + max_chars_hidden + " byte message.";
+                document.getElementById("current-message").maxLength = max_chars_hidden;
+                document.getElementById("new-message").maxLength = max_chars_hidden;
                 old_canvas.width = img.width;
                 old_canvas.height = img.height;
                 old_ctx.drawImage(img, 0, 0);
@@ -108,4 +113,3 @@ function download_img() {
     link.href = img;
     link.click();
 }
-
