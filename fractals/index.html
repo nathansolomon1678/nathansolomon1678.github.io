@@ -179,21 +179,11 @@
       return sqrt(square(z.x) + square(z.y));
     }
 
-    // A single iteration of Bob Jenkins' One-At-A-Time hashing algorithm.
-    int hash(int x) {
-      x += ( x << 10u );
-      x ^= ( x >>  6u );
-      x += ( x <<  3u );
-      x ^= ( x >> 11u );
-      x += ( x << 15u );
-      return x;
-    }
     // Taken from https://thebookofshaders.com/13/
-    // Note that taking the sine of a very large number will have precision issues, which is why
-    // the output from hash is bitshifted left by 10 (divided by 1024)
     float random2d(vec2 pos) {
-      pos.x = float(hash(int(pos.x)) << 10);
-      pos.y = float(hash(int(pos.y)) << 10);
+      // Taking the sine of a very large number would have precision issues
+      pos.x = mod(pos.x, 1000.);
+      pos.y = mod(pos.y, 1000.);
       return fract(sin(dot(pos.xy, vec2(12.9898, 78.233))) * 43758.5453123);
     }
     float smooth_noise(vec2 pos) {
@@ -211,9 +201,9 @@
     float noise2d(vec2 pos) {
         float value = 0.;
         float amplitude = cloud_amp * (1.3 - cloud_mult);
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 20; i++) {
             value += amplitude * smooth_noise(pos);
-            pos *= mat2(1.6, 1.2, -1.2, 1.6);
+            pos *= mat2(1.2, .9, -.9, 1.2);
             amplitude *= cloud_mult;
         }
         return value;
