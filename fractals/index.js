@@ -159,7 +159,7 @@ function rerandomize_clouds() {
     cloud_x = Math.random() * 10000;
     cloud_y = Math.random() * 10000;
 }
-function toggle_fractal_type() {
+function change_fractal_type() {
     if (document.getElementById("fractal type").value == 1) {
         document.getElementById("heartiness").value = 100;
     } else {
@@ -167,6 +167,15 @@ function toggle_fractal_type() {
     }
     redraw();
 }
+function change_coloring_method() {
+    if (document.getElementById("coloring method").value == 4) {
+        document.getElementById("radius").value = 1000000000;
+    } else if (document.getElementById("coloring method").value == 3 && document.getElementById("radius").value > 2) {
+        document.getElementById("radius").value = 2;
+    }
+    redraw();
+}
+
 
 
 function setMouseCoords() {

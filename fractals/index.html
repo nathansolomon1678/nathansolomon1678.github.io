@@ -35,7 +35,7 @@
     <ul>
       <li>
         <label for="fractal type">Fractal type:</label>
-        <select id="fractal type" onchange="toggle_fractal_type()">
+        <select id="fractal type" onchange="change_fractal_type()">
           <option value=0 selected="selected">Mandelbrot</option>
           <option value=1>Heart</option>
           <option value=2>Burning ship</option>
@@ -43,11 +43,13 @@
       </li>
       <li>
         <label for="coloring method">Coloring method:</label>
-        <select id="coloring method" onchange="redraw()">
+        <select id="coloring method" onchange="change_coloring_method()">
           <option value=0 selected="selected">Terraced</option>
           <option value=1>Smooth</option>
-          <option value=2>Interior</option>
+          <option value=2>Interior (magnitude)</option>
           <option value=3>Rings</option>
+          <option value=4>Weierstripes</option>
+          <option value=5>Interior (2-periodicity)</option>
         </select>
       </li>
       <li>
@@ -174,9 +176,15 @@
     uniform float cloud_x;
     uniform float cloud_y;
 
+    #define pi 3.141592653589793
+
     float square(float x) { return x * x; }
     float magnitude(vec2 z) {
       return sqrt(square(z.x) + square(z.y));
+    }
+    float weierstrass(float x) {
+      x *= 3.;
+      return cos(x) + cos(3. * x) / 2. + cos(9. * x) / 4. + cos(27. * x) / 8. + cos(81. * x) / 16.;
     }
 
     // Taken from https://thebookofshaders.com/13/
@@ -225,7 +233,7 @@
 
     // COLORSCHEMES
     vec3 classic_colorscheme(float x) {
-      x *= 6.28318530718;
+      x *= pi * 2.;
       return vec3(.5 + sin(x     ) / 2.,
                   .5 + sin(x + 1.) / 2.,
                   .5 + sin(x + 2.) / 2.);
@@ -279,6 +287,10 @@
         real_colorfulness /= 50.;
       } else if (coloring_method == 3) {
         real_colorfulness /= 150.;
+      } else if (coloring_method == 4) {
+        real_colorfulness /= 1500.;
+      } else if (coloring_method == 5) {
+        real_colorfulness /= 100.;
       }
       x = x * real_colorfulness + color_offset;
       vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
@@ -344,6 +356,9 @@
 
       float color_value = 0.;
       bool color_black = false;
+      float stripe_total = 0.;
+      vec2 period_2_total = vec2(0.);
+      vec2 period_2_oscillator = vec2(1., 0.);
 
       for (int i = 0; i <= max_iterations; i++) {
         z = iterate(z, c, fractal_type);
@@ -377,7 +392,31 @@
           // Color based on how close z gets to a ring around the origin with radius = divergence_threshold
           distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_threshold));
           color_value = -log(distance_to_orbit_trap);
+        } else if (coloring_method == 4) {
+          // Stripe Average Coloring
+          if (magnitude(z) > divergence_threshold) {
+            float float_iters = float(i) + log(divergence_threshold / magnitude(last_z)) /
+                                           log(magnitude(z) / magnitude(last_z));
+            stripe_total += weierstrass(atan(z.y, z.x)) * fract(float_iters);
+            color_value = float_iters / square(log(float_iters)) + 40. * stripe_total / float_iters;
+            break;
+          } else if (i == max_iterations) {
+            color_black = true;
+          } else {
+            stripe_total += weierstrass(atan(z.y, z.x));
+          }
+        } else if (coloring_method == 5) {
+          if (magnitude(z) > divergence_threshold) {
+            color_black = true;
+            break;
+          }
+          // FFT to calculate period of oscillation, assuming period is less than 32
+          period_2_oscillator *= -1.;
+          period_2_total += vec2(z.x * period_2_oscillator.x - z.y * period_2_oscillator.y,
+                                 z.x * period_2_oscillator.y + z.y * period_2_oscillator.x);
+          color_value = magnitude(period_2_total) / (magnitude(period_2_total) + magnitude(original_z));
         }
+
         last_z = z;
       }
       if (color_black) {
