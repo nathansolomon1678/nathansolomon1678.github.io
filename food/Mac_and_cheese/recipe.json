@@ -1,17 +1,15 @@
 {
-    "Pictures": {
-        "macaroni.jpg": ""
-    },
     "Ingredients": [
         "Macaroni",
         "Butter",
+        "Flour",
         "Onions",
         "Salt",
         "Pepper",
-        "Flour",
         "Milk",
-        "Cheddar cheese",
-        "Mustard powder",
-        "Smoked paprika"
-    ]
+        "Mustard powder (optional)",
+        "Smoked paprika (optional)",
+        "Cheddar cheese"
+    ],
+    "Instructions": "Cook and drain macaroni. Soften onions in roux, then add everything else, melting in the cheese last. Mix the pasta and cheese sauce, then bake that mixture until the top is darkened."
 }

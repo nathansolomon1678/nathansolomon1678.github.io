@@ -1,7 +1,4 @@
 {
-    "Pictures": {
-        "greek_salad.jpg": ""
-    },
     "Ingredients": [
         "Lettuce",
         "Tomato",
@@ -10,6 +7,9 @@
         "Feta cheese",
         "Lemon juice",
         "Kalamata olives",
-        "Artichoke hearts (optional)"
-    ]
+        "Artichoke hearts",
+        "Oregano",
+        "Capers"
+    ],
+    "Instructions": "Add the lemon juice and feta cheese only right before eating, since acid digests food and since you don't want soggy cheese. Chop tomato and cucumber into larger chunks than you would usually use for a salad."
 }

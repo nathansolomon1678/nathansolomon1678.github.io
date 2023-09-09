@@ -5,10 +5,11 @@
         "Salt",
         "Sugar",
         "Lemongrass",
-        "Wild lime leaves",
+        "Lime (or other citrus) leaves",
         "Galanga",
+        "Ginger",
         "Turmeric",
-        "Tamarind",
+        "Tamarind (optional)",
         "Broccoli",
         "Tofu",
         "Tomatoes",
@@ -16,8 +17,9 @@
         "White mushrooms",
         "Butternut squash",
         "Baby corn",
-        "Jalepeño/serrano slices"
+        "Jalepeño/serrano slices",
+        "Red bell pepper, cut into strips"
     ],
-    "Instructions": "Toss everything in a pot and simmer until done.",
+    "Instructions": "Fry tofu until crispy. Toss everything in a pot and simmer until done, except if you use bell pepper, only add that at the very end.",
     "Serving suggestion": "Eat with white rice, or better yet, sticky rice. Don't eat the lemongrass or citrus leaves."
 }
