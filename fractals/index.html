@@ -46,10 +46,9 @@
         <select id="coloring method" onchange="change_coloring_method()">
           <option value=0 selected="selected">Terraced</option>
           <option value=1>Smooth</option>
-          <option value=2>Interior (magnitude)</option>
+          <option value=2>Interior</option>
           <option value=3>Rings</option>
-          <option value=4>Weierstripes</option>
-          <option value=5>Interior (2-periodicity)</option>
+          <option value=4>Stripes</option>
         </select>
       </li>
       <li>
@@ -183,7 +182,7 @@
       return sqrt(square(z.x) + square(z.y));
     }
     float weierstrass(float x) {
-      x *= 3.;
+      x *= 2.;
       return cos(x) + cos(3. * x) / 2. + cos(9. * x) / 4. + cos(27. * x) / 8. + cos(81. * x) / 16.;
     }
 
@@ -289,8 +288,6 @@
         real_colorfulness /= 150.;
       } else if (coloring_method == 4) {
         real_colorfulness /= 1500.;
-      } else if (coloring_method == 5) {
-        real_colorfulness /= 100.;
       }
       x = x * real_colorfulness + color_offset;
       vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
@@ -357,8 +354,6 @@
       float color_value = 0.;
       bool color_black = false;
       float stripe_total = 0.;
-      vec2 period_2_total = vec2(0.);
-      vec2 period_2_oscillator = vec2(1., 0.);
 
       for (int i = 0; i <= max_iterations; i++) {
         z = iterate(z, c, fractal_type);
@@ -405,16 +400,6 @@
           } else {
             stripe_total += weierstrass(atan(z.y, z.x));
           }
-        } else if (coloring_method == 5) {
-          if (magnitude(z) > divergence_threshold) {
-            color_black = true;
-            break;
-          }
-          // FFT to calculate period of oscillation, assuming period is less than 32
-          period_2_oscillator *= -1.;
-          period_2_total += vec2(z.x * period_2_oscillator.x - z.y * period_2_oscillator.y,
-                                 z.x * period_2_oscillator.y + z.y * period_2_oscillator.x);
-          color_value = magnitude(period_2_total) / (magnitude(period_2_total) + magnitude(original_z));
         }
 
         last_z = z;
