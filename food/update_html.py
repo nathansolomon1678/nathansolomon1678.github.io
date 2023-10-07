@@ -39,6 +39,9 @@ for recipe_name in recipe_names:
     instructions_html = '' if instructions is None else f'\n<hr><h2>Instructions</h2>\n<p>{instructions}</p>'
     serving_suggestion = recipe.get('Serving suggestion')
     serving_suggestion_html = '' if serving_suggestion is None else f'\n<hr><h2>Serving suggestion</h2>\n<p>{serving_suggestion}</p>'
+    notes = recipe.get('Notes')
+    notes_html = '' if serving_suggestion is None else f'\n<hr><h2>Notes</h2>\n<p>{serving_suggestion}</p>'
+    #TODO: warn if there are any keys in the JSON other than the ones this explicitly looks for
 
     html = f"""<!Doctype HTML>
 <html>
@@ -67,6 +70,7 @@ for recipe_name in recipe_names:
             {ingredients_html}
             {instructions_html}
             {serving_suggestion_html}
+            {notes_html}
         </div>
     </body>
 </html>

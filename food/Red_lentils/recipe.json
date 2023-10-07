@@ -20,15 +20,16 @@
             "Black pepper"
         ],
         "Lentils": [
-            "Ghee",
+            "Butter",
             "Diced yellow onion",
             "Garlic",
             "Tomatoes and tomato paste",
             "Berbere spice",
             "Red lentils",
-            "Broth (or just use water)"
+            "Broth (or just use water)",
+            "Bay leaves (optional)"
         ]
     },
-    "Instructions": "Toast and grind the dry, whole spices, then mix the berbere spice powder. Melt ghee and brown the onion. Then add everything else and simmer for around 45 minutes.",
+    "Instructions": "Toast and grind the dry, whole spices to make berbere spice powder. Cook onion and garlic in butter. Then add everything else and simmer for around 45 minutes.",
     "Serving suggestion": "Serve with injera bread."
 }
