@@ -388,7 +388,7 @@
           }
         } else if (coloring_method == 3) {
           // Color based on how close z gets to a ring around the origin with radius = divergence_threshold
-          distance_to_orbit_trap = min(distance_to_orbit_trap, abs(z.y - divergence_threshold));
+          distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - divergence_threshold));
           color_value = -log(distance_to_orbit_trap);
         } else if (coloring_method == 4) {
           // Stripe Average Coloring
