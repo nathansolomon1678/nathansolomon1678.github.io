@@ -9,7 +9,9 @@
         "Milk",
         "Mustard powder (optional)",
         "Smoked paprika (optional)",
-        "Cheddar cheese"
+        "Cheddar cheese",
+        "Gruyère or some other slightly fancy cheese (optional)"
     ],
-    "Instructions": "Cook and drain macaroni. Soften onions in roux, then add everything else, melting in the cheese last. Mix the pasta and cheese sauce, then bake that mixture until the top is darkened."
+    "Instructions": "Cook and drain macaroni. Make a béchamel sauce and cook diced onions in there until soft, then add everything else, melting in the cheese last. Mix the pasta and the cheese sauce, then bake that mixture until the top is slightly darkened.",
+    "Notes": "This recipe intentionally uses the oven's heat to make the cheese sauce break, forming a slightly grainy and greasy sauce, which I love. This is a matter of personal preference -- most people prefrer unbroken sauces, and if you're one of those people, just mix the pasta with the cheese sauce but don't bake it. If you want to learn more about broken emulsifications and how to make a super smooth mac and cheese sauce, see <a href=\"https://www.youtube.com/watch?v=8ZMZT3wCBjw&ab_channel=AdamRagusea\">Adam Ragusea's youtube ideo about How and why sauces 'break' (or don't)"
 }

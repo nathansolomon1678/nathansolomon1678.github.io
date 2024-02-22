@@ -2,7 +2,8 @@
     "Ingredients": {
         "Soup": [
             "Canned tomato soup",
-            "Milk"
+            "Milk",
+            "Basil (optional garnish)"
         ],
         "Grilled cheese sandwich": [
             "Sourdough bread",
@@ -14,5 +15,6 @@
             "Saltine crackers (for dipping)",
             "Lemonade"
         ]
-    }
+    },
+    "Notes": "Google \"tomato bisque\" for inspiration if you feel like making this soup from scratch. Better yet, ask the staff at Kerckhoff Coffehouse for their secret formula."
 }
