@@ -33,12 +33,17 @@
         </div>
         <div id="main">
             <h1>Programming Projects</h1>
-            <h2><i>Online Fractal Exploration Tool</i></h2>
-            <p>Click <a href="fractals">here</a> to start making art!<br><br>If this won't work with your device/browser, or if you find any other bugs in the program, please <a href="https://github.com/nathansolomon1678/nathansolomon1678.github.io/issues/new">open a GitHub issue</a>.</p>
-            <h2><i>Cookbook</i></h2>
-            <p>Click <a href="food">here</a> to visit my personal cookbook.</p>
             <h2><i>Online Steganography Tool</i></h2>
             <p><a href="steganography">This tool</a> allows you to hide messages within pictures without visibly changing the pictures.</p>
+            <h2><i>Strange attractors & stereograms</i></h2>
+            <video id="clip1" onclick="var v = document.getElementById('clip1'); if (v.paused) { v.play(); } else { v.pause(); }" autoplay muted loop>
+                <source src="gallery/clip1.mp4" type="video/mp4">
+            </video>
+            <p><a href="https://www.magiceye.com/faq-items/help-how-do-i-see-in-3d/">Stereograms</a> are 2D pictures which will appear to pop out of the page when you allow your left and right eyes to focus on different parts of the image.<br><br>Each frame of the video above was made by plotting 25 million points using C++ to form a 3D strange attractor which resembles a <a href="https://observablehq.com/@rreusser/clifford-and-de-jong-attractors">2D Clifford attractor</a>, then taking snapshots of it from slightly different angles to form a stereogram. The colorscheme is designed to loosely imitate a <a href="https://www.itp.uni-hannover.de/fileadmin/itp/emeritus/zawischa/pdf/soapfilmcalc.pdf">thin film interference pattern</a>.</p>
+            <h2><i>Cookbook</i></h2>
+            <p>Click <a href="food">here</a> to visit my personal cookbook.</p>
+            <h2><i>Online Fractal Exploration Tool</i></h2>
+            <p>Click <a href="fractals">here</a> to start making art!<br><br>If this won't work with your device/browser, or if you find any other bugs in the program, please <a href="https://github.com/nathansolomon1678/nathansolomon1678.github.io/issues/new">open a GitHub issue</a>.</p>
             <h1>Fractal Gallery</h1>
             <a href="fractals/?fractal_type=2&coloring_method=2&max_iterations=206&colorscheme=0&colorfulness=35&color_offset=18&julification=100&scale_factor=3089.5553957110124&center_x=0.3616077426065434&center_y=-0.08211445591168383&crosshair_x=0.36059549012395886&crosshair_y=-0.08270353026887217">
                 <img src="gallery/imageAWEM4MZ4R9.png">
