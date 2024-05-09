@@ -22,9 +22,25 @@ body {
     margin: 0px;
 }
 
-h1 { color: #fff; }
-h2 { color: #fff; }
-p  { color: #fff; }
+h1 {
+    color: #fff;
+    font-size: 50px;
+}
+
+h2 {
+    color: #fff;
+    font-size: 30px;
+}
+
+p {
+    color: #fff;
+    font-size: 20px;
+}
+
+a {
+    color: #5af;
+    text-decoration: underline;
+}
 
 img {
     width: 100%;
