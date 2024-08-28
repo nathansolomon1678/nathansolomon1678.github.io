@@ -39,7 +39,6 @@
           <option value=0 selected="selected">Mandelbrot</option>
           <option value=1>Heart</option>
           <option value=2>Burning ship</option>
-          <option value=3>Bleh</option>
         </select>
       </li>
       <li>
@@ -343,9 +342,6 @@
       } else if (type == 2) {
         // Burning ship
         return c + vec2(power(abs(z.x), 2. - heartiness) - power(abs(z.y), 2. - heartiness),
-                        -abs(2. * z.x * z.y));
-      } else if (type == 3) {
-        return c + vec2(power(abs(z.x), 3. - heartiness) - power(abs(z.y), 3. - heartiness),
                         -abs(2. * z.x * z.y));
       }
     }
