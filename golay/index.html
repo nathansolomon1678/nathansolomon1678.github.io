@@ -1,0 +1,46 @@
+<!Doctype HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
+        <meta name="author" content="Nathan Solomon">
+        <script src="index.js" type="text/javascript"> </script>
+        <title>Ternary Golay codes</title>
+    </head>
+    <body>
+        <div id="main-div">
+            <h1>Ternary Golay codes for error correction</h1>
+            <hr>
+            <p>
+                In 1947, Juhani Virtakallio wrote to a football pool magazine that when betting on 11 matches (which each result in a win, loss, or draw), it is possible to make 729 different bets and be guaranteed that exactly one of those 729 bets will incorrectly predict the results of only two matches or fewer. <i>Source: "At the Dawn of the Theory of Codes" by Alexander Barg.</i> In 1949, mathematician Marcel Golay independently came up with a similar idea, called Golay codes, which Voyager 1 and 2 used in 1979 and 1980 to transmit color photos of Jupiter and Saturn back to Earth. <i>Source: "Combinatorics in Space: The Mariner 9 Telemetry System" by Bill Cherowitzo.</i>
+            </p>
+            <p>
+                This article focuses on one type of Golay code, called the "perfect ternary Golay code", or the "(11, 6, 5) linear code". It expands the data you want to transmit by a factor of 11/6, meaning your message will take up 5/6=83% more memory, and will take 83% longer to be transmitted. But the advantage is that when parts of the message are transmitted incorrectly, you may be able to notice and correct those mistakes.
+            </p>
+            <hr>
+            <h2>Original message:</h2>
+            <textarea id="original-message" rows=10 cols=100 value="" maxLength=1000 wrap="hard" onchange="update()">with all its sham drudgery and broken dreams it is still a beautiful world be cheerful strive to be happy</textarea>
+            <br>
+            <br>
+            <p><strong>Error rate: <span id="error-rate-display" style="color: red;"></span></strong></p>
+            <input id="error-rate-slider" type="range" class="slider" min="0" max="100" value="10" onchange="update()">
+            <br>
+            <h2>Without Golay coding:</h2>
+            <div id="simple-encoded" class="output-message"></div>
+            <br>
+            <div id="simple-decoded" class="output-message"></div>
+            <br>
+            <h2>With Golay coding:</h2>
+            <div id="golay-encoded" class="output-message"></div>
+            <br>
+            <div id="golay-decoded" class="output-message"></div>
+            <br>
+            <br>
+            <hr>
+            <a href="https://github.com/nathansolomon1678/nathansolomon1678.github.io/tree/main/golay">View source code</a>
+            <br>
+            <a href="https://nathansolomon1678.github.io">Go back to the main page</a>
+        </div>
+    </body>
+</html>
