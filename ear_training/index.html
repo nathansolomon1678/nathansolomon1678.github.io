@@ -1,0 +1,110 @@
+<!Doctype HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
+        <meta name="author" content="Nathan Solomon">
+        <script src="index.js" type="text/javascript"> </script>
+        <title>Ear training</title>
+    </head>
+    <body>
+        <div id="main-div">
+            <h1>Ear training to learn perfect pitch</h1>
+            <hr>
+
+            <div id="settings">
+            <label for"notation">Notation:</label>
+            <select id="notation" onchange="update_html()">
+                <option value=0 selected="selected">X♯</option>
+                <option value=1>Y♭</option>
+                <option value=2>XY</option>
+            </select>
+            <br>
+            <br>
+            <label for="scale">Scale:</label>
+            <select id="scale" onchange="update_html()">
+                <option value=0>Do</option>
+                <option value=1>Do/Sol</option>
+                <option value=2>Do/Mi/Sol</option>
+                <option value=3 selected="selected">Do/Re/Mi/Sol/La</option>
+                <option value=4>Major scale</option>
+                <option value=5>Minor scale</option>
+                <option value=6>Chromatic scale</option>
+            </select>
+            <br>
+            <br>
+            <label for="root">Root note:</label>
+            <select id="root" onchange="update_html()">
+                <option value=0>A</option>
+                <option value=1>A♯</option>
+                <option value=2>B</option>
+                <option value=3 selected="selected">C</option>
+                <option value=4>C♯</option>
+                <option value=5>D</option>
+                <option value=6>D♯</option>
+                <option value=7>E</option>
+                <option value=8>F</option>
+                <option value=9>F♯</option>
+                <option value=10>G</option>
+                <option value=11>G♯</option>
+            </select>
+            <br>
+            <br>
+            <label for="lowest">Lowest note:</label>
+            <select id="lowest" onchange="update_html()">
+                <option value=39 selected="selected">C4</option>
+            </select>
+            <br>
+            <br>
+            <label for="highest">Highest note:</label>
+            <select id="highest" onchange="update_html()">
+                <option value=48 selected="selected">A4</option>
+            </select>
+            <br>
+            <br>
+            <label for="octave-equivalence">Octave equivalence:</label>
+            <select id="octave-equivalence" onchange="update_html()">
+                <option value=0 selected="selected">On</option>
+                <option value=1>Off</option>
+            </select>
+            <p><strong>Changing any settings will reset your score.</strong></p>
+            </div>
+            <br>
+            <button id="play-rand-note" class="regular-button" onclick="play_rand()">Guess this note!</button>
+            <br>
+            <br>
+            <br>
+            <div id="game-status">
+            </div>
+            <div id="keyboard">
+            </div>
+            <br>
+            <hr>
+            <hr>
+            <br>
+            <p>The mp3 files for the 88 piano note recordings used in this site were taken from <a href="https://github.com/fuhton/piano-mp3/tree/master">https://github.com/fuhton/piano-mp3/tree/master</a>. Here is the license for that repository:</p>
+            <div id="license">
+                <i>
+                    Copyright 2017 Nicholas Smith
+                    <br><br>
+                    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+                    <br><br>
+                    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+                    <br><br>
+                    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+                </i>
+            </div>
+            <p>
+            The recordings are intended to match a 12-tone equal temperament piano tuned to A4 = 440Hz. That is how an ideal piano would be tuned, but in practice, the strings' dispersion relation causes higher harmonics to be slightly sharp. Most pianos actually use "stretched tuning" instead of equal temperament, so that they sound good despite having some inharmonicity. The very slight upwards slope of the nearly-horizontal lines in the graph below is the <a href="https://wiki.ubc.ca/Course:Phys341_2020/Railsback_curve">Railsback curve</a>, which indicates that the piano was tuned to account for some inharmonicity.<br><br>The bottom line is the fundamental frequency, and the lines above that are the second harmonic (at +1200 cents = +1 octave), the third harmonic (+1902 cents), and the fourth harmonic (+2400 cents = +2 octaves). Note that for the lowest few notes of the keyboard, the first harmonic appears to be missing. Interestingly, our brains can use the other harmonics to notice that the lowest one is missing and figure out what frequency it should have, meaning that a C1 (32.7Hz) will still sound like a C1 without having any 32.7Hz vibrations. For some of the higher notes, the higher harmonics also appear to be weaker, but this is just because of an artifact in how I made the graph.
+            </p>
+            <img src="spectral_analysis.png">
+            <br>
+            <br>
+            <hr>
+            <a href="https://github.com/nathansolomon1678/nathansolomon1678.github.io/tree/main/ear_training">View source code</a>
+            <br>
+            <a href="https://nathansolomon1678.github.io">Go back to the main page</a>
+        </div>
+    </body>
+</html>

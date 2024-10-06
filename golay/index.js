@@ -16,7 +16,7 @@ function onload_html() {
      * there are only 3^11=177147 such sequences. But for this website, the
      * message to be encoded is limited to 1000 characters anyway, so it makes
      * more sense to compare each 11-trit word to all 729 valid Golay codes
-     * until you find a match (that is, a code word that is Hammind distance
+     * until you find a match (that is, a code word that is Hamming distance
      * 2 or less away).
      */
     const basis = ["10000011111", "01000011220", "00100012102", "00010021012", "00001020121", "00000102211"];
