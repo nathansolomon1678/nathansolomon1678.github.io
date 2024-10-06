@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 def mp3_signal(filename):
     assert filename[-4:] == ".mp3"
-    converted_filename = filename[-4:] + ".wav"
+    converted_filename = filename[:-4] + ".wav"
 
     sound = AudioSegment.from_mp3(filename)
     sound.export(converted_filename, format = "wav")
@@ -36,8 +36,8 @@ def interpolate(x_data, y_data, x):
     # linearly interpolates between points in a signal, given by strictly increasing
     # x data and the corresponding y data
     i = np.searchsorted(x_data, x)
-    fract = x_data[i+1] - x_data[i]
-    return fract * y_data[i+1] + (1 - fract) * y_data[i]
+    fract = (x - x_data[i-1]) / (x_data[i] - x_data[i-1])
+    return fract * y_data[i] + (1 - fract) * y_data[i-1]
 
 # x axis represents half steps above A0, and
 # y axis represents cents above ideal frequency
@@ -48,21 +48,18 @@ y_resolution = int((y_max - y_min) / y_step)
 M = np.zeros((y_resolution, 88))
 
 for j in range(88):
-    # i is the number of half-steps above A0
     note_name = ["A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"][j % 12] + str((j + 9) // 12);
 
     ideal_frequency = 27.5 * 2 ** (j / 12)
     note_fft, note_frequencies = spectrum(note_name)
+    note_fft /= np.max(note_fft)
     for i in range(y_resolution):
         y = y_min + i * y_step
         amplitude = interpolate(note_frequencies, note_fft, ideal_frequency * 2 ** (y / 1200))
         M[y_resolution - i - 1, j] = amplitude ** .5
-    # TODO: put the data into an HTML table, and also make of cents_sharp as a
-    # function of i to see if it resembles a Railsback curve (and if it does, be sure to
-    # explain why we use stretched tuning, and how dispersion relations cause inharmonicity
-    # print(f"{note_name:<4} {ideal_frequency:10.4f} {actual_frequency:10.4f} {cents_sharp:10.4f}")
 
 ax = plt.axes()
+plt.figure(figsize = (5, 7))
 plt.imshow(M, aspect="auto", interpolation="none", extent=[1, 88, -500, 2500])
 plt.title("Amplitude of each piano key at a given frequency")
 plt.xlabel("x = number of half steps above A0")

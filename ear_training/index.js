@@ -18,7 +18,7 @@ function update_html() {
     total_incorrect = 0;
     document.getElementById("game-status").innerHTML = "<p>Your score: " +
         "<strong><span style=\"color:#880\">0/0 = 50%</span></strong><br>" +
-        "Click the button above to play a random note, then guess which note it was.</p>";
+        "Click the button above to play a random note, then guess which note it is.</p>";
 
     let notation = parseInt(document.getElementById("notation").value);
     let root     = parseInt(document.getElementById("root"    ).value);
@@ -255,7 +255,7 @@ function click_note(number) {
             guess = guess.slice(0, -1);
         }
         html += "You guessed <strong><span style=\"color: #f00\">" + guess;
-        html += "</span></strong>, but the notes was actually <strong>" + note_name(current_note, notation) + "</strong>";
+        html += "</span></strong>, but the note was actually <strong>" + note_name(current_note, notation) + "</strong>";
         html += "<br>Click the button above to try again.";
     }
     html += "</p>";
