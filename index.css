@@ -40,7 +40,6 @@ a {
 
 #menu-container {
     position: -webkit-sticky;
-    position: sticky;
     top: 0;
     width: 100%;
     padding-top: 10px;
