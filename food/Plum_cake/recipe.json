@@ -1,0 +1,21 @@
+{
+    "Ingredients": {
+        "Cake batter": [
+            "2 cups flour",
+            "3 tsp baking powder",
+            "2 Tbsp sugar",
+            "6 Tbsp softened butter",
+            "2 eggs",
+            "2/3 cup milk"
+        ],
+        "Topping": [
+            "4 cups pitted plums, halved or sliced",
+            "4 Tbsp melted butter",
+            "3/4 cup sugar",
+            "1 tsp cinnamon"
+        ]
+    },
+    "Instructions": "Mix dry and wet ingredients for batter separately, then combine them, and pur that into a greased 9\" by 13\" baking dish. Place plums on top of the batter. Mix the remaining butter, sugar, and cinnamond, and pour that mixture over the plums. Bake at 350F for 40 minutes.",
+    "Serving suggestion": "Serve with vanilla ice cream.",
+    "Notes": "This works with any kind of plum, but I like it best with fresh satsuma plums."
+}
