@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import random
 
+# TODO: incorporate this into the website, and link to https://hapax.github.io/mathematics/spotit/
+
 # Let p be some prime number. It is the "order" of the
 # finite affine plane to be generated
 # TODO: generalize this code to work when p is a prime power
@@ -55,3 +57,9 @@ for card in cards:
     card = list(card)
     random.shuffle(card)
     print(' '.join(card))
+
+print("""
+To print this, copy & paste the emojis above into a Google Doc, configure the page
+setup to be landscape mode, center all text, and increase font size until each
+line takes up exactly one page. Then print to PDF with either 4 or 6 pages per sheet.
+""")
