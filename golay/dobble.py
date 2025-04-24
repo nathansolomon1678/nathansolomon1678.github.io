@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 import random
 
-# TODO: incorporate this into the website, and link to https://hapax.github.io/mathematics/spotit/
-
-# Let p be some prime number. It is the "order" of the
-# finite affine plane to be generated
-# TODO: generalize this code to work when p is a prime power
-# (see list of prime powers from https://oeis.org/A000961)
 p = 7
 # Let c be the number of cards
 c = 100
@@ -62,4 +56,8 @@ print("""
 To print this, copy & paste the emojis above into a Google Doc, configure the page
 setup to be landscape mode, center all text, and increase font size until each
 line takes up exactly one page. Then print to PDF with either 4 or 6 pages per sheet.
+
+Note that you can remove as many cards as you want and the game will still work. So
+if the last page of your PDF only has 1 or 2 cards, you can save paper by just
+not printing that last page.
 """)
