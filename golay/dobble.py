@@ -1,49 +1,58 @@
 #!/usr/bin/env python3
-import random
 
-p = 7
-# Let c be the number of cards
-c = 100
-assert p in [1, 2, 3, 5, 7, 11]
-c = min(c, p**2)
-print(f"Generating {p**2} cards using {p**2+p} symbols.")
-print(f"Each card has {p+1} symbols, and each symbol appears on {p} cards.")
-if c < p**2:
-    print(f"Omitting {p**2-c} of those cards, because you only wanted {c} cards.")
-print('\n')
+# TODO: convert to javascript, add this to website
 
-cards = [set() for i in range(p**2)]
+from projective_plane import *
 
-symbols = [str(i) for i in range(p**2 + p)]
-# I chose out 56 fun symbols, which is just enough for when p=7
-fun_symbols = "🐒🐼🐧🦆🦉🦃🐢🐬🦀🦐🦑🦋🐌🦂🍇🍉🍋🍌🍍🍓🥝🥑🌽🥐🥞🧀🍔🍟🍕🌭🌮🍩" + \
-"⚽⚾🏀🏐🎱🎳🎲🎷🎸🎻🔬🕯📜💰🗝🔮🤡👻👽💩💪🖖👋🛒"
-for i in range(min(len(fun_symbols), p**2 + p)):
-    symbols[p**2 + p - i - 1] = fun_symbols[i]
+# When editing this file in Vim, be sure to use "set noemoji" for the emojis to
+# display in a way that's not horribly disgusting
 
-# Arrange the cards in a p by p grid, then draw a bunch of horizontal lines
-# through them. For each line, add a unique symbol to each card the line
-# passes through. i is the row number, and k is the column number
-for i in range(p):
-    for k in range(p):
-        cards[i * p + k].add(symbols[i + p**2])
-# Now on the same grid, draw a bunch of diagonal lines. Each line is
-# determined by i and j, and we then add the corresponding symbol to the
-# kth element of that line, for k in range(p)
-# the slope of the line is -1/i and the horizontal offset of the line is j
-for i in range(p):
-    for j in range(p):
-        for k in range(p):
-            cards[p * k + (j + i * k) % p].add(symbols[i * p + j])
+# For counting purposes, there's ten emojis per line. TODO: Ideally I want 381
+# different emojis in total which would be just enough for 20 emojis per card
+emojis = [
+        '🐒', '🐼', '🐧', '🦆', '🦉', '🦃', '🐢', '🐬', '🦀', '🦐',
+        '🦑', '🦋', '🐌', '🦂', '🍇', '🍉', '🍋', '🍌', '🍍', '🍓',
+        '🥝', '🥑', '🌽', '🥐', '🥞', '🧀', '🍔', '🍟', '🍕', '🌭',
+        '🌮', '🍩', '⚽', '⚾', '🏀', '🏐', '🎱', '🎳', '🎲', '🎷',
+        '🎸', '🎻', '🔬', '🕯', '📜', '💰', '🗝', '🔮', '🤡', '👻',
+        '👽', '💩', '💪', '🖖', '👋', '🛒', '🤓', '🤯', '🥀', '🕴️',
+        '🧬', '🫀', '🪔', '🪐', '🥧', '🥨', '🦓', '🦚', '🍆','💀',
+        '🌈', '♈️', '♉️', '♊️', '♋️', '♌️', '♍️', '♎️', '♏️', '♐️',
+        '♑️', '♒️', '♓️', '♠️', '♣️', '♥️', '♦️', '♻️', '☔️', '✨️',
+        '🐓', '🐞', '🐲', '👀', '💎', '🐐', '🚦', '🦩', '🦨', '🥪',
+        '🧸', '🧠', '🧊', '🧋', '🧇', '🧄', '🦦', '🦥', '🦣', '🦢',
+        '🥥', '🧅', '🧲', '🪗', '🗞️'
+]
 
-# This next step really isn't necessary, because we know by design that
-# each pair of cards should have exactly one symbol in common
-for i in range(c):
-     for j in range(i+1, c):
-         if len(cards[i].intersection(cards[j])) != 1:
-             print(cards[i])
-             print(cards[j])
-             raise Exception(f"Intersection of cards is {cards[i].intersection(cards[j])}")
+emojis.sort()
+for i in range(len(emojis) // 10):
+    print('\t'.join(emojis[i*10:i*10+10]))
+print('\t'.join(emojis[len(emojis) - len(emojis)%10:]))
+
+q = 0
+while q not in prime_powers:
+    q = int(input(f"\nHow many symbols do you want per card?\n")) - 1
+    if q not in prime_powers:
+        print(f"\nSorry, you must choose one of the following integers:\n{[x + 1 for x in sorted(prime_powers.keys())]}")
+
+c = 0
+while c < 2 or c > q**2+q+1:
+    c = int(input(f"\nHow many cards do you want to create? You can make up to {q**2+q+1}.\n"))
+    if c < 2:
+        print("\nYou should have at least 2 cards, or else there won't be any matches to spot!")
+    elif c > q**2+q+1:
+        print(f"\nThere aren't enough symbols per card to make {c} cards. Best we can do is {q**2+q+1}.")
+        c = q**2+q+1
+
+all_symbols = set()
+for sym in emojis:
+    if sym in all_symbols:
+        raise Exception(f"Repeat emoji: {sym} (unicode value {ord(sym)})")
+    all_symbols.add(sym)
+
+
+print("\nCreating deck... (this could take a minute)\n")
+cards = ProjectivePlane(q).create_cards(symbols = all_symbols)
 
 random.shuffle(cards)
 cards = cards[:c]
