@@ -1,0 +1,54 @@
+<!Doctype HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
+        <meta name="author" content="Nathan Solomon">
+        <script src="index.js" type="text/javascript"> </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <title>Dobble</title>
+    </head>
+    <body>
+        <div id="main-div">
+            <h1>Spot-It Card Game Generator</h1>
+            <hr>
+            <p>
+                "Spot-It" (also called "Dobble") is a card game in which each card has 8 symbols on it, and each pair of cards has exactly one symbol in common. You can use that deck to play a variety of game modes in which players compete to find those matches as quickly as possible. There is also an easier version of Spot-It made for young kids, in which there are only 6 pictures on each card. This website allows you to make your own Spot-It game, in which you choose the number of symbols per card, and you can also choose which symbols to use (from a limited selection of emojis).
+                <br><br>
+                <a href="Example_8.pdf">Example output (for s=8 symbols per card)</a>
+            </p>
+            <hr>
+            <h2>Settings</h2>
+            <div>
+                <label for="s" id="range slider label">Number of symbols per card: </label>
+                <br>
+                <br>
+                <input id="s" type="range" class="slider" min="2" max="20" value=8 onchange="update_range_slider()" />
+            </div>
+            <hr>
+            <h2>Algorithm outline</h2>
+            <ul>
+                <li>Prompt user for number of symbols per card, and call that value \( s \). If \( s \) is one more than a prime power (<a href="https://oeis.org/A000961">OEIS A000961</a>) then let \( q = s-1 \), and create a projective plane. Otherwise, if \( s \) is equal to a prime power, let \( q=s \), and create an affine plane. If \( s \) is neither a prime power nor one more than a prime power, raise an error and prompt user for a different number.</li>
+                <li>Find a prime number \( p \) and a positive integer \( n \) such that \( q=p^n \).</li>
+                <li>Search randomly for an irreducible degree-\(n\) monic polynomial \(P \in \mathbb{Z}_p[x] \). Let \( \mathbb{F}_q = \mathbb{Z}_p[x] / \langle P \rangle \) be the finite field of order \( q \).</li>
+                <li>Let the projective plane of order \( q \) be \( (\mathbb{F}_q)^3 - \{(0,0,0)\} \), modulo the equivalence relation that \((a,b,c) \sim (ka,kb,kc)\) for any \( k \in \mathbb{F}_q \). For each equivalence class, use a representative element for which the first nonzero coordinate is 1. In other words, if \( a \) is nonzero, write \( (a,b,c) \) as \( (1,b/a,c/a) \), if \( a \) is zero but \( b \) is nonzero, write it as \( (0,1,c/b) \), and if \( a=b=0 \), write it as \( (0,0,1) \).</li>
+                <li>Solve for the set of lines in the projective plane. Since there are \( q^2+q+1 \) lines and \( q+1 \) points on each line, this takes \( O(q^3) \) time.</li>
+                <li>If the inputted value is \( s=q+1 \), assign a unique symbol to each point in the projective plane. For each line in the plane, create a card containing the symbols which correspond to the points on that line. Since every pair of (distinct) lines in a projective plane intersects at exactly 1 point, every pair of cards will have exactly one symbol in common. Alternatively, you could assign a unique symbol to each line, and create a card for each point containing precisely the symbols corresponding to the lines through that point. This still works, since every pair of (distinct) points in a projective plane has exactly one line going thought both.</li>
+                <li>If the inputted value is \( s=q \), turn the projective plane into the dual of an affine plane by selecting one point and removing all the lines through that point. The resulting incidence structure now has \( q^2+q \) points, \( q^2 \) lines, \( q+1 \) points on each line, and \( q \) lines through each point. Unlike the projective plane, this incidence structure is not its own dual. It has the property that each pair of distinct lines intersects at exactly one point, but there are pairs of points such that there is no line through both.</li>
+            </ul>
+            <hr>
+            <h2>Further reading</h2>
+            <p>
+                <a href="https://blog.plover.com/math/finite-projective-planes.html">https://blog.plover.com/math/finite-projective-planes.html</a>
+                <br><br><a href="https://hapax.github.io/mathematics/spotit/">https://hapax.github.io/mathematics/spotit/</a>
+                <br><br><strong>Link to youtube video by Stand-Up Maths.</strong>
+            </p>
+            <hr>
+            <hr>
+            <a href="https://github.com/nathansolomon1678/nathansolomon1678.github.io/tree/main/dobble">View source code</a>
+            <br>
+            <a href="https://nathansolomon1678.github.io">Go back to the main page</a>
+        </div>
+    </body>
+</html>

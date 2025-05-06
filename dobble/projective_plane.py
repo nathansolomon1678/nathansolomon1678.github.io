@@ -1,7 +1,3 @@
-# https://blog.plover.com/math/finite-projective-planes.html
-# https://oeis.org/A000961
-# https://hapax.github.io/mathematics/spotit/
-
 from sympy import GF, Poly, isprime, div
 from sympy.abc import x
 import random
@@ -220,15 +216,3 @@ class ProjectivePlane:
         for l in enumerated_lines.keys():
             cards.append({symbols[enumerated_lines[point]] for point in self.lines[l]})
         return cards
-
-if __name__ == "__main__":
-    q = 27
-    F = FiniteField(q)
-
-    print(f"ADDITION TABLE (for finite field of order {q}):")
-    for i in range(q):
-        print(' '.join([f"{int(F.add(i, j)):>3}" for j in range(q)]))
-
-    print(f"\nMULTIPLICATION TABLE (for finite field of order {q}):")
-    for i in range(q):
-        print(' '.join([f"{int(F.mult(i, j)):>3}" for j in range(q)]))
