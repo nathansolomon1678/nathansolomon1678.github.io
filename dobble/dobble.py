@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# TODO: convert to javascript, add this to website
-
 from projective_plane import *
 
 # When editing this file in Vim, be sure to use "set noemoji" for the emojis to
@@ -28,18 +26,24 @@ emojis = {
         '👽', '💩', '💪', '🖖', '👋', '🛒', '🤓', '🤯', '🥀', '🕴️',
         '🧬', '🫀', '🪔'
     ],
-    "more stuff": [
+    "stuff": [
         '🪐', '🥧', '🥨', '🦓', '🦚', '🍆','💀',
         '🌈', '♈️', '♉️', '♊️', '♋️', '♌️', '♍️', '♎️', '♏️', '♐️',
         '♑️', '♒️', '♓️', '♠️', '♣️', '♥️', '♦️', '♻️', '☔️', '✨️',
         '🐓', '🐞', '🐲', '👀', '💎', '🐐', '🚦', '🦩', '🦨', '🥪',
         '🧸', '🧠', '🧊', '🧋', '🧇', '🧄', '🦦', '🦥', '🦣', '🦢',
-        '🥥', '🧅', '🧲', '🪗', '🗞️'
+        '🥥', '🧅', '🧲', '🪗', '🗞️', '🕋'
+    ],
+    "letters": [
+        'ℵ', 'ඞ', 'ℝ',
+    ],
+    "flags": [
     ]
 }
 
-symbols = emojis["animals"] + emojis["foods"]
+symbols = emojis["animals"] + emojis["foods"] + emojis["letters"] + emojis["stuff"]
 symbols.sort()
+print(f"Here are the {len(symbols)} symbols to choose from:")
 for i in range(len(symbols) // 10):
     print('\t'.join(symbols[i*10:i*10+10]))
 print('\t'.join(symbols[len(symbols) - len(symbols)%10:]))

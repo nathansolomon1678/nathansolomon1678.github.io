@@ -14,34 +14,11 @@ for p in primes:
         order = p ** n
         prime_powers[order] = (p, n)
 
-# DEFINE CLASS FOR ARITHMETIC IN A FINITE FIELD
 class FiniteField:
-    """Defines addition and multiplication of elements in the finite field of order p^n,
-    where p is a prime number and n is a positive integer. The field is represented as
-
-    F_{p^n} := F_{p}[x]/<f(x)>,
-
-    where f(x) is a degree n (monic) irreducible polynomial over F_p.
-    Let r be any root of f, so f(r)=0. Then any element of the field F_{p^n} can be
-    uniquely represented by the polynomial
-
-    a_0 + a_1 r + a_2 r^2 + ... + a_{n-1} r^{n-1},
-
-    which makes addition and multiplication behave the way they should. That same
-    element can also be represented as a single integer in [0, p^n - 1]:
-
-    a_0 + a_1 p + a_2 p^2 + ... + a_{n-1} p^{n-1}.
-
-    That integer representation does not make addition and multiplication work the way
-    they should, but it is more convenient and human-readable."""
-
-    # TODO: check that the time complexity for creating a projective plane of
-    # order q is O(q^2)
     def __init__(self, q):
         assert q in prime_powers, f"q must be a prime number below {N}, not {q}"
         self.p, self.n = prime_powers[q]
         self.field_order = q
-        self.base_field = GF(p)
         self.modulus = self._find_irreducible_poly()
         self.cached_add  = dict()
         self.cached_mult = dict()
@@ -69,7 +46,11 @@ class FiniteField:
 
         where \mu is the Möbius function. The dominant term in that sum is \mu(1)p^{n/1}=p^n, and
         since the total number of monic polynomials of degree n over F_p is p^n, the probability that a
-        randomly selected monic polynomial of degree n over F_p will be irreducible is roughly 1/n"""
+        randomly selected monic polynomial of degree n over F_p will be irreducible is roughly 1/n.
+
+        The cyclotomic method is a much more elegant algorithm for finding an irreducible polynomial,
+        which has a better amortized time complexity. However, the random search is much simpler,
+        and is definitely good enough for this application."""
         while True:
             # Generate random monic polynomial
             coeffs = [1] + [random.randint(0, self.p - 1) for _ in range(self.n)]
