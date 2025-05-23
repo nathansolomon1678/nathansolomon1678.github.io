@@ -124,9 +124,7 @@ class FiniteField {
         this.q = q
         this.p = prime_powers[q][0];
         this.n = prime_powers[q][1];
-
         this.cache = {};
-
         this.modulus = new Polynomial(this.p, q_to_poly[q]);
     }
     int_to_poly(num) {
@@ -172,19 +170,6 @@ class FiniteField {
         this.cache[b+'*'+a] = a_times_b;
         return a_times_b;
     }
-    inv(a) {
-        // Returns multiplicative inverse of a
-        if ("1/"+a in this.cache) {
-            return this.cache["1/"+a];
-        }
-        for (var i = 0; i < this.q; i++) {
-            if (this.mult(a, i) == 1) {
-                this.cache["1/"+a] = i;
-                this.cache["1/"+i] = a;
-                return i;
-            }
-        }
-    }
     neg(a) {
         // Returns additive inverse of a
         if ('-'+a in this.cache) {
@@ -192,19 +177,32 @@ class FiniteField {
         }
         for (var i = 0; i < this.q; i++) {
             if (this.add(a, i) == 0) {
-                this.cached_neg['-'+a] = i;
-                this.cached_neg['-'+i] = a;
+                this.cache['-'+a] = i;
+                this.cache['-'+i] = a;
+                return i;
+            }
+        }
+    }
+    inv(a) {
+        // Returns multiplicative inverse of a
+        if ("1/"+a in this.cache) {
+            return this.cache["1/"+a];
+        }
+        for (var i = 0; i < this.q; i++) {
+            if (this.mul(a, i) == 1) {
+                this.cache["1/"+a] = i;
+                this.cache["1/"+i] = a;
                 return i;
             }
         }
     }
     div(a, b) {
-        return this.mult(a, this.inv(b));
+        return this.mul(a, this.inv(b));
     }
 }
 
 class IncidenceStructure {
-    // Pretty much the same as a hypergraph, except the hyperedges are called lines
+    // Pretty much the same as a hypergraph, except the hyperedges are called lines.
     // Vertices are labeled as integers from 0 to V-1, and lines are sets of vertices
     constructor(V, lines = []) {
         this.V = V;
@@ -212,17 +210,167 @@ class IncidenceStructure {
     }
     dual() {
         // Returns a new incidence structure, equal to the dual of this one
-        var dual_structure = new IncidenceStructure(
+        const dual_structure = new IncidenceStructure(
             this.lines.length,
-            Array.from({length: this.V}, () => new Set())
+            Array(this.V).fill(null).map(() => [])
         );
-        // TODO: finish making this function
+        // l is the index of the line in this IncidenceStructure, and
+        // v is the index of the vertex in this.lines[l]
+        for (let l = 0; l < this.lines.length; l++) {
+            for (let v = 0; v < this.lines[l].length; v++) {
+                let vertex = this.lines[l][v];
+                dual_structure.lines[vertex].push(l);
+            }
+        }
         return dual_structure;
     }
 }
 
 class ProjectivePlane extends IncidenceStructure {
+    // Generates the projective plane consisting of:
+    // q^2+q+1 lines, which each contain q+1 points, and
+    // q^2+q+1 points, which are each contained in q+1 different lines.
+    // Points are labeled as integers in [0, q^2+q], and lines are
+    // represented as sets of those integers.
+    constructor(q) {
+        let F = new FiniteField(q);
+        let V = q**2 + q + 1;
+        let lines = Array.from({length: V}, () => []);
+
+        // Each triple can either represent a point with coordinates (x, y, z) or
+        // a line with the equation ax+by+cz=0 and coefficients (a, b, c). In
+        // either case, we can assume WLOG that the first non-zero entry is 1.
+        const triples = [[0, 0, 1]];
+        for (let j = 0; j < q; j++) {
+            triples.push([0, 1, j]);
+            for (let i = 0; i < q; i++) {
+                triples.push([1, i, j]);
+            }
+        }
+        // If triples[i] is [a,b,c], then we want lines[i] to be the set of triples
+        // [x,y,z] such that ax+by+cz=0.
+        for (let i = 0; i < V; i++) {
+            let [a, b, c] = triples[i];
+            if (a == 1) {
+                // If a=1, then the equation ax+by+cz=0 becomes x+by+cz=0, and we
+                // can assume WLOG that x=1, so it becomes 1+by+cz=0. One solution is
+                // (0, 1, -b/c), unless c=0, in which case (0, 0, 1) is a solution.
+                if (c == 0) {
+                    lines[i] = [[0, 0, 1]];
+                } else {
+                    lines[i].push([0, 1, F.neg(F.div(b, c))]);
+                }
+                // The remaining solutions can be parameterized by y to obtain
+                // (1, y, -(1+by)/c), unless c=0. If c=0 and b is nonzero, the
+                // remaining solutions can be parameterized by z as (1, -1/b, z),
+                // but if b=c=0, they are parameterized by y as (0, 1, z)
+                if (c == 0 && b == 0) {
+                    for (let z = 0; z < q; z++) {
+                        lines[i].push([0, 1, z]);
+                    }
+                } else if (c == 0) {
+                    for (let z = 0; z < q; z++) {
+                        lines[i].push([1, F.neg(F.inv(b)), z]);
+                    }
+                } else {
+                    for (let y = 0; y < q; y++) {
+                        lines[i].push([1, y, F.neg(F.div(F.add(1, F.mul(b, y)), c))]);
+                    }
+                }
+            } else if (b == 1) {
+                // If a=0 and b=1, then equation becomes y+cz=0, and since y is the
+                // first non-zero coordinate, we can choose the representative
+                // element with y=1. Then the line contains the point
+                // (0, 1, -1/c), unless c=0, in which case it contains (0, 0, 1)
+                if (c == 0) {
+                    lines[i] = [[0, 0, 1]];
+                } else {
+                    lines[i] = [[0, 1, F.neg(F.inv(c))]];
+                }
+                // For the remaining solutions, assume x=1, so the equation is
+                // y+cz=0. The remaining solutions can be parameterized by y,
+                // so they have the form (1, y, -y/c), unless c=0, in which case
+                // they have the form (1, 0, z)
+                if (c == 0) {
+                    for (let z = 0; z < q; z++) {
+                        lines[i].push([1, 0, z]);
+                    }
+                } else {
+                    for (let y = 0; y < q; y++) {
+                        lines[i].push([1, y, F.neg(F.div(y, c))]);
+                    }
+                }
+            } else {
+                // In this case, a=b=0, so the equation ax+by+cz=0 becomes
+                // cz=0. Therefore z=0, but x and y can be anything. Since we
+                // only include the representative element where the first
+                // nonzero coordinate is 1, either x=1 and y can be anything,
+                // or x=0 and y=1.
+                lines[i] = [[0, 1, 0]];
+                for (let y = 0; y < q; y++) {
+                    lines[i].push([1, y, 0]);
+                }
+            }
+        }
+        // Create a bijection from triples [x,y,z] (assuming we use the representative
+        // element where the first nonzero entry of [x,y,z] is 1) to integers in
+        // [0, V)
+        const relabeled_points = {};
+        for (let i = 0; i < V; i++) {
+            let [x, y, z] = triples[i];
+            relabeled_points[x+','+y+','+z] = i;
+        }
+        const relabeled_lines = [];
+        for (let i = 0; i < V; i++) {
+            relabeled_lines.push([]);
+            for (let j = 0; j < q+1; j++) {
+                // Relabel the jth point on the ith line from
+                // the triple [x,y,z] to the integer xq^2+yz+z
+                let [x, y, z] = lines[i][j];
+                relabeled_lines[i].push(relabeled_points[x+','+y+','+z]);
+            }
+        }
+        // Initialize this as an IncidenceStructure
+        super(V, relabeled_lines);
+        this.q = q;
+    }
 }
 
 class AffinePlane extends IncidenceStructure {
+    constructor(q) {
+        // Make a temporary ProjectivePlane of order q, then remove any one line and
+        // all of the vertices on that line
+        let temp_proj_plane = new ProjectivePlane(q);
+        let V = q**2;
+        // Arbitrarily decide to remove the first line
+        let vertices_to_remove = new Set(temp_proj_plane.lines[0]);
+        const vertices_not_being_removed = [];
+        for (let i = 0; i < temp_proj_plane.V; i++) {
+            if (!(vertices_to_remove.has(i))) {
+                vertices_not_being_removed.push(i);
+            }
+        }
+        // Create dictionary from old vertex label (which is in [0, V-1], that is,
+        // in [0, q^2+q]) to new vertex label (which is in [0, q^2-1])
+        const relabeled_vertices = {};
+        for (let i = 0; i < V; i++) {
+            relabeled_vertices[vertices_not_being_removed[i]] = i;
+        }
+        const lines = [];
+        for (let i = 1; i < temp_proj_plane.V; i++) {
+            lines.push([]);
+            for (let j = 0; j < q+1; j++) {
+                // v is the current label for the jth vertex of the ith line
+                let v = temp_proj_plane.lines[i][j];
+                // If v is not one of the vertices being removed, add it to the (i-1)th
+                // line of this AffinePlane
+                if (!(vertices_to_remove.has(v))) {
+                    lines[i-1].push(relabeled_vertices[v]);
+                }
+            }
+        }
+        // Initialize this as an IncidenceStructure
+        super(V, lines);
+        this.q = q;
+    }
 }
