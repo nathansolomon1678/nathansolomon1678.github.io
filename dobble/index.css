@@ -3,16 +3,12 @@ body {
     margin: 0px;
 }
 
-h1    { color: #fff; }
-h2    { color: #fff; }
-h3    { color: #fff; }
-p     { color: #fff; }
-li    { color: #fff; }
-label { color: #fff; }
-
-strong {
-    cursor: pointer;
-}
+h1    { color: #fff; font-size: 2lh; }
+h2    { color: #fff; font-size: 1.6lh; }
+h3    { color: #fff; font-size: 1.3lh; }
+p     { color: #fff; font-size: 1lh; }
+li    { color: #fff; font-size: 1lh; }
+label { color: #fff; font-size: 1lh; }
 
 div {
     overflow: auto;
@@ -41,15 +37,6 @@ div {
     overflow: auto;
 }
 
-canvas {
-    padding: 8px;
-    border: solid white 2px;
-    border-radius: 5px;
-    max-width: calc(100% - 20px);
-    max-height: 100%;
-    right: 0px;
-}
-
 textarea {
     overflow-x: hidden;
     background-color: black;
@@ -58,6 +45,7 @@ textarea {
     border-radius: 5px;
     border: 1px solid #555;
     padding: 5px;
+    font-size: 1lh;
 }
 
 .output-message {
@@ -68,6 +56,18 @@ textarea {
     border-radius: 5px;
     border: 1px solid #555;
     padding: 5px;
+    font-size: 1lh;
+}
+
+select {
+    text-align: center;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+    transition: .2s;
+    cursor: pointer;
+    font-size: 1lh;
 }
 
 button {
@@ -82,6 +82,7 @@ button {
     margin-top: 1lh;
     margin-bottom: 1lh;
     cursor: pointer;
+    font-size: 1lh;
 }
 button:hover {
     background-color: #222;
@@ -111,21 +112,6 @@ button:hover {
     border: 2px solid #0c0;
 }
 
-input[type="number"] {
-    text-align: center;
-    border: 1px solid #555;
-    border-radius: 5px;
-    background-color: #000;
-    color: #fff;
-    transition: .2s;
-    font-size: 1lh;
-}
-input[type="number"]:focus {
-    background-color: #222;
-    color: #0c0;
-    outline: 1px solid #0c0;
-}
-
 ::-webkit-scrollbar-thumb {
   background-color: #555;
   border: 4px solid transparent;
@@ -144,29 +130,9 @@ input[type="number"]:focus {
 a {
     color: #5af;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 ul li {
-    margin-bottom: 1lh;
-}
-
-.slider {
-    -webkit-appearance: none;
-    height: 1lh;
-    width: 100%;
-    border-radius: 1lh;
-    background: #555;
-    margin-top: 1lh;
-    margin-bottom: 1lh;
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 2lh;
-    height: 2lh;
-    border-radius: 1lh;
-    background: #fff;
-    border: 2px solid #555;
+    margin-bottom: .5lh;
 }

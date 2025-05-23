@@ -20,6 +20,9 @@ def int_to_poly(num, p, n):
         num //= p
     return Poly(reversed(coeffs), x, modulus = p)
 
+def mod(x, m):
+    return (x % m + abs(m)) % m;
+
 q_to_poly = dict()
 
 print("IRREDUCIBLE MONIC POLYNOMIALS:")
@@ -30,7 +33,7 @@ for q in sorted(prime_powers.keys()):
         poly = int_to_poly(num, p, n) + Poly(x**n, x, modulus = p)
         if poly.is_irreducible:
             print(poly)
-            q_to_poly[q] = list(reversed(poly.all_coeffs()))
+            q_to_poly[q] = [mod(x, p) for x in reversed(poly.all_coeffs())]
             break
 
 print("\n\nDictionary from q=p^n to a list of coefficients for an irreducible degree-n monic")
