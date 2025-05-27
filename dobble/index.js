@@ -55,11 +55,6 @@ function set_url_params() {
 
 function update_q() {
     q = parseInt(document.getElementById("q-select").value);
-    document.getElementById("plane-description").innerHTML =
-        `Creating projective plane of order ${q}:\n` +
-        `* ${q**2+q+1} points\n` +
-        `* ${q**2+q+1} lines\n` +
-        `* ${q+1} points per line`;
     update_cards_display();
 }
 

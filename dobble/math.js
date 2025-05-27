@@ -201,20 +201,19 @@ class FiniteField {
     }
 }
 
-class IncidenceStructure {
-    // Pretty much the same as a hypergraph, except the hyperedges are called lines.
+class Hypergraph {
     // Vertices are labeled as integers from 0 to V-1, and lines are sets of vertices
     constructor(V, lines = []) {
         this.V = V;
         this.lines = lines;
     }
     dual() {
-        // Returns a new incidence structure, equal to the dual of this one
-        const dual_structure = new IncidenceStructure(
+        // Returns a new Hypergraph, equal to the dual of this one
+        const dual_structure = new Hypergraph(
             this.lines.length,
             Array(this.V).fill(null).map(() => [])
         );
-        // l is the index of the line in this IncidenceStructure, and
+        // l is the index of the line in this Hypergraph, and
         // v is the index of the vertex in this.lines[l]
         for (let l = 0; l < this.lines.length; l++) {
             for (let v = 0; v < this.lines[l].length; v++) {
@@ -226,7 +225,7 @@ class IncidenceStructure {
     }
 }
 
-class ProjectivePlane extends IncidenceStructure {
+class ProjectivePlane extends Hypergraph {
     // Generates the projective plane consisting of:
     // q^2+q+1 lines, which each contain q+1 points, and
     // q^2+q+1 points, which are each contained in q+1 different lines.
@@ -330,13 +329,13 @@ class ProjectivePlane extends IncidenceStructure {
                 relabeled_lines[i].push(relabeled_points[x+','+y+','+z]);
             }
         }
-        // Initialize this as an IncidenceStructure
+        // Initialize this as a Hypergraph
         super(V, relabeled_lines);
         this.q = q;
     }
 }
 
-class AffinePlane extends IncidenceStructure {
+class AffinePlane extends Hypergraph {
     constructor(q) {
         // Make a temporary ProjectivePlane of order q, then remove any one line and
         // all of the vertices on that line
@@ -369,7 +368,7 @@ class AffinePlane extends IncidenceStructure {
                 }
             }
         }
-        // Initialize this as an IncidenceStructure
+        // Initialize this as a Hypergraph
         super(V, lines);
         this.q = q;
     }

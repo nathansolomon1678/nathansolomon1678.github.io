@@ -16,41 +16,61 @@
             <h1>Spot-It Card Game Generator</h1>
             <hr>
             <p><a href="https://www.spotitgame.com/">"Spot-It" (also called "Dobble")</a> is a card game in which each card has 8 pictures/symbols on it, and each pair of cards has exactly one symbol in common. You can use that deck to play a variety of game modes in which players compete to find those matches as quickly as possible. There is also an easier version of Spot-It made for young kids, in which there are only 6 pictures on each card.</p>
-            <p>This website allows you to make your own Spot-It game, in which you choose the number of symbols per card, and you can also choose which symbols to use (from a limited selection of emojis).</p>
-            <p><a href="Example_8.pdf">Example output (for 8 symbols per card)</a></p>
-            <p><a href="Example_20.pdf">Example output (for 20 symbols per card)</a></p>
+            <p>This website allows you to make your own Spot-It game, in which you choose the number of symbols per card, and you can also choose which symbols to use (from a limited selection of emojis). Here are some example outputs:</p>
+            <ul>
+                <li><a href="Example_8.pdf" >Deck with 8 symbols per card</a></li>
+                <li><a href="Example_20.pdf">Deck with 20 symbols per card</a></li>
+                <li><a href="Example_3.pdf" >Deck with 3 symbols per card (Fano plane)</a></li>
+            </ul>
             <hr>
             <h2 id="settings">Settings</h2>
             <div>
                 <div>
-                    <div>
-                        <label for="q-select">Number of symbols per card: </label>
-                        <select id="q-select" onchange="update_q()">
-                            <option value=2>3</option>
-                            <option value=3>4</option>
-                            <option value=4>5</option>
-                            <option value=5>6</option>
-                            <option value=7 selected>8</option>
-                            <option value=8>9</option>
-                            <option value=9>10</option>
-                            <option value=11>12</option>
-                            <option value=13>14</option>
-                            <option value=16>17</option>
-                            <option value=17>18</option>
-                            <option value=19>20</option>
-                        </select>
-                    </div>
-                    <br>
-                    <!-- TODO: fix CSS for the textarea -->
-                    <textarea id="plane-description" readonly style="resize: none">
-                        Loading...
-                    </textarea>
+                    <label for="q-select">Number of symbols per card: </label>
+                    <select id="q-select" onchange="update_q()">
+                        <option value=2>3</option>
+                        <option value=3>4</option>
+                        <option value=4>5</option>
+                        <option value=5>6</option>
+                        <option value=7 selected>8</option>
+                        <option value=8>9</option>
+                        <option value=9>10</option>
+                        <option value=11>12</option>
+                        <option value=13>14</option>
+                        <option value=16>17</option>
+                        <option value=17>18</option>
+                        <option value=19>20</option>
+                    </select>
                 </div>
-                <button id="hide-menu-button" onclick="toggle_menu_visibility()">hide emoji selection menu</button>
-                <br>
-                <br>
-                <br>
-                <br>
+                <div>
+                    <p>The number of symbols that you need to choose from the emoji selection menu below is given in this table:
+                    \[
+                    \begin{array}{|c|c|c|} 
+                        \hline
+                        \text{emojis per card} & \text{emojis needed} \\
+                        \hline
+                        3 & 7 \\
+                        4 & 13 \\
+                        5 & 21 \\
+                        6 & 31 \\
+                        8 & 57 \\
+                        9 & 73 \\
+                        10 & 91 \\
+                        12 & 133 \\
+                        14 & 183 \\
+                        17 & 273 \\
+                        18 & 307 \\
+                        20 & 381 \\
+                        \hline
+                        q+1 & q^2+q+1 \\
+                        \hline
+                    \end{array}
+                    \]
+                    </p>
+                </div>
+                <div>
+                    <button id="hide-menu-button" onclick="toggle_menu_visibility()">hide emoji selection menu</button>
+                </div>
                 <div id="emoji-menu">
                     <p>Loading emoji selection...</p>
                 </div>
@@ -79,37 +99,46 @@
             <hr>
             <h2 id="how-does-this-work">How does this work?</h2>
                 <p>
-                    The math behind Spot-It is fascinating and surprisingly complicated. The best place to begin learning about it is with <a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">this video</a> by Stand-up Maths. I also recommend checking out <a href="https://blog.plover.com/math/finite-projective-planes.html">this article</a> about constructing finite projective planes.
+                    The math behind Spot-It is fascinating and surprisingly deep. The best place to begin learning about it is with <a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">this video</a> by Stand-up Maths. I also recommend checking out <a href="https://blog.plover.com/math/finite-projective-planes.html">this article</a> about constructing finite projective planes.
                 </p>
             <h3 id="hypergraphs">Hypergraphs</h3>
             <p>A <a href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">graph</a> is a structure made of vertices, also called "nodes" or "points", and edges, which are drawn as lines between two vertices. Mathematically, a graph is a structure \( G=(V,E) \), where \( V \) is the set of vertices, and \( E \) is the set of edges. Each edge is a 2-element subset of \( V \).</p>
-                <p>A <i>hypergraph</i> is defined the same way, except that each edge can be any subset of \( V \), not just a 2-element subset. An <i>incidence structure</i> is just a hypergraph in which we call the edges "lines", and where we are interested in the intersections of lines.</p>
-                <p>Everyone's favorite example of an incidence structure is the Fano plane, shown below. It has 7 vertices and 7 lines, although one of those "lines" is drawn as a circle. Each line in the Fano plane contain 3 vertices, and every pair of lines intersects at exactly one vertex. Also, for any pair of vertices, there is exactly one line which goes through both.</p>
-                <div style="background-color: white; max-width: 500px; border-radius: 1lh">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Fano_plane.svg" style="max-width: 500px">
-                </div>
-                <p>If an incidence structure satisfies <a href="#steiner-systems">certain properties</a>, then we can use it to create a Spot-It deck. There are two methods which we can use for representing an incidence structure as a Spot-It deck:</p>
-                <ol>
-                    <li>Label each vertex with a unique symbol. For each line, create a card containing the symbols corresponding to each point on the line.</li>
-                    <li>Label each line with a unique symbol. For each vertex, create a card containing the symbols corresponding to each line which contains that point.</li>
-                </ol>
-                <p>Which method you use is a matter of taste, but I prefer method 1, so I will default to using that method. Representing a hypergraph \( G \) using method 1 is equivalent to representing its <a href="https://en.wikipedia.org/wiki/Hypergraph#Related_hypergraphs">dual</a>, \( G^* \) using method 2, and vice versa. Note that the Fano plane is its own dual.</p>
+            <p>A <i>hypergraph</i> is defined the same way, except that each edge can be any subset of \( V \), not just a 2-element subset. Edges of a hypergraph are sometimes called "lines", because they are drawn as lines through the vertices they contain.</p>
+            <p>Everyone's favorite example of a hypergraph is the Fano plane, shown below. It has 7 vertices and 7 lines, although one of those "lines" is drawn as a circle. Each line in the Fano plane contains 3 vertices, and every pair of lines intersects at exactly one vertex. Also, for any pair of vertices, there is exactly one line which goes through both.</p>
+            <div style="background-color: white; max-width: 500px; border-radius: 1lh">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Fano_plane.svg" style="max-width: 500px">
+            </div>
+            <p>If a hypergraph satisfies <a href="#steiner-systems">certain properties</a>, then we can use it to create a Spot-It deck. There are two methods which we can use for representing a hypergraph as a Spot-It deck:</p>
+            <ol>
+                <li>Label each vertex with a unique symbol. For each line, create a card containing the symbols corresponding to each point on the line.</li>
+                <li>Label each line with a unique symbol. For each vertex, create a card containing the symbols corresponding to each line which contains that point.</li>
+            </ol>
+            <p>Which method you use is a matter of taste, but I prefer method 1, so I will default to using that method. Representing a hypergraph \( G \) using method 1 is equivalent to representing its <a href="https://en.wikipedia.org/wiki/Hypergraph#Related_hypergraphs">dual</a>, \( G^* \), using method 2, and vice versa. Note that the Fano plane is its own dual.</p>
             <h3 id="steiner-systems">Steiner systems</h3>
+            <p>A Steiner system \( S(t, k, n) \) is a hypergraph with \( |V|=n \) vertices such that every edge contains exactly \( k \) elements, and every \( t \)-element subset of \( V \) is contained in exactly one of its edges. For example, the Fano plane is a Steiner system \( S(2, 3, 7) \), because it has 7 vertices, every edge contains 3 vertices, and every pair of 2 vertices is contained in a unique edge.</p>
+            <p>A hypergraph can be represented as a valid Spot-It deck using method 2 if it is a Steiner system \( S(2, k, n) \), because then the criterion that every pair of vertices is contained in a unique edge is equivalent to the criterion that every pair of cards has exactly one symbol in common. Similarly, a hypergraph can be represented as a valid Spot-It deck using method 1 if it is the dual of a Steiner system with \( t=2 \), because every pair of lines in \( S(2, k, n)^* \) intersects at exactly one vertex.</i></p>
+            <p>TODO: Talk about Mathieu groups and <a href="https://nathansolomon1678.github.io/golay">Golay codes</a>, also improve CSS for the page on Golay codes</p>
+            <p>The easiest way to to create a Spot-It deck is to use either a finite projective plane of order \( q \), which is a Steiner system \( S(2, q+1, q^2+q+1) \), or a finite affine plane of order \( q \), which is a Steiner system \( S(2, q, q^2) \). As far as I know, these only exist when \( q \) is a prime power (<a href="https://oeis.org/A000961">OEIS A000961</a>), because then you can use the finite field \( \mathbb{F}_q \) to construct the projective/affine plane. That's why I require the number of symbols per card (\( q+1 \)) to be one more than a prime power.</p>
             <h3 id="finite-fields">Finite fields</h3>
+            <p>The <a href="https://en.wikipedia.org/wiki/Modular_arithmetic">ring of integers modulo \( m \)</a>, denoted \( \mathbb{Z}_m \) (where \( m \) is a positive integer), behaves like the integers, except that any two numbers which differ by an integer multiple of \( m \) are considered to be the same. For example, in \( \mathbb{Z}_{10} \), the statements \( 6+7=3 \) and \( 6 \times 7=2 \) are true, because \( 13=3 \) and \( 42=2 \). This works because \( \mathbb{Z}_m \) is defined as the <i>quotient</i> \( \mathbb{Z}/m\mathbb{Z} \), so when we say "the element 6 in \( \mathbb{Z}_{10} \)", what we really mean is the <i>coset</i> \( \{ \dots, -14, -4, 6, 16, \dots \} \).</p>
+            <p>If \( p \) is a prime number, then you can verify fairly easily that \( \mathbb{Z}_p \) satisfies the <a href="https://mathworld.wolfram.com/FieldAxioms.html">field axioms</a>, which makes \( \mathbb{Z}_p \) very nice to work with.</p>
+            <p>For any prime number \( p \) and any natural number \( n \), there exists an irreducible degree-\( n \) polynomial \( \pi(x) \in \mathbb{Z}_p[x] \) (<a href="https://math.stackexchange.com/questions/3051870/about-existence-of-an-irreducible-polynomial-of-degree-n-in-z-px">here</a> is a proof, but you don't really need to know why it is true). For convenience, I can make that polynomial monic (by dividing by the leading coefficient).</p>
+            <p>The finite field of order \( q=p^n \) is defined as the quotient \( \mathbb{F}_q := \mathbb{Z}_p[x] / \langle \pi(x) \rangle \).</p>
+            <p>TODO: talk about the number of irreducible polynomials of degree \( n \) over \( \mathbb{Z}_p \). Also explain why a field of order \( q \) exists iff \( q \) is a prime power, and if it does exist, it's unique up to isomorphism.</p>
             <h3 id="projective-planes">Projective planes</h3>
-            <h3 id="affine-planes">Affine planes</h3>
-            <!-- TODO: delete the algorithm outline -->
-            <h2>Algorithm outline</h2>
+            <p>The projective plane of order \( q \) is defined as \( (\mathbb{F}_q)^3 - \{(0,0,0)\} \), modulo the equivalence relation that \((a,b,c) \sim (ka,kb,kc)\) for any \( k \in \mathbb{F}_q \). The set \( (\mathbb{F}_q)^3 - \{(0,0,0)\} \) has \( q^3-1 \) points, and each equivalence class contains \( q-1 \) of those, so the projective plane of order \( q \) has \( (q^3-1)/(q-1)=q^2+q+1 \) distinct points. We can represent each equivalence class as the unique point in that class for which the leading nonzero coordinate is 1. In other words,</p>
             <ul>
-                <li>Prompt user for number of symbols per card, \( q+1 \). Note that \( q \) must be a prime power (<a href="https://oeis.org/A000961">OEIS A000961</a>).
-                <li>Find a prime number \( p \) and a positive integer \( n \) such that \( q=p^n \).</li>
-                <li>Choose any irreducible degree-\(n\) polynomial \( \pi(x) \in \mathbb{Z}_p[x] \). Such a polynomial will always exist (CITATION NEEDED), and for convenience, we can also make sure \( \pi(x) \) is monic.</li>
-                <li>Let \( \mathbb{F}_q = \mathbb{Z}_p[x] / \langle \pi(x) \rangle \) be the finite field of order \( q \).</li>
-                <li>Let the projective plane of order \( q \) be \( (\mathbb{F}_q)^3 - \{(0,0,0)\} \), modulo the equivalence relation that \((a,b,c) \sim (ka,kb,kc)\) for any \( k \in \mathbb{F}_q \). For each equivalence class, use a representative element for which the first nonzero coordinate is 1. In other words, if \( a \) is nonzero, write \( (a,b,c) \) as \( (1,b/a,c/a) \), if \( a \) is zero but \( b \) is nonzero, write it as \( (0,1,c/b) \), and if \( a=b=0 \), write it as \( (0,0,1) \).</li>
-                <li>Solve for the set of lines in the projective plane. Each line is uniquely described by an equation of the form \( ax+by+cz=0 \), where \( a,b,c \in \mathbb{F}_q \) are constants which are not all zero. Since there are \( q^2+q+1 \) lines and \( q+1 \) points on each line, this takes \( O(q^3) \) time.</li>
-                <li>For each line in the plane, create a card containing the symbols which correspond to the points on that line. Since every pair of (distinct) lines in a projective plane intersects at exactly 1 point, every pair of cards will have exactly one symbol in common. Alternatively, you could assign a unique symbol to each line, and create a card for each point containing precisely the symbols corresponding to the lines through that point. This still works, since every pair of (distinct) points in a projective plane has exactly one line going thought both.</li>
-                <li>Note than you can turn a projective plane into the dual of an affine plane by selecting one point and removing all the lines through that point. The resulting incidence structure now has \( q^2+q \) points, \( q^2 \) lines, \( q+1 \) points on each line, and \( q \) lines through each point. Unlike the projective plane, this incidence structure is not its own dual. It has the property that each pair of distinct lines intersects at exactly one point, but there are pairs of points such that there is no line through both.</li>
+                <li>If \( a \) is nonzero, write \( (a,b,c) \) as \( (1,b/a,c/a) \). There are \( q^2 \) distinct points that can be written this way, since \( b \) and \( c \) (or equivalently, \( b/a \) and \( c/a \)) can each be any element of \( \mathbb{F}_q \).</li>
+                <li>If \( a \) is zero but \( b \) is nonzero, write it as \( (0,1,c/b) \). Since \( c/b \) can be any element of \( \mathbb{F}_q \), this parameterizes \( q \) distinct points.</li>
+                <li>If \( a=b=0 \), write it as \( (0,0,1) \).</li>
             </ul>
+            <p>Counting up those 3 cases shows again that the projective plane of order \( q \) has \( q^2+q+1 \) distinct points.</p>
+            <p>Any line in the projective plane of order \( q \) can be defined as the set of points \( (x,y,z) \) in that plane which satisfy the equation \( ax+by+cz=0 \), where \( a,b,c \) are constants in \( \mathbb{F}_q \) which are not all zero.</p>
+            <p>One very nice property of finite projective planes is that they are their own dual. You can use either method 1 or method 2 to turn a finite projective plane into a Spot-It deck.</p>
+            <p>TODO: Remember to explain why it is its own dual, and also talk about parameterization, and explain why it is a Steiner system</p>
+            <h3 id="affine-planes">Affine planes</h3>
+            <p>TODO: Talk about why I choose to only use projective plane instead of affine plane</p>
+            <p>TODO: note that affine planes are not equal to their own dual, so only method 2 works</p>
             <hr>
             <h2 id="further-reading">Further reading</h2>
                 <p><a href="https://blog.plover.com/math/finite-projective-planes.html">https://blog.plover.com/math/finite-projective-planes.html</a></p>
@@ -117,6 +146,8 @@
                 <p><a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">https://www.youtube.com/watch?v=VTDKqW_GLkw</a></p>
                 <p><a href="https://thewessens.net/ClassroomApps/Main/finitegeometry.html">https://thewessens.net/ClassroomApps/Main/finitegeometry.html</a></p>
                 <p><a href="https://macrusher.github.io/dobble-generator/">https://macrusher.github.io/dobble-generator/</a></p>
+                <p><a href="https://www.amni.co/dobble/">https://www.amni.co/dobble/</a></p>
+                <!-- TODO: talk about difference between incidence structure and hypergraph -->
             <hr>
             <hr>
             <p>

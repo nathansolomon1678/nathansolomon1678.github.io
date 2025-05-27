@@ -18,8 +18,8 @@ div {
     max-width: 1000px;
     width: calc(100% - 60px);
     margin: auto;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 20px;
     background-color: #222;
     border-radius: 20px;
@@ -39,7 +39,7 @@ div {
 
 textarea {
     resize: vertical;
-    min-height: 5lh;
+    min-height: 10lh;
     background-color: black;
     color: #0c0;
     width: calc(100% - 20px);
@@ -81,13 +81,13 @@ button:hover {
 }
 
 .emoji-button {
-    padding: 5px;
-    margin: 5px;
+    padding: 3px;
+    margin: 3px;
     border: 2px solid #555;
     border-radius: 5px;
     background-color: #000;
     color: #fff;
-    font-size: 1.75lh;
+    font-size: 1.7lh;
 }
 .emoji-button:hover {
     background-color: #000;
@@ -123,6 +123,6 @@ a {
     cursor: pointer;
 }
 
-ul li {
+li {
     margin-bottom: .5lh;
 }
