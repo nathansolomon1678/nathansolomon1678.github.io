@@ -38,21 +38,11 @@ div {
 }
 
 textarea {
-    overflow-x: hidden;
+    resize: vertical;
+    min-height: 5lh;
     background-color: black;
     color: #0c0;
-    max-width: calc(100% - 20px);
-    border-radius: 5px;
-    border: 1px solid #555;
-    padding: 5px;
-    font-size: 1lh;
-}
-
-.output-message {
-    overflow-x: hidden;
-    background-color: black;
-    color: #0c0;
-    max-width: calc(100% - 20px);
+    width: calc(100% - 20px);
     border-radius: 5px;
     border: 1px solid #555;
     padding: 5px;
@@ -97,7 +87,7 @@ button:hover {
     border-radius: 5px;
     background-color: #000;
     color: #fff;
-    font-size: 1.5lh;
+    font-size: 1.75lh;
 }
 .emoji-button:hover {
     background-color: #000;

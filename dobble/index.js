@@ -1,4 +1,6 @@
 "use strict"
+// TODO: carefully check overall code quality. Use const and let when possible.
+
 
 // DEFAULT VALUES
 var q = 7;
@@ -9,18 +11,94 @@ function shuffle(arr) {
     return arr.sort(() => Math.random() - 0.5);
 }
 
+window.addEventListener("load", load_window, false);
+function load_window() {
+    create_emoji_menu();
+    get_url_params();
+}
 
-window.addEventListener("load", update_q, false);
+function get_url_params() {
+    let url_params = (new URL(window.location.href)).searchParams;
+    if (url_params.has('q')) {
+        q = parseInt(url_params.get('q'));
+        document.getElementById("q-select").value = q;
+    }
+    var emojis = "";
+    if (url_params.has("emojis")) {
+        emojis = base64_to_binary(url_params.get("emojis"));
+    }
+    for (let i = 0; i < emojis.length && i < all_emojis.length; i++) {
+        if (emojis[i] == '1') {
+            toggle_emoji(all_emojis[i]);
+        }
+    }
+    update_q();
+    if (selected_emojis.size == q**2 + q + 1) {
+        create_cards();
+    }
+}
+
+function set_url_params() {
+    var emojis = "";
+    for (let i = 0; i < all_emojis.length; i++) {
+        emojis += selected_emojis.has(all_emojis[i]) ? '1' : '0';
+    }
+    emojis = binary_to_base64(emojis);
+
+    const url_with_params = new URL(window.location.href);
+    url_with_params.searchParams.delete('q');
+    url_with_params.searchParams.append('q', q);
+    url_with_params.searchParams.delete("emojis");
+    url_with_params.searchParams.append("emojis", emojis);
+    window.history.replaceState(null, null, url_with_params.href);
+}
+
 function update_q() {
     q = parseInt(document.getElementById("q-select").value);
-    // TODO: discuss construction of Steiner systems S(2,k,n) other than just
-    // projective and affine planes
-    document.getElementById("settings-description").innerHTML =
-        `Creating projective plane of order ${q}:<br>` +
-        `* ${q+1} symbols per card<br>` +
-        `* ${q**2+q+1} symbols<br>` +
-        `* Up to ${q**2+q+1} cards`;
+    document.getElementById("plane-description").innerHTML =
+        `Creating projective plane of order ${q}:\n` +
+        `* ${q**2+q+1} points\n` +
+        `* ${q**2+q+1} lines\n` +
+        `* ${q+1} points per line`;
     update_cards_display();
+}
+
+let base64_encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
+// binary_encoding is a dictionary from base64 characters to 6-bit chunks,
+// {'A': "000000", 'B': "100000", ...}
+const base64_lookup = {};
+
+function binary_to_base64(bin_string) {
+    // For convenience assume this is little-endian, so padding the right
+    // side of the binary string with zeros doesn't change its value
+    bin_string = bin_string + '0'.repeat(mod(-bin_string.length, 6));
+    var base64_string = "";
+    // Iterate through 6-bit chunks
+    for (let i = 0; i < bin_string.length; i += 6) {
+        var char_value = 0;
+        for (let j = 0; j < 6; j++) {
+            char_value += parseInt(bin_string[i+j]) * 2**j;
+        }
+        base64_string += base64_encoding[char_value];
+    }
+    return base64_string;
+}
+
+function base64_to_binary(base64_string) {
+    // First, create lookup table
+    for (let c = 0; c < 64; c++) {
+        var bin_string = "";
+        for (let j = 0; j < 6; j++) {
+            bin_string += (c % (2**(j+1)) >= (2**j)) ? '1' : '0';
+        }
+        base64_lookup[binary_to_base64(bin_string)] = bin_string;
+    }
+    // Iterate through each character in base64 string
+    var bin_string = "";
+    for (let i = 0; i < base64_string.length; i++) {
+        bin_string += base64_lookup[base64_string[i]];
+    }
+    return bin_string;
 }
 
 function toggle_menu_visibility() {
@@ -29,14 +107,13 @@ function toggle_menu_visibility() {
     const emoji_menu = document.getElementById("emoji-menu");
     if (emoji_menu.style.display == "none") {
         emoji_menu.style.display = "block";
-        button.innerHTML = "Hide emoji selection menu";
+        button.innerHTML = "hide emoji selection menu";
     } else {
         emoji_menu.style.display = "none";
-        button.innerHTML = "Show emoji selection menu";
+        button.innerHTML = "show emoji selection menu";
     }
 }
 
-window.addEventListener("load", create_emoji_menu, false);
 function create_emoji_menu() {
     var menu_html = "";
     for (const category in emoji_categories) {
@@ -90,46 +167,55 @@ function update_cards_display() {
 }
 
 function copy_cards() {
-    let text = document.getElementById("cards").innerHTML.replaceAll("<br>", '\n');
+    let text = document.getElementById("cards").innerHTML;
     navigator.clipboard.writeText(text);
 }
 
 
 function create_cards() {
     update_q();
-    // TODO: save q, the random seed, and the selected emojis in the URL
     var plane = new ProjectivePlane(q);
     let num_symbols = plane.V;
-    let emoji_list = shuffle([...selected_emojis]);
-    if (emoji_list.length < num_symbols) {
+
+    var emojis_to_toggle = [];
+    if (selected_emojis.size < num_symbols) {
         var message =
-            `You need ${num_symbols} symbols, but have only selected ${emoji_list.length}.` +
-            `\n\nDo you want to select ${num_symbols - emoji_list.length} more at random?`;
+            `You need ${num_symbols} symbols, but have only selected ${selected_emojis.size}.` +
+            `\n\nDo you want to select ${num_symbols - selected_emojis.size} more at random?`;
         if (!confirm(message)) {
             return;
         }
-        // TODO: select more symbols at random
-    } else if (emoji_list.length > num_symbols) {
+        // Select more symbols at random
+        emojis_to_toggle = shuffle([...(new Set(all_emojis)).difference(selected_emojis)]).slice(0, num_symbols - selected_emojis.size);
+    } else if (selected_emojis.size > num_symbols) {
         var message =
-            `You need ${num_symbols} symbols, but have ${emoji_list.length} selected.` +
-            `\n\nDo you want to randomly deselect ${emoji_list.length - num_symbols} of those?`;
+            `You need ${num_symbols} symbols, but have ${selected_emojis.size} selected.` +
+            `\n\nDo you want to randomly deselect ${selected_emojis.size - num_symbols} of those?`;
         if (!confirm(message)) {
             return;
         }
-        // TODO: deselect symbols at random
+        // Deselect symbols at random
+        emojis_to_toggle = shuffle([...selected_emojis]).slice(0, selected_emojis.size - num_symbols);
     }
+    for (let i = 0; i < emojis_to_toggle.length; i++) {
+        toggle_emoji(emojis_to_toggle[i]);
+    }
+    let emoji_list = shuffle([...selected_emojis]);
+    set_url_params();
+
     var text = "";
     // Iterate through vertices on each line
     let lines = shuffle(plane.lines);
-    for (let line = 0; line < lines.length; line++) {
-        for (let v = 0; v < lines[line].length; v++) {
-            if (v > 0) {
+    for (let i = 0; i < lines.length; i++) {
+        let line = shuffle(lines[i]);
+        for (let j = 0; j < line.length; j++) {
+            if (j > 0) {
                 text += ' ';
             }
-            let vertex = lines[line][v];
+            let vertex = line[j];
             text += emoji_list[vertex];
         }
-        text += "<br>";
+        text += '\n';
     }
     document.getElementById("cards").innerHTML = text;
     document.getElementById("copy-cards").style.display = "block";

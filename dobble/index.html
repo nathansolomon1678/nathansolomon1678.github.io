@@ -15,12 +15,12 @@
         <div id="main-div">
             <h1>Spot-It Card Game Generator</h1>
             <hr>
-            <p><a href="https://www.spotitgame.com/">"Spot-It" (also called "Dobble")</a> is a card game in which each card has 8 pictures/symbols on it, and each pair of cards has exactly one symbol in common. You can use that deck to play a variety of game modes in which players compete to find those matches as quickly as possible.</p>
-            <p>There is also an easier version of Spot-It made for young kids, in which there are only 6 pictures on each card.</p>
+            <p><a href="https://www.spotitgame.com/">"Spot-It" (also called "Dobble")</a> is a card game in which each card has 8 pictures/symbols on it, and each pair of cards has exactly one symbol in common. You can use that deck to play a variety of game modes in which players compete to find those matches as quickly as possible. There is also an easier version of Spot-It made for young kids, in which there are only 6 pictures on each card.</p>
             <p>This website allows you to make your own Spot-It game, in which you choose the number of symbols per card, and you can also choose which symbols to use (from a limited selection of emojis).</p>
             <p><a href="Example_8.pdf">Example output (for 8 symbols per card)</a></p>
+            <p><a href="Example_20.pdf">Example output (for 20 symbols per card)</a></p>
             <hr>
-            <h2>Settings</h2>
+            <h2 id="settings">Settings</h2>
             <div>
                 <div>
                     <div>
@@ -41,11 +41,12 @@
                         </select>
                     </div>
                     <br>
-                    <div id="settings-description" class="output-message">
+                    <!-- TODO: fix CSS for the textarea -->
+                    <textarea id="plane-description" readonly style="resize: none">
                         Loading...
-                    </div>
+                    </textarea>
                 </div>
-                <button id="hide-menu-button" onclick="toggle_menu_visibility()">Hide emoji selection menu</button>
+                <button id="hide-menu-button" onclick="toggle_menu_visibility()">hide emoji selection menu</button>
                 <br>
                 <br>
                 <br>
@@ -55,20 +56,49 @@
                 </div>
             </div>
             <hr>
-            <h2>Instructions</h2>
-                <p>To print this, copy & paste the emojis above into a Google Doc, configure the page setup to be landscape mode, center all text, and increase font size until each line takes up exactly one page. Then print to PDF with either 4 or 6 pages per sheet.</p>
-                <p>Of course, the game will still work even if you remove a few cards. So if the last page of your PDF only has 1 or 2 cards, you can save paper by just not printing that page.</p>
+            <h2 id="instructions">Instructions</h2>
                 <div>
-                    <button onclick="create_cards()">Create cards</button>
+                    <ul>
+                        <li>Use the settings above to choose how many symbols you want per card, and which symbols you want to use. Then click the "create cards" button below and copy the output to your clipboard.</li>
+                        <li>Paste that output into a new Google Doc, and configure the page setup to be landscape mode.</li>
+                        <li>Select all of the text in the document. Center-align all the text, and increase its font size as much as possible while still fitting each line on one page.</li>
+                        <li>Print the doc to a PDF, with either 4 or 6 pages per sheet, depending on how big you want the cards to be.</li>
+                        <li>Use a color printer to print out the resulting PDF, then cut each piece of paper into 4 or 6 cards. Remember that the game will still work even if you remove a few cards, so you can save paper by not printing every page of the PDF (especially if the last page of your PDF only has 1 or 2 cards).</p>
+                    </ul>
                 </div>
                 <div>
-                    <button id="copy-cards" onclick="copy_cards()">Copy to clipboard</button>
+                    <button onclick="create_cards()">create cards</button>
                 </div>
-                <div id="cards" class="output-message">
+                <div>
+                    <button id="copy-cards" onclick="copy_cards()">copy to clipboard</button>
+                </div>
+                <textarea id="cards" readonly>
                     Loading...
-                </div>
+                </textarea>
                 <br>
             <hr>
+            <h2 id="how-does-this-work">How does this work?</h2>
+                <p>
+                    The math behind Spot-It is fascinating and surprisingly complicated. The best place to begin learning about it is with <a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">this video</a> by Stand-up Maths. I also recommend checking out <a href="https://blog.plover.com/math/finite-projective-planes.html">this article</a> about constructing finite projective planes.
+                </p>
+            <h3 id="hypergraphs">Hypergraphs</h3>
+            <p>A <a href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">graph</a> is a structure made of vertices, also called "nodes" or "points", and edges, which are drawn as lines between two vertices. Mathematically, a graph is a structure \( G=(V,E) \), where \( V \) is the set of vertices, and \( E \) is the set of edges. Each edge is a 2-element subset of \( V \).</p>
+                <p>A <i>hypergraph</i> is defined the same way, except that each edge can be any subset of \( V \), not just a 2-element subset. An <i>incidence structure</i> is just a hypergraph in which we call the edges "lines", and where we are interested in the intersections of lines.</p>
+                <p>Everyone's favorite example of an incidence structure is the Fano plane, shown below. It has 7 vertices and 7 lines, although one of those "lines" is drawn as a circle. Each line in the Fano plane contain 3 vertices, and every pair of lines intersects at exactly one vertex. Also, for any pair of vertices, there is exactly one line which goes through both.</p>
+                <div style="background-color: white; max-width: 500px; border-radius: 1lh">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Fano_plane.svg" style="max-width: 500px">
+                </div>
+                <p>If an incidence structure satisfies <a href="#steiner-systems">certain properties</a>, then we can use it to create a Spot-It deck. There are two methods which we can use for representing an incidence structure as a Spot-It deck:</p>
+                <ol>
+                    <li>Label each vertex with a unique symbol. For each line, create a card containing the symbols corresponding to each point on the line.</li>
+                    <li>Label each line with a unique symbol. For each vertex, create a card containing the symbols corresponding to each line which contains that point.</li>
+                </ol>
+                <p>Which method you use is a matter of taste, but I prefer method 1, so I will default to using that method. Representing a hypergraph \( G \) using method 1 is equivalent to representing its <a href="https://en.wikipedia.org/wiki/Hypergraph#Related_hypergraphs">dual</a>, \( G^* \) using method 2, and vice versa. Note that the Fano plane is its own dual.</p>
+            <h3 id="steiner-systems">Steiner systems</h3>
+            <h3 id="finite-fields">Finite fields</h3>
+            <h3 id="projective-planes">Projective planes</h3>
+            <h3 id="affine-planes">Affine planes</h3>
+            <!-- TODO: delete the algorithm outline -->
             <h2>Algorithm outline</h2>
             <ul>
                 <li>Prompt user for number of symbols per card, \( q+1 \). Note that \( q \) must be a prime power (<a href="https://oeis.org/A000961">OEIS A000961</a>).
@@ -81,12 +111,12 @@
                 <li>Note than you can turn a projective plane into the dual of an affine plane by selecting one point and removing all the lines through that point. The resulting incidence structure now has \( q^2+q \) points, \( q^2 \) lines, \( q+1 \) points on each line, and \( q \) lines through each point. Unlike the projective plane, this incidence structure is not its own dual. It has the property that each pair of distinct lines intersects at exactly one point, but there are pairs of points such that there is no line through both.</li>
             </ul>
             <hr>
-            <h2>Further reading</h2>
-            <p>
-                <a href="https://blog.plover.com/math/finite-projective-planes.html">https://blog.plover.com/math/finite-projective-planes.html</a>
-                <br><br><a href="https://hapax.github.io/mathematics/spotit/">https://hapax.github.io/mathematics/spotit/</a>
-                <br><br><a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">https://www.youtube.com/watch?v=VTDKqW_GLkw</a>
-            </p>
+            <h2 id="further-reading">Further reading</h2>
+                <p><a href="https://blog.plover.com/math/finite-projective-planes.html">https://blog.plover.com/math/finite-projective-planes.html</a></p>
+                <p><a href="https://hapax.github.io/mathematics/spotit/">https://hapax.github.io/mathematics/spotit/</a></p>
+                <p><a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">https://www.youtube.com/watch?v=VTDKqW_GLkw</a></p>
+                <p><a href="https://thewessens.net/ClassroomApps/Main/finitegeometry.html">https://thewessens.net/ClassroomApps/Main/finitegeometry.html</a></p>
+                <p><a href="https://macrusher.github.io/dobble-generator/">https://macrusher.github.io/dobble-generator/</a></p>
             <hr>
             <hr>
             <p>
