@@ -4,6 +4,7 @@ from sympy.abc import x
 
 # COMPUTE PRIME POWERS UP TO N
 N = 20
+
 primes = [i for i in range(N) if isprime(i)]
 prime_powers = dict()
 for p in primes:
@@ -28,7 +29,7 @@ q_to_poly = dict()
 print("IRREDUCIBLE MONIC POLYNOMIALS:")
 for q in sorted(prime_powers.keys()):
     p, n = prime_powers[q]
-    # Iterate through all monic polynomials (of degree n over Z_p)
+    # Iterate through all monic polynomials of degree n over Z_p
     for num in range(p**n):
         poly = int_to_poly(num, p, n) + Poly(x**n, x, modulus = p)
         if poly.is_irreducible:

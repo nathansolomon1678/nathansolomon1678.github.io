@@ -1,18 +1,13 @@
-body {
-    background-color: #202;
-    margin: 0px;
-}
+body  { background-color: #202; margin: 0px; }
+div   { overflow: auto; }
 
 h1    { color: #fff; font-size: 2lh; }
 h2    { color: #fff; font-size: 1.6lh; }
 h3    { color: #fff; font-size: 1.3lh; }
 p     { color: #fff; font-size: 1lh; }
-li    { color: #fff; font-size: 1lh; }
+li    { color: #fff; font-size: 1lh; margin-bottom: .5lh; }
 label { color: #fff; font-size: 1lh; }
-
-div {
-    overflow: auto;
-}
+a     { color: #5af; text-decoration: underline; cursor: pointer; }
 
 #main-div {
     max-width: 1000px;
@@ -83,22 +78,22 @@ button:hover {
 .emoji-button {
     padding: 3px;
     margin: 3px;
-    border: 2px solid #555;
+    border: 2px solid #000;
     border-radius: 5px;
     background-color: #000;
     color: #fff;
-    font-size: 1.7lh;
+    font-size: 1.5lh;
 }
 .emoji-button:hover {
-    background-color: #000;
-    border: 2px solid #0c0;
+    background-color: #555;
+    border: 2px solid #555;
 }
 .emoji-button-selected {
     background-color: #555;
     border: 2px solid #0c0;
 }
 .emoji-button-selected:hover {
-    background-color: #555;
+    background-color: #000;
     border: 2px solid #0c0;
 }
 
@@ -108,21 +103,9 @@ button:hover {
   border-radius: 8px;
   background-clip: padding-box;  
 }
-
 ::-webkit-scrollbar {
-  width: 16px;
+  width: 1lh;
 }
-
 ::-webkit-resizer {
   background: #555;
-}
-
-a {
-    color: #5af;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-li {
-    margin-bottom: .5lh;
 }

@@ -1,10 +1,9 @@
 "use strict"
-// TODO: carefully check overall code quality. Use const and let when possible.
 
 
 // DEFAULT VALUES
 var q = 7;
-var selected_emojis = new Set();
+const selected_emojis = new Set();
 
 function shuffle(arr) {
     // Returns a given array in a random order
@@ -38,7 +37,7 @@ function get_url_params() {
     }
 }
 
-function set_url_params() {
+function update_settings_link() {
     var emojis = "";
     for (let i = 0; i < all_emojis.length; i++) {
         emojis += selected_emojis.has(all_emojis[i]) ? '1' : '0';
@@ -50,21 +49,25 @@ function set_url_params() {
     url_with_params.searchParams.append('q', q);
     url_with_params.searchParams.delete("emojis");
     url_with_params.searchParams.append("emojis", emojis);
-    window.history.replaceState(null, null, url_with_params.href);
+    // window.history.replaceState(null, null, url_with_params.href);
+    const settings_link = document.getElementById("settings-link");
+    settings_link.innerHTML = `<p>Come back to these settings: ` +
+                              `<a href="${url_with_params}">${url_with_params}</a></p>`;
 }
 
 function update_q() {
     q = parseInt(document.getElementById("q-select").value);
     update_cards_display();
+    update_settings_link();
 }
 
 let base64_encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
-// binary_encoding is a dictionary from base64 characters to 6-bit chunks,
-// {'A': "000000", 'B': "100000", ...}
+// base64_lookup will be made into a dictionary from base64 characters to 6-bit chunks,
+// {'A': "000000", 'B': "100000", ..., '-': "111111"}
 const base64_lookup = {};
 
 function binary_to_base64(bin_string) {
-    // For convenience assume this is little-endian, so padding the right
+    // For convenience, assume this is little-endian, so padding the right
     // side of the binary string with zeros doesn't change its value
     bin_string = bin_string + '0'.repeat(mod(-bin_string.length, 6));
     var base64_string = "";
@@ -111,13 +114,18 @@ function toggle_menu_visibility() {
 
 function create_emoji_menu() {
     var menu_html = "";
-    for (const category in emoji_categories) {
+    for (let category in emoji_categories) {
+        // National flag emojis are not supported on Windows
+        if (category == "National flags" && navigator.platform.indexOf("Win") > -1) {
+            menu_html += `<div><h3>${category}:</h3><p>Flag emojis are not supported on Windows.</p></div>`;
+            continue;
+        }
         menu_html += `<div><h3>${category} ` +
                      `(<a onclick="toggle_category('${category}')">` +
                      `select all` + 
-                     `</a>):</h3></div><div>`
+                     `</a>):</h3></div><div>`;
         for (let i = 0; i < emoji_categories[category].length; i++) {
-            const sym = emoji_categories[category][i];
+            let sym = emoji_categories[category][i];
             menu_html += `<button id="${sym}" class="emoji-button" onclick="toggle_emoji('${sym}')">${sym}</button>`;
         }
         menu_html += "</div>";
@@ -136,6 +144,7 @@ function toggle_emoji(symbol) {
         button.classList.add("emoji-button-selected");
     }
     update_cards_display();
+    update_settings_link();
 }
 
 
@@ -149,7 +158,7 @@ function toggle_category(category) {
         }
     }
     for (let i = 0; i < emoji_categories[category].length; i++) {
-        const symbol = emoji_categories[category][i];
+        let symbol = emoji_categories[category][i];
         if (all_selected === selected_emojis.has(symbol)) {
             toggle_emoji(symbol);
         }
@@ -169,12 +178,12 @@ function copy_cards() {
 
 function create_cards() {
     update_q();
-    var plane = new ProjectivePlane(q);
+    let plane = new ProjectivePlane(q);
     let num_symbols = plane.V;
 
     var emojis_to_toggle = [];
     if (selected_emojis.size < num_symbols) {
-        var message =
+        let message =
             `You need ${num_symbols} symbols, but have only selected ${selected_emojis.size}.` +
             `\n\nDo you want to select ${num_symbols - selected_emojis.size} more at random?`;
         if (!confirm(message)) {
@@ -183,7 +192,7 @@ function create_cards() {
         // Select more symbols at random
         emojis_to_toggle = shuffle([...(new Set(all_emojis)).difference(selected_emojis)]).slice(0, num_symbols - selected_emojis.size);
     } else if (selected_emojis.size > num_symbols) {
-        var message =
+        let message =
             `You need ${num_symbols} symbols, but have ${selected_emojis.size} selected.` +
             `\n\nDo you want to randomly deselect ${selected_emojis.size - num_symbols} of those?`;
         if (!confirm(message)) {
@@ -196,7 +205,7 @@ function create_cards() {
         toggle_emoji(emojis_to_toggle[i]);
     }
     let emoji_list = shuffle([...selected_emojis]);
-    set_url_params();
+    update_settings_link();
 
     var text = "";
     // Iterate through vertices on each line
