@@ -88,6 +88,10 @@ let emoji_categories = {
 
 const all_emojis = [];
 for (const category in emoji_categories) {
+    if (category == "National flags" && navigator.platform.indexOf("Win") > -1) {
+        console.log("Skipping national flag emojis, becuase they aren't supported on Windows.");
+        continue;
+    }
     all_emojis.push(... emoji_categories[category]);
 }
 

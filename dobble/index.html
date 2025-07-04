@@ -15,8 +15,8 @@
         <div id="main-div">
             <h1>Spot-It Card Game Generator</h1>
             <hr>
-            <p><a href="https://www.spotitgame.com/">"Spot-It" (also called "Dobble")</a> is a card game in which each card has 8 pictures/symbols on it, and each pair of cards has exactly one symbol in common. You can use that deck to play a variety of game modes in which players compete to find those matches as quickly as possible. There is also an easier version of Spot-It made for young kids, in which there are only 6 pictures on each card.</p>
-            <p>This website allows you to make your own Spot-It game, in which you choose the number of symbols per card, and you can also choose which symbols to use (from a limited selection of emojis). Here are some example outputs:</p>
+            <p><a href="https://www.spotitgame.com/">"Spot-It" (also called "Dobble")</a> is a card game in which each card has 8 pictures/symbols on it, and each pair of cards has exactly one symbol in common. Players compete to find those matches as quickly as possible. There is also an easier version of Spot-It made for young kids, with only 6 pictures on each card.</p>
+            <p>This website allows you to make your own Spot-It game, where you choose the number of symbols per card and which symbols to use. Here are some example outputs:</p>
             <ul>
                 <li><a href="Example_3.pdf" >Deck with 3 symbols per card</a></li>
                 <li><a href="Example_8.pdf" >Deck with 8 symbols per card</a></li>
@@ -85,7 +85,7 @@
                         <li>Use the settings above to choose how many symbols you want per card, and which symbols you want to use. Then click the "create cards" button below and copy the output to your clipboard.</li>
                         <li>Paste that output into a new Google Doc, and configure the page setup to be landscape mode.</li>
                         <li>Select all of the text in the document. Center-align all the text, and increase its font size as much as possible while still fitting each line on one page.</li>
-                        <li>Print the doc to a PDF, with either 4 or 6 pages per sheet, depending on how big you want the cards to be.</li>
+                        <li>Print the doc to a PDF, with either 4 or 6 pages per sheet, depending on how big you want the cards to be. Double check that the cards look how you expect, since emojis can be displayed differently depending on what platform you are using.</li>
                         <li>Use a color printer to print out the resulting PDF, then cut each piece of paper into 4 or 6 cards. Remember that the game will still work even if you remove a few cards, so you can save paper by not printing every page of the PDF (especially if the last page of your PDF only has 1 or 2 cards).</p>
                     </ul>
                 </div>
@@ -99,11 +99,12 @@
             <hr>
             <h2 id="how-does-this-work">How does this work?</h2>
                 <p>
-                    The math behind Spot-It is fascinating and surprisingly deep. The best place to begin learning about it is with <a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">this video</a> by Stand-up Maths. I also recommend checking out <a href="https://blog.plover.com/math/finite-projective-planes.html">this article</a> about constructing finite projective planes.
+                    The math behind Spot-It is fascinating and surprisingly deep. I recommend you first watch <a href="https://www.youtube.com/watch?v=VTDKqW_GLkw">this video</a> by Stand-up Maths, then continue reading below.
                 </p>
             <h3 id="hypergraphs">Hypergraphs</h3>
             <p>A <a href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">graph</a> is a structure made of vertices, also called "nodes" or "points", and edges, which are drawn as lines between two vertices. Mathematically, a graph is a structure \( G=(V,E) \), where \( V \) is the set of vertices, and \( E \) is the set of edges. Each edge is a 2-element subset of \( V \).</p>
-            <p>A <i>hypergraph</i> is defined the same way, except that each edge can be any subset of \( V \), not just a 2-element subset. Edges of a hypergraph are sometimes called "lines", because they are drawn as lines through the vertices they contain.</p>
+            <p>A <i>hypergraph</i> is defined the same way, except that each edge can be any subset of \( V \), not just a 2-element subset.</p>
+            <p>An <i>incidence structure</i> is pretty much just a hypergraph, but with the data organized differently, and its edges are called "lines", because they're drawn as lines through the points they contain. I will use the terms "incidence structure" and "hypergraph" interchangeable, since they describe equivalent structures.</p>
             <p>Everyone's favorite example of a hypergraph is the Fano plane, shown below. It has 7 vertices and 7 lines, although one of those "lines" is drawn as a circle. Each line in the Fano plane contains 3 vertices, and every pair of lines intersects at exactly one vertex. Also, for any pair of vertices, there is exactly one line which goes through both.</p>
             <div style="background-color: white; max-width: 500px; border-radius: 1lh">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Fano_plane.svg" style="max-width: 500px">
@@ -141,13 +142,13 @@
             <hr>
             <h2 id="further-reading">Further reading</h2>
                 <ul>
-                    <li><a href="https://thewessens.net/ClassroomApps/Main/finitegeometry.html">https://thewessens.net/ClassroomApps/Main/finitegeometry.html</a></li>
-                    <li><a href="https://hapax.github.io/mathematics/spotit/">https://hapax.github.io/mathematics/spotit/</a></li>
-                    <li><a href="https://macrusher.github.io/dobble-generator/">https://macrusher.github.io/dobble-generator/</a></li>
-                    <li><a href="https://www.amni.co/dobble/">https://www.amni.co/dobble/</a></li>
-                    <li><a href="https://multramate.github.io/projects/fpp/main.pdf">https://multramate.github.io/projects/fpp/main.pdf</a></li>
+                    <li><a href="https://blog.plover.com/math/finite-projective-planes.html">https://blog.plover.com/math/finite-projective-planes.html</a> is one of the main resources I used for learning the math behind Spot-It. It walks you through a concrete example (constructing a deck with 5 symbols per card using the projective plane of order 4), and it also mentions several fun facts about projective planes.</li>
+                    <li><a href="https://thewessens.net/ClassroomApps/Main/finitegeometry.html">https://thewessens.net/ClassroomApps/Main/finitegeometry.html</a> provides an amazing interactive tool for visualizing how to make a 7 card (3 symbols per card) deck using what I called "method 2".</li>
+                    <li><a href="https://hapax.github.io/mathematics/spotit/">https://hapax.github.io/mathematics/spotit/</a> describes more of the interesting combinatorics behind incidence structures.</li>
+                    <li><a href="https://macrusher.github.io/dobble-generator/">https://macrusher.github.io/dobble-generator/</a> is another online card deck generator that will actually arrange the cards on a page for you, so all you need to do is print the PDF output. Rotating and resizing the symbols on each card makes the deck more fun to play with, but I didn't implement that feature on this site because it wouldn't be interesting to program.</li>
+                    <li><a href="https://www.amni.co/dobble/">https://www.amni.co/dobble/</a> is another online card generator, but it allows you to set the number of symbols per card to be any integer between 3 and 18. I still don't understand what it's doing in the cases where the number of symbols per card is 7, 11, 13, 15, or 16.</li>
+                    <li><a href="https://multramate.github.io/projects/fpp/main.pdf">https://multramate.github.io/projects/fpp/main.pdf</a> is a long document that thoroughly describes the math behind projective planes, and it proves why there is no projective plane of order 6.</li>
                 </ul>
-                <p>Note that some sources refer to Steiner systems (including projective and affine planes) as "incidence structures" instead of "hypergraphs". Those terms are pretty much interchangeable, since they describe equivalent structures but organize the data differently.</p>
             <hr>
             <hr>
             <p>
